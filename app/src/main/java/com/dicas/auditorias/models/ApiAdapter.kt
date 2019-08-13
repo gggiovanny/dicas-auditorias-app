@@ -17,7 +17,6 @@ class ApiAdapter
     {
         val authInterceptor = Interceptor { chain ->
             val url = chain.request().url().newBuilder()
-                .addQueryParameter("token", token)
                 .build()
 
             val newRequest = chain.request()
