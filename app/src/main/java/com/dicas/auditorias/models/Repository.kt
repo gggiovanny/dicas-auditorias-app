@@ -22,7 +22,6 @@ class Repository {
         val apiService = apiAdapter.getClientService()
         val call = apiService.getToken(username, password)
 
-
         call.enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 Log.e("ERROR: ", t.message)
@@ -30,20 +29,27 @@ class Repository {
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                var status = ""
+                var description = ""
                 try {
-                    val status = (response.body() ?: return).get("status").asString
-                    val description = (response.body() ?: return).get("description").asString
-                    token.value = (response.body() ?: return).get("token").asString ?: ""
-
-                    Log.d(TAG, "onResponse: status=$status")
-                    Log.d(TAG, "onResponse: description=$description")
-                    Log.d(TAG, "onResponse: etoken=${token.value}")
+                    status = (response.body() ?: return).get("status").asString
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
 
-
-
+                if(status == "ok") {
+                    try {
+                        token.value = (response.body() ?: return).get("token").asString ?: ""
+                        Log.d(TAG, "callToken.onResponse: token=${token.value}")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    description = (response.body() ?: return).get("description").asString
+                    Log.d(TAG, "callToken.onResponse: Can not get the token!. status=$status")
+                    Log.d(TAG, "callToken.onResponse: description=$description")
+                    token.value=""
+                }
             }
         })
     }

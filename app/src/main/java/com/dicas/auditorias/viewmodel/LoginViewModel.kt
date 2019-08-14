@@ -1,69 +1,46 @@
 package com.dicas.auditorias.viewmodel
 
-import android.content.Context
-import android.content.res.Resources
+
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
-import com.dicas.auditorias.models.Repository
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginViewModel(view: AppCompatActivity): ViewModel() {
 
-    private val repository = Repository()
-    private val preferenceName by lazy { Resources.getSystem().getString(R.string.preference_token_key) }
-    private val tokenKey by lazy { Resources.getSystem().getString(R.string.saved_token_key) }
-    private var token = ""
-    lateinit var view: AppCompatActivity
+    private val view: AppCompatActivity
+    val loginService: LoginService
 
     init {
         this.view = view
+        loginService = LoginService(view)
     }
 
     companion object {
         private const val TAG = "LoginViewModel"
     }
 
-    fun getTokenAPI(username: String, password: String) {
-        repository.callToken(username, password)
-        repository.getToken().observe(view, Observer {
-            token = it
-            storeTokenLocal()
-            Log.d(TAG, "getToken: $it")
-        })
-    }
-
-    fun storeTokenLocal() {
-        val sharedPref = view?.getSharedPreferences(preferenceName, Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putString(tokenKey, token)
-            apply()
-        }
-        Log.d(TAG, "storeTokenLocal: Saved!: $token")
-    }
-
-    fun getTokenLocal()
+    fun getTokenAPI(username: String, password: String)
     {
-        val sharedPref = view?.getSharedPreferences(preferenceName, Context.MODE_PRIVATE) ?: return
-        token = sharedPref.getString(tokenKey, "") ?: ""
-        Log.d(TAG, "getTokenLocal: $token")
-    }
-
-    fun getToken(username: String, password: String): String {
-        if(token.isEmpty()) {
-            getTokenLocal()
-
-            if(token.isEmpty()) {
-                getTokenAPI(username, password)
-
-                if(token.isEmpty()) {
-                    view.username.setText(R.string.login_wrong_user)
-                }
+        loginService.callTokenAPI(username, password)
+        loginService.getTokenAPI().observe(view, Observer {
+            if (it.isEmpty()) {
+                view.login_status.setText(R.string.login_status_wrong_user)
+                view.login_status.setTextColor(ContextCompat.getColor(view, R.color.error_red))
+                view.login_status.visibility = View.VISIBLE
+            } else {
+                Log.d(TAG, "getTokenAPI: $it")
+                view.login_status.setText(R.string.login_status_sucessful)
+                view.login_status.setTextColor(ContextCompat.getColor(view, R.color.sucess_green))
+                view.login_status.visibility = View.VISIBLE
             }
+        })
 
-        }
-        return token
+
     }
+
 }

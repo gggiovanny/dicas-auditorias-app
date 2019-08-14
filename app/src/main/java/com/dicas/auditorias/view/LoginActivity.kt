@@ -23,7 +23,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         var user = username.text.toString()
         val passwd = password.text.toString()
-
-        model.getToken(user, passwd)
+        model.getTokenAPI(user, passwd)
     }
 }

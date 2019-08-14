@@ -4,8 +4,11 @@
     <string name="hint_password">Contraseña</string>
     <string name="button_login">Iniciar sesión</string>
     <string name="company">Grupo Dicas</string>
+
+    <string name="login_status_wrong_user">¡Usuario o contraseña incorrectos!</string>
+    <string name="login_status_sucessful">Inicio correcto</string>
+
     <string name="preference_token_key">com.dicas.auditorias.PREFERENCE_TOKEN_KEY</string>
     <string name="saved_token_key">SAVED_TOKEN_KEY</string>
-    <string name="login_wrong_user">Usuario o contraseña incorrectos!</string>
 
 </resources>

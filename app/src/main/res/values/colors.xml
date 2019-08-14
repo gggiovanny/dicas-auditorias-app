@@ -12,4 +12,7 @@
     <color name="yellow_dicas">#FCCE01</color>
     <color name="pink_dicas">#E91E63</color>
 
+    <color name="sucess_green">#4BB543</color>
+    <color name="error_red">#FC100D</color>
+
 </resources>
