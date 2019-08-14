@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#FCCE01</color>
+    <color name="colorPrimaryDark">#DBBB2A</color>
+    <color name="colorAccent">#E91E63</color>
+    <color name="backgrond_dark">#475069</color>
+
+
+    <color name="backgrond_dark_dicas">#414042</color>
+    <color name="backgrond_dark_pretty">#475069</color>
+
+    <color name="yellow_dicas">#FCCE01</color>
+    <color name="pink_dicas">#E91E63</color>
+
 </resources>

@@ -17,10 +17,10 @@ class Repository {
 
     fun getToken() = token
 
-    fun callToken(user: String, passwd: String) {
+    fun callToken(username: String, password: String) {
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getClientService()
-        val call = apiService.getToken(user, passwd)
+        val call = apiService.getToken(username, password)
 
 
         call.enqueue(object : Callback<JsonObject> {
@@ -30,15 +30,20 @@ class Repository {
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                val status = (response.body() ?: return).get("status").asString
-                val description = (response.body() ?: return).get("description").asString
-                val etoken = (response.body() ?: return).get("token").asString
+                try {
+                    val status = (response.body() ?: return).get("status").asString
+                    val description = (response.body() ?: return).get("description").asString
+                    token.value = (response.body() ?: return).get("token").asString ?: ""
 
-                Log.d(TAG, "onResponse: status=$status")
-                Log.d(TAG, "onResponse: description=$description")
-                Log.d(TAG, "onResponse: etoken=$etoken")
+                    Log.d(TAG, "onResponse: status=$status")
+                    Log.d(TAG, "onResponse: description=$description")
+                    Log.d(TAG, "onResponse: etoken=${token.value}")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
 
-                token.value = etoken
+
+
             }
         })
     }

@@ -1,4 +1,11 @@
 <resources>
-    <string name="app_name">auditorias</string>
-    <string name="token">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjY1MjMwMDIsImNpZCI6ImI4ZWFlMjViOWNkNTU0ZjFjNzNlNWZkZDY0Yjg0NjBhODhjYjAyZmUiLCJkYXRhIjp7InVzZXJuYW1lIjoiZ2dvbnphbGV6IiwiaWQiOjE3fX0.7rI-VPYlSpnu5ERTa7i160GH9c7nzwB-C6O3Zgr5d6c</string>
+    <string name="app_name">Auditorias</string>
+    <string name="hint_username">Usuario</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="button_login">Iniciar sesión</string>
+    <string name="company">Grupo Dicas</string>
+    <string name="preference_token_key">com.dicas.auditorias.PREFERENCE_TOKEN_KEY</string>
+    <string name="saved_token_key">SAVED_TOKEN_KEY</string>
+    <string name="login_wrong_user">Usuario o contraseña incorrectos!</string>
+
 </resources>

@@ -11,7 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiAdapter
 {
     private val urlApi = "http://grupodicas.com.mx/api/"
-    private val token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjY1MjMwMDIsImNpZCI6ImI4ZWFlMjViOWNkNTU0ZjFjNzNlNWZkZDY0Yjg0NjBhODhjYjAyZmUiLCJkYXRhIjp7InVzZXJuYW1lIjoiZ2dvbnphbGV6IiwiaWQiOjE3fX0.7rI-VPYlSpnu5ERTa7i160GH9c7nzwB-C6O3Zgr5d6c"
 
     fun getClientService(): ApiService
     {
