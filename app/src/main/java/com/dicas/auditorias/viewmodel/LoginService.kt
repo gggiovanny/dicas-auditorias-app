@@ -7,11 +7,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.dicas.auditorias.R
-import com.dicas.auditorias.models.Repository
 
 class LoginService(view: AppCompatActivity) {
 
-    private val repository = Repository()
     private val view: AppCompatActivity
     private var loginStatus = false
     private var token = MutableLiveData<String>()
@@ -38,22 +36,6 @@ class LoginService(view: AppCompatActivity) {
         })
     }
 
-    private fun storeTokenLocal(token: String) {
-        val sharedPref = view?.getSharedPreferences(getPreferenceName(), Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putString(getTokenKey(), token)
-            apply()
-        }
-        Log.d(TAG, "storeTokenLocal: Saved!: $token")
-    }
 
-    private fun getTokenLocal() {
-        val sharedPref = view?.getSharedPreferences(getPreferenceName(), Context.MODE_PRIVATE) ?: return
-        token.value = sharedPref.getString(getTokenKey(), "") ?: ""
-        Log.d(TAG, "getTokenLocal: $token")
-    }
-
-    private fun getTokenKey() = view.getString(R.string.saved_token_key)
-    private fun getPreferenceName() = view.getString(R.string.preference_token_key)
 
 }

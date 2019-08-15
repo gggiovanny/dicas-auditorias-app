@@ -1,8 +1,6 @@
-package com.dicas.auditorias.models
+package com.dicas.auditorias.data.api
 
 
-import android.content.res.Resources
-import com.dicas.auditorias.R
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
