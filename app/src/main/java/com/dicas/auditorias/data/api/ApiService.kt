@@ -4,6 +4,7 @@ package com.dicas.auditorias.data.api
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.*
+import io.reactivex.Observable
 
 interface ApiService
 {
@@ -18,7 +19,7 @@ interface ApiService
     /** Activos */
 
     @GET("activos")
-    fun getActivos( @QueryMap parameters: Map<String, String> = HashMap() ): Call<JsonObject>
+    fun getActivos( @QueryMap parameters: Map<String, String> = HashMap() ): Observable<JsonObject>
 
     @GET("activos/{id}")
     fun getActivo( @Path("id") id:Int ): Call<JsonObject>

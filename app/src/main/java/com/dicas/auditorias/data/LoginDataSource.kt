@@ -50,7 +50,7 @@ class LoginDataSource{
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getClientService()
         val call = apiService.getToken(username, password)
-
+        TODO("Cambiar implementacion a observable")
         call.enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 Log.e("ERROR: ", t.message)
@@ -65,8 +65,8 @@ class LoginDataSource{
                         status = (response.body() ?: return).get("status").asString,
                         description = (response.body() ?: return).get("description").asString
                     )
-                    Log.d(TAG, "callToken.onResponse: Can not get the token!. status=${apiResponse.status}")
-                    Log.d(TAG, "callToken.onResponse: description=${apiResponse.description}")
+                    Log.d(TAG, "callToken.onResponse: status=${apiResponse.status}")
+                    Log.d(TAG, "callToken.onResponse: description=[${apiResponse.description}]")
                 } catch (e: Exception) {
                     responseCallback?.onError(IOException("Error getting token from API", e))
                 }

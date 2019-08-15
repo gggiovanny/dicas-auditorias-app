@@ -5,7 +5,6 @@ import android.util.Log
 import com.dicas.auditorias.App
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.LoggedInUser
-import com.dicas.auditorias.viewmodel.LoginService
 
 /**
  * Class that requests authentication and user information from the remote data source and
