@@ -25,4 +25,10 @@
     <string name="next">Siguiente</string>
     <string name="no_local_token"></string>
 
+    <string-array name="auditoria_status_options">
+        <item>En curso</item>
+        <item>Terminada</item>
+        <item>Guardada</item>
+    </string-array>
+
 </resources>
