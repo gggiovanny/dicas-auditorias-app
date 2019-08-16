@@ -28,7 +28,6 @@ class LoginRepository(val dataSource: LoginDataSource) {
 
     fun logout() {
         token = null
-        dataSource.logout()
     }
 
     fun login(username: String, password: String, responseHandler: (jsonResponse: JsonObject) -> Unit) {
@@ -63,6 +62,15 @@ class LoginRepository(val dataSource: LoginDataSource) {
             return Result.Success(LoggedInUser(token!!, username!!))
         } else
             return Result.Error(Exception("$TAG: No local token!"))
+    }
+
+    private fun deleteTokenLocal() {
+        val sharedPref = App.sApplication.applicationContext.getSharedPreferences(getPreferenceName(), Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            clear()
+            apply()
+        }
+        Log.d(TAG, "deleteTokenLocal: Token deleted!")
     }
 
     private fun getTokenKey() = App.sApplication.applicationContext.getString(R.string.saved_token_key)

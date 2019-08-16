@@ -1,4 +1,4 @@
-package com.dicas.auditorias.models
+package com.dicas.auditorias.data.model
 
 import android.util.Log
 import com.google.gson.JsonObject

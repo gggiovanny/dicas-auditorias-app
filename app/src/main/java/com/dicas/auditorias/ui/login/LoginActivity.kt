@@ -1,4 +1,4 @@
-package com.dicas.auditorias.view
+package com.dicas.auditorias.ui.login
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.LoggedInUser
-import com.dicas.auditorias.ui.login.LoginViewModel
-import com.dicas.auditorias.ui.login.LoginViewModelFactory
 import kotlinx.android.synthetic.main.activity_login.*
 
 

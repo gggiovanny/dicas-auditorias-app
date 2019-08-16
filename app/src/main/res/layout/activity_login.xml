@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgrond_dark"
     android:weightSum="100"
-    tools:context=".view.LoginActivity">
+    tools:context=".ui.login.LoginActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat"

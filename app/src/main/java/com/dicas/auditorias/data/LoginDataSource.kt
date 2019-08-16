@@ -27,10 +27,6 @@ class LoginDataSource{
             callTokenApiObservable(username, password, responseHandler)
     }
 
-    fun logout() {
-        // TODO: revoke authentication
-    }
-
     private fun callTokenApiObservable(username: String, password: String, responseHandler: (jsonResponse: JsonObject) -> Unit) {
 
         val apiAdapter = ApiAdapter()
