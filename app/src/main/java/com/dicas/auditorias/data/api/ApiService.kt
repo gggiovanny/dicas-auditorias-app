@@ -14,7 +14,7 @@ interface ApiService
     fun getToken(
         @Query("user") user: String,
         @Query("passwd") passwd: String
-    ): Call<JsonObject>
+    ): Observable<JsonObject>
 
     /** Activos */
 

@@ -30,6 +30,8 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(com.dicas.auditorias.ui.login.LoginViewModel::class.java)
 
+        checkForSavedToken()
+
         loginViewModel.loginState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
@@ -49,15 +51,21 @@ class LoginActivity : AppCompatActivity() {
 
             loading.visibility = View.GONE
             if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
+                if(loginResult.error != R.string.no_local_token) {
+                    showLoginFailed(loginResult.error, loginResult.description)
+                } else {
+                    username.visibility = View.VISIBLE
+                    password.visibility = View.VISIBLE
+                    button_login.visibility = View.VISIBLE
+                    loading.visibility = View.GONE
+                }
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
+                //Complete and destroy login activity once successful
+                finish()
             }
             setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            finish()
         })
 
         username.afterTextChanged {
@@ -79,6 +87,7 @@ class LoginActivity : AppCompatActivity() {
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         if(loginViewModel.loginState.value?.isDataValid == true) {
+                            loading.visibility = View.VISIBLE
                             loginViewModel.login(
                                 username.text.toString(),
                                 password.text.toString()
@@ -97,17 +106,31 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUiWithUser(model: LoggedInUser) {
         val welcome = getString(R.string.welcome)
-        val token = model.token
         // TODO : initiate successful logged in experience
         Toast.makeText(
             applicationContext,
-            "$welcome $token",
+            "$welcome ${model.name}",
             Toast.LENGTH_LONG
         ).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    private fun showLoginFailed(@StringRes errorString: Int, errorDescription: String? = null) {
+        if (errorDescription == null)
+            Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+        else
+            Toast.makeText(applicationContext, "${getString(errorString)}: $errorDescription", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun checkForSavedToken(){
+        username.visibility = View.GONE
+        password.visibility = View.GONE
+        button_login.visibility = View.GONE
+        loading.visibility = View.VISIBLE
+
+        val result = loginViewModel.checkLocalToken()
+
+
+
     }
 }
 

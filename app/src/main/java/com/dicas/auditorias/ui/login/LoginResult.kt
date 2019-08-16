@@ -7,5 +7,6 @@ import com.dicas.auditorias.data.model.LoggedInUser
  */
 data class LoginResult(
     val success: LoggedInUser? = null,
-    val error: Int? = null
+    val error: Int? = null,
+    val description: String? = null
 )

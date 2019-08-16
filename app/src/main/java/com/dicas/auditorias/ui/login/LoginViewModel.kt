@@ -1,5 +1,6 @@
 package com.dicas.auditorias.ui.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,10 +9,15 @@ import com.dicas.auditorias.data.LoginRepository
 import com.dicas.auditorias.data.Result
 
 import com.dicas.auditorias.R
+import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.LoggedInUser
+import java.io.IOException
+import java.lang.Exception
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
-
+    companion object {
+        private const val TAG = "LoginViewModel"
+    }
     private val _loginState = MutableLiveData<LoginFormState>()
     val loginState: LiveData<LoginFormState> = _loginState
 
@@ -20,12 +26,30 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun login(username: String, password: String) {
         // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+        loginRepository.login(username, password) {responseJson ->
 
-        if (result is Result.Success) {
-            _loginResult.value = LoginResult(success = LoggedInUser(result.data.token))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+            var apiResponse = ApiResponse(
+                status = responseJson.get("status").asString,
+                description = responseJson.get("description").asString
+            )
+            Log.d(TAG, "callToken.onResponse: status=${apiResponse.status}")
+            Log.d(TAG, "callToken.onResponse: description=[${apiResponse.description}]")
+
+            if(apiResponse.statusOk) {
+                apiResponse.token = responseJson.get("token").asString
+                apiResponse.username = responseJson.get("username").asString
+                Log.d(TAG, "callToken.onResponse: token=${apiResponse.token}")
+
+                try {
+                    loginRepository.setLoggedInUser(apiResponse.token!!, apiResponse.username!!)
+                    _loginResult.value = LoginResult(success = LoggedInUser(token = apiResponse.token!!, name = apiResponse.username))
+                } catch (e: Throwable) {
+                    _loginResult.value = LoginResult(error = R.string.login_failed, description = apiResponse.description)
+                    throw Exception("$TAG: No token on response object!", e)
+                }
+            } else {
+                _loginResult.value = LoginResult(error = R.string.login_failed, description = apiResponse.description)
+            }
         }
     }
 
@@ -51,5 +75,18 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5;
+    }
+
+    fun checkLocalToken() {
+        val result = loginRepository.getTokenLocal()
+
+        if (result is Result.Success)
+        {
+            _loginResult.value = LoginResult(success = result.data)
+        }
+        else
+        {
+            _loginResult.value = LoginResult(error = R.string.no_local_token)
+        }
     }
 }
