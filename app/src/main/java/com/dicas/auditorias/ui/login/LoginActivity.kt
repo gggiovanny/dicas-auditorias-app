@@ -1,10 +1,12 @@
 package com.dicas.auditorias.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -12,12 +14,17 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.LoggedInUser
+import com.dicas.auditorias.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity() {
+    companion object {
+        private const val TAG = "LoginActivity"
+    }
 
     private lateinit var loginViewModel: LoginViewModel
 
@@ -102,14 +109,22 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUiWithUser(model: LoggedInUser) {
+    private fun updateUiWithUser(userData: LoggedInUser) {
+        Log.d(TAG, "updateUiWithUser: Sucessful loged in!")
         val welcome = getString(R.string.welcome)
-        // TODO : initiate successful logged in experience
         Toast.makeText(
             applicationContext,
-            "$welcome ${model.name}",
+            "$welcome ${userData.name}",
             Toast.LENGTH_LONG
         ).show()
+
+        /** Creación de intent para abrir MainActivity si el login fue correcto
+         * Se le envian los datos del usuario en el intent */
+        val main = Intent(this, MainActivity::class.java).apply {
+            putExtra("user_data", userData)
+        }
+        startActivity(main)
+
     }
 
     private fun showLoginFailed(@StringRes errorString: Int, errorDescription: String? = null) {

@@ -4,7 +4,6 @@ data class ApiResponse(
     val status: String? = null,
     val description: String? = null,
     var token: String? = null,
-    var list: String? = null,
     var username: String? = null
 ) {
     val statusOk: Boolean
@@ -12,8 +11,5 @@ data class ApiResponse(
 
     val hasToken: Boolean
         get() = token != null
-
-    val hasList: Boolean
-        get() = list != null
 }
 

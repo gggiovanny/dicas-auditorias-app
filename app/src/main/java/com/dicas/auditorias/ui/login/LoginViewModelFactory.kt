@@ -2,7 +2,7 @@ package com.dicas.auditorias.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dicas.auditorias.data.LoginDataSource
+import com.dicas.auditorias.data.api.LoginDataSource
 import com.dicas.auditorias.data.LoginRepository
 
 /**

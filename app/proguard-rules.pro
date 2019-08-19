@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn android.support.**
+
+-keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
+-ignorewarnings
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
+-keep public class * extends android.support.v4.** {*;}
+-keep public class * extends android.app.Fragment
