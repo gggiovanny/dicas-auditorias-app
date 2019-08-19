@@ -11,7 +11,7 @@ class AuditoriasRepository(val dataSource: AuditoriasDataSource) {
     val response: LiveData<ApiResponse> = dataSource.response
 
 
-    fun callAuditoriasAPI(user: String =  "", status: String = "") {
-        dataSource.callAuditoriaAPI(user, status)
+    fun callAuditoriasAPI(apikey: String, user: String =  "", status: String = "") {
+        dataSource.callAuditoriaAPI(apikey, user, status)
     }
 }

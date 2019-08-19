@@ -24,10 +24,10 @@ class AuditoriasDataSource {
     val response: LiveData<ApiResponse> = _response
 
 
-    fun callAuditoriaAPI(user: String =  "", status: String = "") {
+    fun callAuditoriaAPI(apiKey: String, user: String =  "", status: String = "") {
         val apiAdapter = ApiAdapter()
-        val apiService = apiAdapter.getApiService()
-        val request: Disposable  = apiService.getToken(user, status)
+        val apiService = apiAdapter.getApiService(apiKey)
+        val request: Disposable  = apiService.getAuditorias(user, status)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(this::ResponseHandler, this::ErrorHandler)
@@ -54,10 +54,7 @@ class AuditoriasDataSource {
                     auditoriaJson.get("id").asString,
                     auditoriaJson.get("fechaCreacion").asString,
                     auditoriaJson.get("status").asString,
-                    auditoriaJson.get("descripcion").asString,
-                    auditoriaJson.get("username").asString,
-                    auditoriaJson.get("terminada").asString,
-                    auditoriaJson.get("fechaGuardada").asString
+                    auditoriaJson.get("descripcion").asString
                 )
                 auditoriasList.add(auditoria)
             }
@@ -67,6 +64,6 @@ class AuditoriasDataSource {
     }
 
     private fun ErrorHandler(error: Throwable) {
-        throw IOException("Error getting ${Auditoria.NAME} from API", error)
+        throw IOException("Error getting Auditorias from API", error)
     }
 }

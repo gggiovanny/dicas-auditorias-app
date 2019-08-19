@@ -14,7 +14,7 @@ class ApiAdapter {
     fun getApiService(apiKey: String = ""): ApiService {
         val authInterceptor = Interceptor { chain ->
             val url = chain.request().url().newBuilder()
-                .addQueryParameter("API_KEY", apiKey)
+                .addQueryParameter("token", apiKey)
                 .build()
 
             val newRequest = chain.request()
