@@ -31,4 +31,9 @@
         <item>Guardada</item>
     </string-array>
 
+    <string name="nueva_auditoria">Nueva auditoria</string>
+
+    <string name="spin_empresa_title">Elije una empresa</string>
+    <string name="spin_depto_title">Elije un departamento</string>
+
 </resources>

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -16,6 +17,7 @@ import com.dicas.auditorias.data.model.Auditoria
 import com.dicas.auditorias.data.model.LoggedInUser
 import com.dicas.auditorias.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_auditoria.*
+import kotlinx.android.synthetic.main.layout_nueva_auditoria.view.*
 
 
 class AuditoriasFragment : Fragment() {
@@ -48,13 +50,14 @@ class AuditoriasFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        setupSpinners()
 
     }
 
     fun setupBindings() {
 
-        val activityMainBinding: com.dicas.auditorias.databinding.FragmentAuditoriaBinding
-        = DataBindingUtil.setContentView(this.requireActivity(), R.layout.fragment_auditoria)
+        val activityMainBinding: com.dicas.auditorias.databinding.FragmentAuditoriaBinding =
+            DataBindingUtil.setContentView(this.requireActivity(), R.layout.fragment_auditoria)
 
         viewModel = ViewModelProviders.of(this, AuditoriasViewModelFactory())
             .get(com.dicas.auditorias.ui.auditorias.AuditoriaViewModel::class.java)
@@ -67,9 +70,23 @@ class AuditoriasFragment : Fragment() {
     fun setupListUpdate() {
         viewModel.callAuditorias(apikey = userData.token)
         viewModel.auditorias.observe(this, Observer { auditorias: List<Auditoria> ->
-            Log.d(TAG, "setupListUpdate: Auditoria: ${auditorias.get(0).status}")
             viewModel.setAuditoriasInRecyclerAdapter(auditorias)
         })
+    }
+
+    fun setupSpinners() {
+        val adapter = ArrayAdapter.createFromResource(
+            this.requireContext(),
+            R.array.auditoria_status_options, android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        empresa_spinner.adapter = adapter
+        departamento_spinner.adapter = adapter
+
+        Log.d(TAG, "setupSpinners: data seted!")
+
+
     }
 
 }
