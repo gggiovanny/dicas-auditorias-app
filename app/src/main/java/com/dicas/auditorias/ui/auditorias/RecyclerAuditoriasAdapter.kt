@@ -12,13 +12,13 @@ class RecyclerAuditoriasAdapter( var auditoriaViewModel: AuditoriaViewModel, var
 
     var auditorias: List<Auditoria>? = null
 
-    fun setAuditoriasList(coupons: List<Auditoria>?){
-        this.auditorias= coupons
+    fun setAuditoriasList(auditorias: List<Auditoria>?){
+        this.auditorias= auditorias
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): AuditoriaCardHolder {
-        var layoutInflater: LayoutInflater = LayoutInflater.from(p0.context)
-        var binding: ViewDataBinding = DataBindingUtil.inflate(layoutInflater, p1, p0, false)
+        val layoutInflater: LayoutInflater = LayoutInflater.from(p0.context)
+        val binding: ViewDataBinding = DataBindingUtil.inflate(layoutInflater, p1, p0, false)
         return AuditoriaCardHolder(binding)
     }
 
@@ -46,8 +46,8 @@ class RecyclerAuditoriasAdapter( var auditoriaViewModel: AuditoriaViewModel, var
             this.binding = binding
         }
 
-        fun setDataCard(couponViewModel: AuditoriaViewModel, index: Int){
-            binding?.setVariable(BR.model, couponViewModel)
+        fun setDataCard(auditoriaViewModel: AuditoriaViewModel, index: Int){
+            binding?.setVariable(BR.model, auditoriaViewModel)
             binding?.setVariable(BR.index, index)
             binding?.executePendingBindings()
         }

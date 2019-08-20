@@ -7,12 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.Auditoria
+import com.dicas.auditorias.data.model.Empresa
 import com.dicas.auditorias.data.model.LoggedInUser
 import kotlinx.android.synthetic.main.fragment_auditoria.*
+import android.widget.Toast
+import com.dicas.auditorias.data.model.Departamento
 
 
 class AuditoriasFragment : Fragment() {
@@ -31,6 +35,7 @@ class AuditoriasFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         /** Obteniendo los datos de usuario que vienen del login */
         try {
             userData = arguments?.getParcelable<LoggedInUser>("user_data")!!
@@ -56,7 +61,6 @@ class AuditoriasFragment : Fragment() {
     }
 
 
-
     fun setupRecyclerView() {
         rvAuditorias.adapter = viewModel.recyclerAuditoriasAdapter
 
@@ -68,19 +72,70 @@ class AuditoriasFragment : Fragment() {
     }
 
     fun setupSpinners() {
-        val adapter = ArrayAdapter.createFromResource(
-            context,
-            R.array.auditoria_status_options, android.R.layout.simple_spinner_item
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        /** Creando los adapters */
+        val adapterEmpresas = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item)
+        with(adapterEmpresas) {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            add("Selecicione una empresa")
+        }
 
+        val adapterDeptos = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item)
+        with(adapterDeptos) {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            add("Seleccione un departamento")
+        }
 
-        empresa_spinner.adapter = adapter
-        departamento_spinner.adapter = adapter
+        /** Llamando al API para obtener los datos y creando el observer para añadir la informacion cuando llegue */
+        viewModel.callEmpresas(apikey = userData.token)
+        viewModel.empresas.observe(this, Observer { empresas: List<Empresa> ->
+            for (empresa in empresas)
+                adapterEmpresas.add(empresa.nombre)
+            Log.d(TAG, "setupSpinners: Observer empresas done!")
+        })
+            /** Los departamentos se actualizan cuando se cambia la empresa elegida para traer los de la misma*/
+        viewModel.departamento.observe(this, Observer { departamentos: List<Departamento> ->
+            with(adapterDeptos) {
+                clear()
+                add("Seleccione un departamento")
+            }
+            departamento_spinner.setSelection(0)
+            for (depto in departamentos)
+                adapterDeptos.add(depto.nombre)
+            Log.d(TAG, "setupSpinners: Observer departamentos done! ")
+        })
 
-        Log.d(TAG, "setupSpinners: done!")
+        /** Seteando adapters y creando listeners */
+        with(empresa_spinner) {
+            adapter = adapterEmpresas
+            OnItemSelectedListener { parent, position ->
+                if(position > 0) {
+                    val item = parent.getItemAtPosition(position).toString()
+                    Toast.makeText(parent.context, "Selected: $item", Toast.LENGTH_LONG).show()
+                    /** Cuando Se elija una empresa, se cargan los departamentos de la misma */
+                    Log.d(TAG, "setupSpinners: $position")
+                    viewModel.callDepartamentos(apikey = userData.token, empresaID = position)
+                }
+            }
+        }
 
+        with(departamento_spinner) {
+            adapter = adapterDeptos
+        }
 
     }
-
 }
+
+/**
+ * Extension function to simplify setting an OnItemSelectedListener action to EditText components.
+ */
+fun AdapterView<*>.OnItemSelectedListener(lamdaListener: (parent: AdapterView<*>, position: Int) -> Unit) {
+    setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+
+        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            lamdaListener.invoke(parent, position)
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>) { }
+    })
+}
+

@@ -80,7 +80,7 @@ interface ApiService
     fun getEmpresas(
     ): Observable<JsonObject>
 
-    /** Departamentos */
+    /** Departamento */
 
     @GET("departamentos")
     fun getDepartamentos(

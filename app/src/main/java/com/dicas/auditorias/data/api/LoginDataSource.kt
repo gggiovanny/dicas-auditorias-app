@@ -1,6 +1,5 @@
 package com.dicas.auditorias.data.api
 
-import com.dicas.auditorias.data.api.ApiAdapter
 import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -13,10 +12,10 @@ import java.io.IOException
 class LoginDataSource {
 
     fun login(username: String, password: String, responseHandler: (jsonResponse: JsonObject) -> Unit) {
-            callTokenApiObservable(username, password, responseHandler)
+            callTokenApi(username, password, responseHandler)
     }
 
-    private fun callTokenApiObservable(username: String, password: String, responseHandler: (jsonResponse: JsonObject) -> Unit) {
+    private fun callTokenApi(username: String, password: String, responseHandler: (jsonResponse: JsonObject) -> Unit) {
 
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getApiService()
