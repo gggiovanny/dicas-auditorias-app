@@ -30,17 +30,17 @@ class AuditoriasDataSource {
         val request: Disposable  = apiService.getAuditorias(user, status)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe(this::ResponseHandler, this::ErrorHandler)
+            .subscribe(this::AuditoriasResponseHandler, this::ErrorHandler)
     }
 
-    private fun ResponseHandler(responseJson: JsonObject) {
+    private fun AuditoriasResponseHandler(responseJson: JsonObject) {
 
         val responseObject = ApiResponse (
             status = responseJson.get("status").asString,
             description = responseJson.get("description").asString
         )
-        Log.d(TAG, "ResponseHandler: status=${responseObject.status}")
-        Log.d(TAG, "ResponseHandler: description=[${responseObject.description}]")
+        Log.d(TAG, "AuditoriasResponseHandler: status=${responseObject.status}")
+        Log.d(TAG, "AuditoriasResponseHandler: description=[${responseObject.description}]")
 
         if(responseObject.statusOk) {
             val listJson = responseJson.get("list").asJsonArray

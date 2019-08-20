@@ -1,103 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgrond_dark_dicas">
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-        <variable
-            name="model_fragment"
-            type="com.dicas.auditorias.ui.auditorias.AuditoriaViewModel" />
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/backgrond_dark_dicas"
-        >
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tall_toolbar_height"
-            android:backgroundTint="@color/colorPrimary"
-            android:orientation="vertical">
+        android:layout_height="@dimen/tall_toolbar_height"
+        android:backgroundTint="@color/colorPrimary"
+        android:orientation="vertical">
 
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:contentScrim="@color/colorPrimary"
-                app:expandedTitleGravity="top"
-                app:expandedTitleMarginStart="@dimen/shrine_toolbar_offset_start"
-                app:expandedTitleMarginTop="@dimen/shrine_toolbar_offset_top"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:title="@string/app_name">
-
-                </androidx.appcompat.widget.Toolbar>
-
-                <androidx.appcompat.widget.Toolbar
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.5">
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/colorPrimary"
-                        android:orientation="horizontal"
-                        android:weightSum="100"
-                        >
-
-                        <Spinner
-                            android:id="@+id/empresa_spinner"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/spinner_height"
-                            android:layout_weight="50"
-                            android:prompt="@string/spin_empresa_title"
-                            android:spinnerMode="dropdown" />
-
-                        <Spinner
-                            android:id="@+id/departamento_spinner"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/spinner_height"
-                            android:layout_weight="50"
-                            android:prompt="@string/spin_depto_title"
-                            android:spinnerMode="dropdown" />
-
-                        <ImageButton
-                            android:id="@+id/nueva_auditoria"
-                            app:srcCompat="@android:drawable/ic_menu_add"
-                            android:layout_width="wrap_content"
-                            android:layout_height="25dp"
-                            android:backgroundTint="@color/colorPrimary" />
-                    </LinearLayout>
-
-                </androidx.appcompat.widget.Toolbar>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAuditorias"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/default_padding"
-            android:layout_marginTop="@dimen/default_padding"
-            android:layout_marginRight="@dimen/default_padding"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:setAdapter="@{model_fragment.recyclerAuditoriasAdapter}" />
+            app:expandedTitleGravity="top"
+            app:expandedTitleMarginStart="@dimen/shrine_toolbar_offset_start"
+            app:expandedTitleMarginTop="@dimen/shrine_toolbar_offset_top"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:title="@string/app_name">
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="100">
+
+                    <Spinner
+                        android:id="@+id/empresa_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/spinner_height"
+                        android:layout_weight="50"
+                        android:prompt="@string/spin_empresa_title"
+                        android:spinnerMode="dropdown" />
+
+                    <Spinner
+                        android:id="@+id/departamento_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/spinner_height"
+                        android:layout_weight="50"
+                        android:prompt="@string/spin_depto_title"
+                        android:spinnerMode="dropdown" />
+
+                    <ImageButton
+                        android:id="@+id/nueva_auditoria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        app:srcCompat="@android:drawable/ic_menu_add" />
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAuditorias"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/default_padding"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginRight="@dimen/default_padding"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

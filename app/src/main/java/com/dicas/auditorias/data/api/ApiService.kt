@@ -78,13 +78,12 @@ interface ApiService
 
     @GET("empresas")
     fun getEmpresas(
-        @QueryMap parameters: Map<String, String>
     ): Observable<JsonObject>
 
     /** Departamentos */
 
     @GET("departamentos")
     fun getDepartamentos(
-        @QueryMap parameters: Map<String, String>
+        @Query("empresa") empresaID: String
     ): Observable<JsonObject>
 }
