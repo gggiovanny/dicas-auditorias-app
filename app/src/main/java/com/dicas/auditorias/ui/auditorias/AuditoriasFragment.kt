@@ -1,5 +1,6 @@
 package com.dicas.auditorias.ui.auditorias
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +12,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import com.dicas.auditorias.R
-import com.dicas.auditorias.data.model.Auditoria
-import com.dicas.auditorias.data.model.Empresa
-import com.dicas.auditorias.data.model.LoggedInUser
 import kotlinx.android.synthetic.main.fragment_auditoria.*
+import kotlinx.android.synthetic.main.layout_nueva_auditoria.*
 import android.widget.Toast
-import com.dicas.auditorias.data.model.Departamento
+import com.dicas.auditorias.data.model.*
+import com.dicas.auditorias.ui.login.LoginActivity
 
 
 class AuditoriasFragment : Fragment() {
@@ -58,10 +58,11 @@ class AuditoriasFragment : Fragment() {
 
         setupSpinners()
         setupRecyclerView()
+        setupLoginIfExpiredToken()
     }
 
 
-    fun setupRecyclerView() {
+    private fun setupRecyclerView() {
         rvAuditorias.adapter = viewModel.recyclerAuditoriasAdapter
 
         viewModel.callAuditorias(apikey = userData.token)
@@ -71,7 +72,7 @@ class AuditoriasFragment : Fragment() {
         })
     }
 
-    fun setupSpinners() {
+    private fun setupSpinners() {
         /** Creando los adapters */
         val adapterEmpresas = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item)
         with(adapterEmpresas) {
@@ -92,7 +93,7 @@ class AuditoriasFragment : Fragment() {
                 adapterEmpresas.add(empresa.nombre)
             Log.d(TAG, "setupSpinners: Observer empresas done!")
         })
-            /** Los departamentos se actualizan cuando se cambia la empresa elegida para traer los de la misma*/
+        /** Los departamentos se actualizan cuando se cambia la empresa elegida para traer los de la misma*/
         viewModel.departamento.observe(this, Observer { departamentos: List<Departamento> ->
             with(adapterDeptos) {
                 clear()
@@ -108,7 +109,7 @@ class AuditoriasFragment : Fragment() {
         with(empresa_spinner) {
             adapter = adapterEmpresas
             OnItemSelectedListener { parent, position ->
-                if(position > 0) {
+                if (position > 0) {
                     val item = parent.getItemAtPosition(position).toString()
                     Toast.makeText(parent.context, "Selected: $item", Toast.LENGTH_LONG).show()
                     /** Cuando Se elija una empresa, se cargan los departamentos de la misma */
@@ -123,6 +124,25 @@ class AuditoriasFragment : Fragment() {
         }
 
     }
+
+    private fun setupLoginIfExpiredToken() {
+        viewModel.response.observe(this, Observer { response: ApiResponse ->
+            Log.d(TAG, "setupLoginIfExpiredToken: ${response.status}: ${response.description}")
+            if (!response.statusOk) {
+                showCallApiFailed(response)
+                val login = Intent(context, LoginActivity::class.java)
+                startActivity(login)
+                this.activity?.finish()
+            }
+
+        })
+        Log.d(TAG, "setupLoginIfExpiredToken: created observer done!")
+    }
+
+    private fun showCallApiFailed(response: ApiResponse) {
+        Toast.makeText(context, "${response.status}: ${response.description}", Toast.LENGTH_SHORT).show()
+    }
+
 }
 
 /**
@@ -135,7 +155,7 @@ fun AdapterView<*>.OnItemSelectedListener(lamdaListener: (parent: AdapterView<*>
             lamdaListener.invoke(parent, position)
         }
 
-        override fun onNothingSelected(parent: AdapterView<*>) { }
+        override fun onNothingSelected(parent: AdapterView<*>) {}
     })
 }
 

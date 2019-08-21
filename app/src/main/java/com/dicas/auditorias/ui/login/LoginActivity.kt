@@ -124,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
             putExtra("user_data", userData)
         }
         startActivity(main)
-
+        finish()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int, errorDescription: String? = null) {
