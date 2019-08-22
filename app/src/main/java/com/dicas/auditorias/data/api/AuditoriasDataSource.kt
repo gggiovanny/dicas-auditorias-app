@@ -43,6 +43,7 @@ class AuditoriasDataSource {
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
+                _response.value = responseObject
                 Log.d(TAG, "AuditoriasResponseHandler: status=${responseObject.status}")
                 Log.d(TAG, "AuditoriasResponseHandler: description=[${responseObject.description}]")
 
@@ -63,7 +64,6 @@ class AuditoriasDataSource {
                         auditoriasList.add(auditoria)
                     }
                     _auditorias.value = auditoriasList
-                    _response.value = responseObject
                 }
             }, {
                 throw IOException("Error getting Auditorias from API", it)
@@ -81,6 +81,7 @@ class AuditoriasDataSource {
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
+                _response.value = responseObject
                 Log.d(TAG, "EmpresasResponseHandler: status=${responseObject.status}")
                 Log.d(TAG, "EmpresasResponseHandler: description=[${responseObject.description}]")
 
@@ -99,7 +100,6 @@ class AuditoriasDataSource {
                         empresasList.add(empresa)
                     }
                     _empresas.value = empresasList
-                    _response.value = responseObject
                 }
             }, {
                 throw IOException("Error getting Auditorias from API", it)
@@ -118,6 +118,7 @@ class AuditoriasDataSource {
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
+                _response.value = responseObject
                 Log.d(TAG, "DepartamentosResponseHandler: status=${responseObject.status}")
                 Log.d(TAG, "DepartamentosResponseHandler: description=[${responseObject.description}]")
 
@@ -136,7 +137,6 @@ class AuditoriasDataSource {
                         deptosList.add(departamento)
                     }
                     _departamentos.value = deptosList
-                    _response.value = responseObject
                 }
             }, {
                 throw IOException("Error getting Auditorias from API", it)

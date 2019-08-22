@@ -1,18 +1,15 @@
 package com.dicas.auditorias.ui.login
 
 import android.util.Log
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
+import com.dicas.auditorias.R
 import com.dicas.auditorias.data.LoginRepository
 import com.dicas.auditorias.data.Result
-
-import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.LoggedInUser
-import java.io.IOException
-import java.lang.Exception
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
     companion object {
@@ -32,8 +29,6 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 status = responseJson.get("status").asString,
                 description = responseJson.get("description").asString
             )
-            Log.d(TAG, "callToken.onResponse: status=${apiResponse.status}")
-            Log.d(TAG, "callToken.onResponse: description=[${apiResponse.description}]")
 
             if(apiResponse.statusOk) {
                 apiResponse.token = responseJson.get("token").asString
@@ -74,7 +69,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5;
+        return password.length > 5
     }
 
     fun checkLocalToken() {
@@ -88,5 +83,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         {
             _loginResult.value = LoginResult(error = R.string.no_local_token)
         }
+    }
+
+    fun deleteLocalToken() {
+        loginRepository.deleteTokenLocal()
     }
 }

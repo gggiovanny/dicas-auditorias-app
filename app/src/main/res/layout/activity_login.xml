@@ -48,44 +48,49 @@
             android:ems="10"
             android:fontFamily="sans-serif-light"
             android:hint="@string/hint_username"
-            android:selectAllOnFocus="true"
+            android:imeActionLabel="@string/next"
+            android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:imeOptions="actionNext"
-            android:imeActionLabel="@string/next"
-            android:nextFocusForward="@id/password"/>
+            android:nextFocusForward="@id/password"
+            android:selectAllOnFocus="true" />
 
-        <EditText
-            android:id="@+id/password"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="sans-serif-light"
-            android:hint="@string/hint_password"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:imeActionLabel="@string/action_sign_in_short"
-            android:imeOptions="actionDone"
-            />
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/hint_password"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ProgressBar
             android:id="@+id/loading"
             style="?android:attr/progressBarStyle"
-            android:indeterminateTint="@color/colorAccent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"
-            />
+            android:indeterminateTint="@color/colorAccent"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button_login_rounded"
-            android:text="@string/button_login"
             android:enabled="false"
-            />
+            android:text="@string/button_login" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

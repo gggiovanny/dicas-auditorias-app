@@ -2,7 +2,6 @@ package com.dicas.auditorias.ui.login
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,12 +11,12 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.LoggedInUser
-import com.dicas.auditorias.ui.main.MainActivity
+import com.dicas.auditorias.ui.auditorias.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -35,7 +34,9 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(com.dicas.auditorias.ui.login.LoginViewModel::class.java)
 
-        checkForSavedToken()
+        val loginFailed = intent.getBooleanExtra("login_failed", false)
+        checkForSavedToken(loginFailed)
+
 
         loginViewModel.loginState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -111,12 +112,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUiWithUser(userData: LoggedInUser) {
         Log.d(TAG, "updateUiWithUser: Sucessful loged in!")
-        val welcome = getString(R.string.welcome)
-        Toast.makeText(
-            applicationContext,
-            "$welcome ${userData.name}",
-            Toast.LENGTH_LONG
-        ).show()
+
+        if (!userData.fromMemory) {
+            Toast.makeText(applicationContext, "${getString(R.string.welcome)} ${userData.name}", Toast.LENGTH_LONG)
+                .show()
+        }
 
         /** Creación de intent para abrir MainActivity si el login fue correcto
          * Se le envian los datos del usuario en el intent */
@@ -131,19 +131,19 @@ class LoginActivity : AppCompatActivity() {
         if (errorDescription == null)
             Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
         else
-            Toast.makeText(applicationContext, "${getString(errorString)}: $errorDescription", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "$errorDescription", Toast.LENGTH_SHORT).show()
     }
 
-    private fun checkForSavedToken(){
-        username.visibility = View.GONE
-        password.visibility = View.GONE
-        button_login.visibility = View.GONE
-        loading.visibility = View.VISIBLE
-
-        val result = loginViewModel.checkLocalToken()
-
-
-
+    private fun checkForSavedToken(loginFailed: Boolean) {
+        if (!loginFailed) {
+            username.visibility = View.GONE
+            password.visibility = View.GONE
+            button_login.visibility = View.GONE
+            loading.visibility = View.VISIBLE
+            val result = loginViewModel.checkLocalToken()
+        } else {
+            loginViewModel.deleteLocalToken()
+        }
     }
 }
 

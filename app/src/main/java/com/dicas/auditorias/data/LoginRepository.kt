@@ -7,7 +7,6 @@ import com.dicas.auditorias.R
 import com.dicas.auditorias.data.api.LoginDataSource
 import com.dicas.auditorias.data.model.LoggedInUser
 import com.google.gson.JsonObject
-import java.lang.Exception
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -60,12 +59,12 @@ class LoginRepository(val dataSource: LoginDataSource) {
         Log.d(TAG, "getTokenLocal: $token")
 
         if(token != null) {
-            return Result.Success(LoggedInUser(token!!, username!!))
+            return Result.Success(LoggedInUser(token!!, username!!, fromMemory = true))
         } else
             return Result.Error(Exception("$TAG: No local token!"))
     }
 
-    private fun deleteTokenLocal() {
+    fun deleteTokenLocal() {
         val sharedPref = App.sApplication.applicationContext.getSharedPreferences(getPreferenceName(), Context.MODE_PRIVATE) ?: return
         with (sharedPref.edit()) {
             clear()

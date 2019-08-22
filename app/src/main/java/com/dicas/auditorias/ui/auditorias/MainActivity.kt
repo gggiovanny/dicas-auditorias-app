@@ -1,12 +1,9 @@
-package com.dicas.auditorias.ui.main
+package com.dicas.auditorias.ui.auditorias
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.dicas.auditorias.R
-import com.dicas.auditorias.data.model.LoggedInUser
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 

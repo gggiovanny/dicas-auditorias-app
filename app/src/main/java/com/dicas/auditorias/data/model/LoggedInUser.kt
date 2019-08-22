@@ -8,5 +8,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class LoggedInUser(
     val token: String,
-    val name: String? = null
+    val name: String? = null,
+    val fromMemory: Boolean = false
 ): Parcelable
