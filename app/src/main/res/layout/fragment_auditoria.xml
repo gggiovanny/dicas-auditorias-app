@@ -6,7 +6,26 @@
     android:layout_height="match_parent"
     android:background="@color/backgrond_dark_dicas">
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/colorAccent"
+        android:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAuditorias"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/default_padding"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginRight="@dimen/default_padding"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tall_toolbar_height"
         android:backgroundTint="@color/colorPrimary"
@@ -34,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.5">
+                app:layout_collapseParallaxMultiplier="0.5"
+                android:paddingBottom="10dp">
 
                 <include layout="@layout/layout_nueva_auditoria" />
 
@@ -44,21 +64,15 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAuditorias"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/default_padding"
-        android:layout_marginTop="@dimen/default_padding"
-        android:layout_marginRight="@dimen/default_padding"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/loading"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/nueva_auditoria"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminateTint="@color/colorAccent"
-        android:visibility="visible" />
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@drawable/ic_add_white_24dp" />
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -22,11 +22,4 @@
         android:layout_weight="50"
         android:prompt="@string/spin_depto_title"
         android:spinnerMode="dropdown" />
-
-    <ImageButton
-        android:id="@+id/nueva_auditoria"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_menu_add" />
 </LinearLayout>
