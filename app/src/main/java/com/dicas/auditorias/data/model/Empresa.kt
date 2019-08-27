@@ -1,6 +1,10 @@
 package com.dicas.auditorias.data.model
 
 data class Empresa (
-    val idEmpresa: String,
+    val id: String,
     val nombre: String
-)
+) {
+    override fun toString(): String {
+        return nombre
+    }
+}

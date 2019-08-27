@@ -2,12 +2,10 @@ package com.dicas.auditorias.data.api
 
 
 import com.google.gson.JsonObject
-import retrofit2.Call
-import retrofit2.http.*
 import io.reactivex.Observable
+import retrofit2.http.*
 
-interface ApiService
-{
+interface ApiService {
     /** Authentication */
 
     @GET("auth")
@@ -19,45 +17,60 @@ interface ApiService
     /** Activos */
 
     @GET("activos")
-    fun getActivos( @QueryMap parameters: Map<String, String> = HashMap() ): Observable<JsonObject>
+    fun getActivos(
+        @Query("auditoria_actual") auditoria_actual: String = "",
+        @Query("empresa") empresa: String = "",
+        @Query("departamento") departamento: String = "",
+        @Query("clasificacion") clasificacion: String = ""
+    ): Observable<JsonObject>
 
     @GET("activos/{id}")
-    fun getActivo( @Path("id") id:Int ): Observable<JsonObject>
+    fun getActivo(@Path("id") id: Int): Observable<JsonObject>
 
     /** Auditorias */
 
     @GET("auditorias")
-    fun getAuditorias( @Query("user") user: String = "",
-                       @Query("status") status: String = ""
+    fun getAuditorias(
+        @Query("user") user: String = "",
+        @Query("status") status: String = ""
     ): Observable<JsonObject>
 
     @GET("auditorias/{id}")
-    fun getAuditoria( @Path("id") id:Int ): Observable<JsonObject>
+    fun getAuditoria(@Path("id") id: Int): Observable<JsonObject>
 
     @POST("auditorias")
-    fun createAuditoria( @Query("descripcion") descripcion: String = "" ): Observable<JsonObject>
-
-    @PUT("auditorias/{id}")
-    fun finishAuditoria( @Path("id") id: Int,
-                         @Query("terminada") terminada: Boolean
+    fun createAuditoria(
+        @Query("descripcion") descripcion: String = "",
+        @Query("empresa") empresa: String = "",
+        @Query("departamento") departamento: String = "",
+        @Query("clasificacion") clasificacion: String = ""
     ): Observable<JsonObject>
 
     @PUT("auditorias/{id}")
-    fun saveAuditoria( @Path("id") id: Int,
-                       @Query("guardada") guardada: Boolean
+    fun finishAuditoria(
+        @Path("id") id: Int,
+        @Query("terminada") terminada: Boolean
+    ): Observable<JsonObject>
+
+    @PUT("auditorias/{id}")
+    fun saveAuditoria(
+        @Path("id") id: Int,
+        @Query("guardada") guardada: Boolean
     ): Observable<JsonObject>
 
     /** Auditorias_activos */
 
     @GET("auditorias/{id_auditoria}/activos")
-    fun getAuditoriaActivos( @Path("id_auditoria") id_auditoria: Int,
-                             @Query("all") all: Boolean,
-                             @QueryMap parameters: Map<String, Int>
+    fun getAuditoriaActivos(
+        @Path("id_auditoria") id_auditoria: Int,
+        @Query("all") all: Boolean,
+        @QueryMap parameters: Map<String, Int>
     ): Observable<JsonObject>
 
     @GET("auditorias/{id_auditoria}/activos/{id_activo}")
-    fun getAuditoriaActivo( @Path("id_auditoria") id_auditoria: Int,
-                            @Path("id_activo") id_activo: Int
+    fun getAuditoriaActivo(
+        @Path("id_auditoria") id_auditoria: Int,
+        @Path("id_activo") id_activo: Int
     ): Observable<JsonObject>
 
     @POST("auditorias/{id_auditoria}/activos/{id_activo}")

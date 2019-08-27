@@ -56,10 +56,10 @@ class AuditoriasDataSource {
                         val auditoriaJson = it.asJsonObject
 
                         val auditoria = Auditoria(
-                            auditoriaJson.get("id").asString,
-                            auditoriaJson.get("fechaCreacion").asString,
-                            auditoriaJson.get("status").asString,
-                            auditoriaJson.get("descripcion").asString
+                            id = auditoriaJson.get("id").asString,
+                            fechaCreacion = auditoriaJson.get("fechaCreacion").asString,
+                            status = auditoriaJson.get("status").asString,
+                            descripcion = auditoriaJson.get("descripcion").asString
                         )
                         auditoriasList.add(auditoria)
                     }

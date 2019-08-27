@@ -16,7 +16,6 @@ import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.*
 import com.dicas.auditorias.ui.login.LoginActivity
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.fragment_auditoria.*
 import kotlinx.android.synthetic.main.layout_nueva_auditoria.*
 
@@ -82,24 +81,24 @@ class AuditoriasFragment : Fragment() {
     private fun setupSpinners() {
         /** Creando los adapters */
         val adapterEmpresas =
-            ArrayAdapter<String>(context ?: return, android.R.layout.simple_spinner_item)
+            ArrayAdapter<Empresa>(context ?: return, android.R.layout.simple_spinner_item)
         with(adapterEmpresas) {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            add(getString(R.string.elija_empresa_spinner))
+            add(Empresa("-1", getString(R.string.elija_empresa_spinner)))
         }
 
         val adapterDeptos =
-            ArrayAdapter<String>(context ?: return, android.R.layout.simple_spinner_item)
+            ArrayAdapter<Departamento>(context ?: return, android.R.layout.simple_spinner_item)
         with(adapterDeptos) {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            add(getString(R.string.elija_departamento_spinner))
+            add(Departamento("-1", getString(R.string.elija_departamento_spinner)))
         }
 
         /** Llamando al API para obtener los datos y creando el observer para añadir la informacion cuando llegue */
         viewModel.callEmpresas(apikey = userData.token)
         viewModel.empresas.observe(this, Observer { empresas: List<Empresa> ->
             for (empresa in empresas)
-                adapterEmpresas.add(empresa.nombre)
+                adapterEmpresas.add(empresa)
             Log.d(TAG, "setupSpinners: Observer empresas done!")
             loading.visibility = View.GONE
         })
@@ -108,7 +107,7 @@ class AuditoriasFragment : Fragment() {
             loading.visibility = View.GONE
             with(adapterDeptos) {
                 clear()
-                add(getString(R.string.elija_departamento_spinner))
+                add(Departamento("-1", getString(R.string.elija_departamento_spinner)))
             }
             departamento_spinner.setSelection(0)
 
@@ -120,7 +119,7 @@ class AuditoriasFragment : Fragment() {
                 ).show()
             }
             for (depto in departamentos)
-                adapterDeptos.add(depto.nombre)
+                adapterDeptos.add(depto)
             Log.d(TAG, "setupSpinners: Observer departamentos done! ")
         })
 
@@ -130,11 +129,26 @@ class AuditoriasFragment : Fragment() {
             OnItemSelectedListener { parent, position ->
                 if (position > 0) {
                     loading.visibility = View.VISIBLE
-                    val item = parent.getItemAtPosition(position).toString()
-                    Log.d(TAG, "setupSpinners: Selected: $item")
+                    val empresa: Empresa? = parent.getItemAtPosition(position) as? Empresa
+                    Log.d(
+                        TAG,
+                        "setupSpinners: Selected: id=${empresa?.id}, nombre=${empresa?.nombre}"
+                    )
                     /** Cuando Se elija una empresa, se cargan los departamentos de la misma */
                     Log.d(TAG, "setupSpinners: $position")
-                    viewModel.callDepartamentos(apikey = userData.token, empresaID = position)
+
+                    try {
+                        viewModel.callDepartamentos(
+                            apikey = userData.token,
+                            empresaID = empresa!!.id.toInt()
+                        )
+                    } catch (e: Throwable) {
+                        Exception(
+                            "No se pudo consultar el spinner de departamentos debido a que la empresa es null",
+                            e
+                        )
+                    }
+
                 }
             }
         }
@@ -193,7 +207,7 @@ class AuditoriasFragment : Fragment() {
             override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
                 try {
                     val alpha =
-                        (appBarLayout!!.totalScrollRange + verticalOffset).toFloat() / appBarLayout!!.totalScrollRange
+                        (appBarLayout!!.totalScrollRange + verticalOffset).toFloat() / appBarLayout.totalScrollRange
                     toolbar_spinners.alpha = alpha
 
                     if (alpha > 0)
