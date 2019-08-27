@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.*
 import com.dicas.auditorias.ui.login.LoginActivity
+import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.fragment_auditoria.*
 import kotlinx.android.synthetic.main.layout_nueva_auditoria.*
 
@@ -61,6 +63,8 @@ class AuditoriasFragment : Fragment() {
         loading.visibility = View.VISIBLE
         setupSpinners()
         setupRecyclerView()
+        setupScrollFade()
+        setupNuevaAuditoriaButton()
     }
 
 
@@ -77,13 +81,15 @@ class AuditoriasFragment : Fragment() {
 
     private fun setupSpinners() {
         /** Creando los adapters */
-        val adapterEmpresas = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item)
+        val adapterEmpresas =
+            ArrayAdapter<String>(context ?: return, android.R.layout.simple_spinner_item)
         with(adapterEmpresas) {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             add(getString(R.string.elija_empresa_spinner))
         }
 
-        val adapterDeptos = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item)
+        val adapterDeptos =
+            ArrayAdapter<String>(context ?: return, android.R.layout.simple_spinner_item)
         with(adapterDeptos) {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             add(getString(R.string.elija_departamento_spinner))
@@ -107,7 +113,11 @@ class AuditoriasFragment : Fragment() {
             departamento_spinner.setSelection(0)
 
             departamentos.ifEmpty {
-                Toast.makeText(context, "Esta empresa no tiene departamentos dados de alta", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    context,
+                    "Esta empresa no tiene departamentos dados de alta",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             for (depto in departamentos)
                 adapterDeptos.add(depto.nombre)
@@ -142,12 +152,16 @@ class AuditoriasFragment : Fragment() {
             if (response.statusOk) {
                 if (firstSucess && userData.fromMemory) {
                     firstSucess = false
-                    Toast.makeText(context, "${getString(R.string.welcome)} ${userData.name}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        "${getString(R.string.welcome)} ${userData.name}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } else {
                 if (firstError) {
                     firstError = false
-                    showCallApiFailed(response)
+                    showSesionCaducada(response)
                     val login = Intent(context, LoginActivity::class.java).apply {
                         putExtra("login_failed", true)
                     }
@@ -160,16 +174,59 @@ class AuditoriasFragment : Fragment() {
         Log.d(TAG, "setupLoginIfExpiredToken: created observer done!")
     }
 
-    private fun showCallApiFailed(response: ApiResponse) {
+    private fun showSesionCaducada(response: ApiResponse) {
         if (response.description == "Expired token") {
-            Log.d(TAG, "showCallApiFailed: ${response.status}: ${response.description}")
+            Log.d(TAG, "showSesionCaducada: ${response.status}: ${response.description}")
             Toast.makeText(context, R.string.invalid_token, Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(context, "${response.status}: ${response.description}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "${response.status}: ${response.description}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun setupScrollFade() {
+        app_bar_layout.addOnOffsetChangedListener(object :
+            AppBarLayout.BaseOnOffsetChangedListener<AppBarLayout> {
+            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+                try {
+                    val alpha =
+                        (appBarLayout!!.totalScrollRange + verticalOffset).toFloat() / appBarLayout!!.totalScrollRange
+                    toolbar_spinners.alpha = alpha
+
+                    if (alpha > 0)
+                        toolbar_spinners.visibility = View.VISIBLE
+                    else
+                        toolbar_spinners.visibility = View.INVISIBLE
+
+
+                } catch (e: Throwable) {
+                    Exception(
+                        "$TAG:setupScrollFade: No se pudo configurar el fade del los spinners al hacer scroll",
+                        e
+                    )
+                }
+            }
+
+        })
+    }
+
+    private fun setupNuevaAuditoriaButton() {
+        nueva_auditoria.setOnClickListener {
+            Log.d(
+                TAG,
+                "Empresa: ${empresa_spinner.selectedItem}, Depto: ${departamento_spinner.selectedItem}"
+            )
+
+
         }
     }
 
 }
+
+
 
 /**
  * Extension function to simplify setting an OnItemSelectedListener action to EditText components.

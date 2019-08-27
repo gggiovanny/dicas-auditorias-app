@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="tall_toolbar_height">130dp</dimen>
+    <dimen name="tall_toolbar_height">113dp</dimen>
     <dimen name="default_padding">8dp</dimen>
     <dimen name="shrine_toolbar_offset_start">8dp</dimen>
     <dimen name="shrine_toolbar_offset_top">8dp</dimen>
