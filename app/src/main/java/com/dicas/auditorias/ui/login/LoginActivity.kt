@@ -45,8 +45,11 @@ class LoginActivity : AppCompatActivity() {
             button_login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+                username_layout.error = getString(loginState.usernameError)
+            } else {
+                username_layout.error = null
             }
+
             if (loginState.passwordError != null) {
                 password_layout.error = getString(loginState.passwordError)
             } else {

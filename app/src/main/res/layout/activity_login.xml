@@ -41,20 +41,25 @@
             android:textSize="30sp"
             android:typeface="normal" />
 
-        <EditText
-            android:id="@+id/username"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/username_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="sans-serif-light"
-            android:hint="@string/hint_username"
-            android:imeActionLabel="@string/next"
-            android:imeOptions="actionNext"
-            android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:nextFocusForward="@id/password"
-            android:selectAllOnFocus="true" />
+            android:layout_height="wrap_content">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/hint_username"
+                android:imeActionLabel="@string/next"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:nextFocusForward="@id/password"
+                android:selectAllOnFocus="true" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password_layout"
