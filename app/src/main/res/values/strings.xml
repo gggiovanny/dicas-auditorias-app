@@ -41,4 +41,6 @@
     <string name="elija_empresa_spinner">Elija empresa</string>
     <string name="elija_departamento_spinner">Elija departamento</string>
 
+    <string name="error_api">Error al consultar los datos de la base de datos</string>
+
 </resources>

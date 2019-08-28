@@ -160,7 +160,8 @@ class AuditoriasFragment : Fragment() {
     }
 
     private fun setupLoginIfExpiredToken() {
-        viewModel.response.observe(this, Observer { response: ApiResponse ->
+        viewModel.response.observe(this, Observer {
+            val response: ApiResponse = it ?: return@Observer
             loading.visibility = View.GONE
             Log.d(TAG, "setupLoginIfExpiredToken: ${response.status}: ${response.description}")
             if (response.statusOk) {
@@ -173,7 +174,7 @@ class AuditoriasFragment : Fragment() {
                     ).show()
                 }
             } else {
-                if (firstError) {
+                if (firstError && !(response.status ?: return@Observer).contains("app")) {
                     firstError = false
                     showSesionCaducada(response)
                     val login = Intent(context, LoginActivity::class.java).apply {
@@ -181,6 +182,11 @@ class AuditoriasFragment : Fragment() {
                     }
                     startActivity(login)
                     this.activity?.finish()
+                } else {
+                    Toast.makeText(
+                        context, R.string.error_api,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
 

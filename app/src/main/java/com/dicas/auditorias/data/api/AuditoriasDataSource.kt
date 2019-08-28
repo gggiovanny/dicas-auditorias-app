@@ -59,14 +59,18 @@ class AuditoriasDataSource {
                             id = auditoriaJson.get("id").asString,
                             fechaCreacion = auditoriaJson.get("fechaCreacion").asString,
                             status = auditoriaJson.get("status").asString,
-                            descripcion = auditoriaJson.get("descripcion").asString
+                            descripcion = auditoriaJson.get("descripcion")?.asString
                         )
                         auditoriasList.add(auditoria)
                     }
                     _auditorias.value = auditoriasList
                 }
             }, {
-                throw IOException("Error getting Auditorias from API", it)
+                it.printStackTrace()
+                _response.value = ApiResponse(
+                    status = "error_app",
+                    description = "No se pudo consultar la auditoria"
+                )
             })
     }
 
