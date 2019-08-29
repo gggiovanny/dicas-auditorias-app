@@ -1,6 +1,6 @@
 package com.dicas.auditorias.data.model
 
-class Activo(
+data class Activo(
     val id: String,
     val descripcion: String,
     val existencia_guardada: String? = null,

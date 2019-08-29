@@ -10,7 +10,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "29.0.0"
     defaultConfig {
-        applicationId "com.dicas.auditorias"
+        applicationId "com.dicas.activos"
         minSdkVersion 25
         targetSdkVersion 28
         versionCode 1
@@ -89,3 +89,5 @@ android {
 
     }
 }
+
+

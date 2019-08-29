@@ -1,4 +1,4 @@
-package com.dicas.auditorias.ui.auditorias
+package com.dicas.auditorias.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

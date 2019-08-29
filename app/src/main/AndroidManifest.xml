@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.auditorias.MainActivity" />
+        <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".view.ScannerActivity" />
 
         <meta-data

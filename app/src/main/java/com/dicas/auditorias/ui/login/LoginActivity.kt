@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.LoggedInUser
-import com.dicas.auditorias.ui.auditorias.MainActivity
+import com.dicas.auditorias.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 

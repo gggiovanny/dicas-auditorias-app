@@ -29,16 +29,16 @@ interface ApiService {
 
     /** Auditorias */
 
-    @GET("auditorias")
+    @GET("activos")
     fun getAuditorias(
         @Query("user") user: String = "",
         @Query("status") status: String = ""
     ): Observable<JsonObject>
 
-    @GET("auditorias/{id}")
+    @GET("activos/{id}")
     fun getAuditoria(@Path("id") id: Int): Observable<JsonObject>
 
-    @POST("auditorias")
+    @POST("activos")
     fun createAuditoria(
         @Query("descripcion") descripcion: String = "",
         @Query("empresa") empresa: String = "",
@@ -46,13 +46,13 @@ interface ApiService {
         @Query("clasificacion") clasificacion: String = ""
     ): Observable<JsonObject>
 
-    @PUT("auditorias/{id}")
+    @PUT("activos/{id}")
     fun finishAuditoria(
         @Path("id") id: Int,
         @Query("terminada") terminada: Boolean
     ): Observable<JsonObject>
 
-    @PUT("auditorias/{id}")
+    @PUT("activos/{id}")
     fun saveAuditoria(
         @Path("id") id: Int,
         @Query("guardada") guardada: Boolean
@@ -60,27 +60,27 @@ interface ApiService {
 
     /** Auditorias_activos */
 
-    @GET("auditorias/{id_auditoria}/activos")
+    @GET("activos/{id_auditoria}/activos")
     fun getAuditoriaActivos(
         @Path("id_auditoria") id_auditoria: Int,
         @Query("all") all: Boolean,
         @QueryMap parameters: Map<String, Int>
     ): Observable<JsonObject>
 
-    @GET("auditorias/{id_auditoria}/activos/{id_activo}")
+    @GET("activos/{id_auditoria}/activos/{id_activo}")
     fun getAuditoriaActivo(
         @Path("id_auditoria") id_auditoria: Int,
         @Path("id_activo") id_activo: Int
     ): Observable<JsonObject>
 
-    @POST("auditorias/{id_auditoria}/activos/{id_activo}")
+    @POST("activos/{id_auditoria}/activos/{id_activo}")
     fun createAuditoriaActivo(
         @Path("id_auditoria") id_auditoria: Int,
         @Path("id_activo") id_activo: Int,
         @Query("conteo") conteo: String
     ): Observable<JsonObject>
 
-    @PUT("auditorias/{id_auditoria}/activos/{id_activo}")
+    @PUT("activos/{id_auditoria}/activos/{id_activo}")
     fun updateAuditoriaActivo(
         @Path("id_auditoria") id_auditoria: Int,
         @Path("id_activo") id_activo: Int,
