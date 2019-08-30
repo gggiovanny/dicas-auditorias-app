@@ -1,7 +1,7 @@
 package com.dicas.auditorias
 
 import android.app.Application
-import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 
 class App : Application() {
     companion object {
@@ -12,5 +12,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         sApplication = this
+        AppCompatDelegate.setDefaultNightMode(
+            AppCompatDelegate.MODE_NIGHT_NO
+        )
     }
 }

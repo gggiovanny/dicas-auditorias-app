@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1F1B24</color>
-    <color name="colorPrimaryDark">#B09000</color>
-    <color name="colorAccent">#FCCE01</color>
-    <color name="backgrond_dark">#121212</color>
-    <!-- ?>color name="backgrond_dark_card">#505A75</color> -->
-    <color name="card_dark">#1D1D1D</color>
+    <!-- Colores en uso -->
+    <color name="colorPrimary">@color/yellow_dicas</color>
+    <color name="colorPrimaryDark">@color/yellow_dicas_dark</color>
+    <color name="colorAccent">@color/pink_dicas</color>
+    <color name="background_surface">@color/background_surface_dark</color>
+    <color name="card_surface">@color/card_surface_dark</color>
+    <color name="toolbar">@color/yellow_dicas_dark</color>
 
+    <!-- NO INVOCAR COLORES DE ABAJO EN LA APP, SOLO USAR COMO REFERENCIA EN LOS DE ARRIBA -->
 
-    <!--color name="backgrond_dark_dicas">#414042</color-->
-    <!--color name="backgrond_dark_pretty">#475069</color-->
-
+    <!-- Light Colors -->
     <color name="yellow_dicas">#FCCE01</color>
     <color name="pink_dicas">#E91E63</color>
-
     <color name="sucess_green">#4BB543</color>
     <color name="error_red">#FC100D</color>
 
-    <color name="text_dark">#FFFFFF</color>
-    <color name="text_light">#111111</color>
+    <!-- Dark Colors -->
+    <color name="background_surface_dark">#121212</color>
+    <color name="card_surface_dark">#1D1D1D</color>
+    <color name="yellow_dicas_dark">#252111</color>
+    <color name="pink_dicas_dark">#231319</color>
+    <color name="sucess_green_dark">#93D38E</color>
+    <color name="error_red_dark">#CF6679</color>
+    <color name="azul_kory_dark">#D1F0F2</color>
 
-
-    <color name="azul_kory">#D1F0F2</color>
 
 </resources>
