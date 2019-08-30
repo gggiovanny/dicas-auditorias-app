@@ -7,12 +7,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="0dp">
+        app:cardElevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/backgrond_dark_card">
+            android:background="@color/card_dark">
 
             <TextView
                 android:id="@+id/textView9"
@@ -23,6 +23,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="id"
                 android:textAlignment="center"
+                android:textColor="@color/azul_kory"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_id"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -36,6 +37,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="Creada el"
                 android:textAlignment="center"
+                android:textColor="@color/azul_kory"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_status"
                 app:layout_constraintStart_toStartOf="@+id/guideline_id"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -49,6 +51,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="Estatus"
                 android:textAlignment="center"
+                android:textColor="@color/azul_kory"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline_status"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -59,8 +62,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="##"
+                android:text="@{model.getAuditoriaAt(index).id}"
                 android:textAlignment="center"
+                android:textColor="@color/azul_kory"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_id"
                 app:layout_constraintStart_toStartOf="parent"
@@ -72,8 +76,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="2019-08-27"
+                android:text="@{model.getAuditoriaAt(index).fechaCreacion}"
                 android:textAlignment="center"
+                android:textColor="@color/azul_kory"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_status"
                 app:layout_constraintStart_toStartOf="@+id/guideline_id"
@@ -83,12 +88,13 @@
                 android:id="@+id/status_auditoria"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:background="@drawable/rounded_corner"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="En curso"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/colorAccent"
+                android:text="@{model.getAuditoriaAt(index).status}"
                 android:textAlignment="center"
+                android:textColor="@color/azul_kory"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline_status"
@@ -102,7 +108,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Auditoria de pruebas"
+                android:text="@{model.getAuditoriaAt(index).descripcion}"
+                android:textColor="@color/azul_kory"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -126,7 +133,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-
     <data>
 
         <variable
@@ -138,4 +144,6 @@
             type="com.dicas.auditorias.ui.auditorias.AuditoriaViewModel" />
 
     </data>
+
+
 </layout>

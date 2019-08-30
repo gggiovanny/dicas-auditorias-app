@@ -29,7 +29,7 @@ interface ApiService {
 
     /** Auditorias */
 
-    @GET("activos")
+    @GET("auditorias")
     fun getAuditorias(
         @Query("user") user: String = "",
         @Query("status") status: String = ""
