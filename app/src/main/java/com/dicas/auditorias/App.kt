@@ -13,7 +13,7 @@ class App : Application() {
         super.onCreate()
         sApplication = this
         AppCompatDelegate.setDefaultNightMode(
-            AppCompatDelegate.MODE_NIGHT_NO
+            AppCompatDelegate.MODE_NIGHT_YES
         )
     }
 }
