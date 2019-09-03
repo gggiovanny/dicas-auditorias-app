@@ -6,7 +6,6 @@
     <color name="colorAccent">@color/pink_dicas</color>
     <color name="background_surface">@color/background_surface_dark</color>
     <color name="card_surface">@color/card_surface_dark</color>
-    <color name="toolbar">@color/yellow_dicas_dark</color>
 
     <!-- NO INVOCAR COLORES DE ABAJO EN LA APP, SOLO USAR COMO REFERENCIA EN LOS DE ARRIBA -->
 
@@ -17,8 +16,13 @@
     <color name="error_red">#FC100D</color>
 
     <!-- Dark Colors -->
+
+    <!-- Surface colors -->
     <color name="background_surface_dark">#121212</color>
     <color name="card_surface_dark">#1D1D1D</color>
+    <color name="editText_surface_dark">#2E2E2E</color>
+
+
     <color name="yellow_dicas_dark">#252111</color>
     <color name="pink_dicas_dark">#231319</color>
     <color name="sucess_green_dark">#93D38E</color>

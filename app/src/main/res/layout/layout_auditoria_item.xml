@@ -3,16 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
+        style="@style/card_item"
+        app:cardCornerRadius="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        app:cardCornerRadius="10dp"
         app:cardElevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/card_surface">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/textView9"
@@ -91,6 +90,7 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline_status"
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 

@@ -94,6 +94,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_login_rounded"
             android:enabled="false"
+            style="@style/button"
             android:text="@string/button_login" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
