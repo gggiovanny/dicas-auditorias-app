@@ -3,41 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
-        style="@style/card_item"
-        app:cardCornerRadius="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="@color/toolbar_surface"
+        app:cardCornerRadius="10dp"
         app:cardElevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="id"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_id"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="Creada el"
-                android:textAlignment="center"
+                android:textColor="?android:attr/textColorSecondary"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_status"
                 app:layout_constraintStart_toStartOf="@+id/guideline_id"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/textView11"
@@ -48,35 +37,24 @@
                 android:layout_marginEnd="8dp"
                 android:text="Estatus"
                 android:textAlignment="center"
+                android:textColor="?android:attr/textColorSecondary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline_status"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/id_auditoria"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@{model.getAuditoriaAt(index).id}"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_id"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-            <TextView
                 android:id="@+id/fecha_auditoria"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:text="@{model.getAuditoriaAt(index).fechaCreacion}"
-                android:textAlignment="center"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_status"
                 app:layout_constraintStart_toStartOf="@+id/guideline_id"
                 app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
 
             <TextView
                 android:id="@+id/status_auditoria"
@@ -85,9 +63,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/rounded_corner"
-                android:backgroundTint="@color/colorAccent"
+                android:backgroundTint="@color/disabled"
                 android:text="@{model.getAuditoriaAt(index).status}"
                 android:textAlignment="center"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -98,16 +77,41 @@
                 android:id="@+id/description_auditoria"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@{model.getAuditoriaAt(index).descripcion}"
+                android:textColor="?android:attr/textColorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline_id"
+                app:layout_constraintTop_toBottomOf="@+id/fecha_auditoria"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/auditoria_accent"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_id"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fecha_auditoria" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/id_auditoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="@{model.getAuditoriaAt(index).id}"
+                    android:gravity="center"
+                    android:textColor="@color/text_primary_light"
+                    android:textSize="24sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_id"

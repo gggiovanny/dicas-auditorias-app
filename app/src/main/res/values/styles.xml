@@ -6,27 +6,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="buttonStyle">@style/button</item>
         <item name="floatingActionButtonStyle">@style/floating_action_button</item>
 
         <!-- Adaptaciones para previsualizar en dark -->
         <item name="android:colorBackground">@color/background_surface_dark</item>
-    </style>
-
-    <style name="button" parent="@style/Widget.AppCompat.Button">
-        <item name="android:backgroundTint">@color/colorPrimary</item>
-    </style>
-
-    <style name="card_item">
-
-        <item name="android:layout_marginBottom">15dp</item>
-        <item name="android:backgroundTint">@color/cardview_dark_background</item>
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+        <item name="android:textColorTertiary">@color/text_secondary_dark</item>
     </style>
 
     <style name="floating_action_button" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="backgroundTint">@color/yellow_dicas</item>
+        <item name="backgroundTint">@color/colorAccent</item>
     </style>
 
 </resources>

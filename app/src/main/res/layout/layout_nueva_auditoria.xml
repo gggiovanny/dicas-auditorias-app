@@ -12,7 +12,7 @@
         android:layout_height="@dimen/spinner_height"
         android:layout_weight="50"
         android:prompt="@string/spin_empresa_title"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/auditoria_accent"
         android:spinnerMode="dropdown" />
 
     <Spinner
@@ -21,6 +21,6 @@
         android:layout_height="@dimen/spinner_height"
         android:layout_weight="50"
         android:prompt="@string/spin_depto_title"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/auditoria_accent"
         android:spinnerMode="dropdown" />
 </LinearLayout>
