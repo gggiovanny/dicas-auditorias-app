@@ -8,6 +8,9 @@
     <color name="card_surface">@color/card_surface_dark</color>
     <color name="toolbar_surface">@color/toolbar_surface_dark</color>
     <color name="auditoria_accent">@color/yellow_summertime</color>
+    <color name="sucess_green">@color/sucess_green_dark</color>
+    <color name="error_red">@color/error_red_dark</color>
+    <color name="yellow_terminada">@color/yellow_pastel</color>
 
 
     <!-- NO INVOCAR COLORES DE ABAJO EN LA APP, SOLO USAR COMO REFERENCIA EN LOS DE ARRIBA -->
@@ -16,8 +19,8 @@
     <color name="yellow_dicas">#FCCE01</color>
     <color name="yellow_dicas_darker">#E3B900</color>
     <color name="pink_dicas">#E91E63</color>
-    <color name="sucess_green">#4BB543</color>
-    <color name="error_red">#FC100D</color>
+    <color name="sucess_green_light">#4BB543</color>
+    <color name="error_red_light">#FC100D</color>
 
     <color name="text_primary_light">#de000000</color>
     <color name="text_secondary_light">#99000000</color>
@@ -43,14 +46,16 @@
     <color name="editText_surface_dark">#2E2E2E</color>
     <color name="toolbar_surface_dark">#1F1F1F</color>
 
-
+    <!-- Dark -->
     <color name="yellow_dicas_dark">#252111</color>
     <color name="pink_dicas_dark">#231319</color>
+    <!-- Pastel -->
     <color name="sucess_green_dark">#93D38E</color>
     <color name="error_red_dark">#CF6679</color>
     <color name="azul_kory_dark">#D1F0F2</color>
+    <color name="yellow_pastel">#FCF599</color>
 
-    <color name="disabled">#20FFFFFF</color>
+    <color name="disabled">#313131</color>
 
 
 </resources>
