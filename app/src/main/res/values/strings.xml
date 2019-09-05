@@ -23,9 +23,9 @@
     <string name="invalid_password">Contraseña demasiado corta</string>
     <string name="invalid_token">Sesión caducada</string>
     <string name="login_failed">"Error de inicio de sesión!"</string>
+    <string name="no_local_token">no_local_token</string>
 
     <string name="next">Siguiente</string>
-    <string name="no_local_token"></string>
 
     <string-array name="auditoria_status_options">
         <item>En curso</item>
@@ -42,5 +42,9 @@
     <string name="elija_departamento_spinner">Elija departamento</string>
 
     <string name="error_api">Error al consultar los datos de la base de datos</string>
+
+    <string name="created">Creada el</string>
+
+    <string name="activo_title">Activos fijos</string>
 
 </resources>

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicas.auditorias.data.ActivosRepository
 import com.dicas.auditorias.data.api.ActivosDataSource
 
-class AuditoriasViewModelFactory : ViewModelProvider.Factory {
+class ActivosViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ActivosViewModel::class.java)) {

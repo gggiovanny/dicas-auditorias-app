@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:backgroundTint="@color/toolbar_surface"
+        android:backgroundTint="@color/card_surface"
         app:cardCornerRadius="10dp"
         app:cardElevation="1dp">
 
@@ -19,9 +19,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="Creada el"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:text="@string/created"
                 android:textColor="?android:attr/textColorSecondary"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_status"
                 app:layout_constraintStart_toStartOf="@+id/guideline_id"
@@ -29,27 +29,12 @@
 
 
             <TextView
-                android:id="@+id/fecha_auditoria"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:lines="1"
-                android:text="@{model.getAuditoriaAt(index).fechaCreacion}"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_status"
-                app:layout_constraintStart_toStartOf="@+id/guideline_id"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-
-            <TextView
                 android:id="@+id/description_auditoria"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:text="@{model.getAuditoriaAt(index).descripcion}"
                 android:textColor="?android:attr/textColorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -57,6 +42,24 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline_id"
                 app:layout_constraintTop_toBottomOf="@+id/chip_status_auditoria" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/fecha_auditoria"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="4dp"
+                android:lines="1"
+                android:text="@{model.getAuditoriaAt(index).fechaCreacion}"
+                android:textColor="?android:attr/textColorPrimary"
+                app:autoSizeMaxTextSize="100sp"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_status"
+                app:layout_constraintStart_toStartOf="@+id/guideline_id"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
@@ -66,19 +69,24 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_id"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/id_auditoria"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
                     android:gravity="center"
                     android:text="@{model.getAuditoriaAt(index).id}"
                     android:textColor="@color/text_primary_light"
-                    android:textSize="24sp" />
+                    app:autoSizeMaxTextSize="24sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeStepGranularity="2sp"
+                    app:autoSizeTextType="uniform" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -94,25 +102,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent=".65" />
+                app:layout_constraintGuide_percent=".685" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_status_auditoria"
                 style="@style/Widget.MaterialComponents.Chip.Action"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
                 android:text="@{model.getAuditoriaAt(index).status}"
-                android:textColor="@color/text_primary_light"
-                android:textSize="18sp"
                 android:textAlignment="center"
+                android:textColor="@color/text_primary_light"
                 app:chipBackgroundColor="@color/disabled"
                 app:chipIconTint="@color/text_primary_light"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/fecha_auditoria"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@+id/guideline_status"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textAppearance="@style/chip_text_appearance_small" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

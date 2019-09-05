@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/auditoriasFragment">
 
     <fragment
         android:id="@+id/auditoriasFragment"
         android:name="com.dicas.auditorias.ui.auditorias.AuditoriasFragment"
-        android:label="AuditoriasFragment" >
+        android:label="AuditoriasFragment">
+        <action
+            android:id="@+id/action_auditoriasFragment_to_activosFragment"
+            app:destination="@id/activosFragment" />
         <argument
             android:name="user_data"
             app:argType="com.dicas.auditorias.data.model.LoggedInUser" />
+    </fragment>
+    <fragment
+        android:id="@+id/activosFragment"
+        android:name="com.dicas.auditorias.ui.activos.ActivosFragment"
+        android:label="fragment_activos"
+        tools:layout="@layout/fragment_activos">
+        <argument
+            android:name="user_data"
+            app:argType="com.dicas.auditorias.data.model.LoggedInUser" />
+        <argument
+            android:name="auditoria_activa"
+            app:argType="com.dicas.auditorias.data.model.Auditoria" />
     </fragment>
 </navigation>

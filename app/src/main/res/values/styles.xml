@@ -21,4 +21,8 @@
         <item name="backgroundTint">@color/colorAccent</item>
     </style>
 
+    <style name="chip_text_appearance_small" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

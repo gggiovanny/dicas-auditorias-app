@@ -6,12 +6,14 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: "kotlin-kapt"
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.dicas.activos"
-        minSdkVersion 25
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -73,6 +75,7 @@ android {
         def nav_version = "2.2.0-alpha01"
         implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
         implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
 
         /** Retrofit */
         def retrofit_version = '2.6.1'

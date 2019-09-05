@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
 import com.dicas.auditorias.data.model.Activo
 
@@ -51,9 +52,9 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
         }
 
         fun setDataCard(viewModel: ActivosViewModel, position: Int) {
-            //binding?.setVariable(BR.model, viewModel)
-            //binding?.setVariable(BR.index, position)
-            //binding?.executePendingBindings()
+            binding?.setVariable(BR.modelAct, viewModel)
+            binding?.setVariable(BR.position, position)
+            binding?.executePendingBindings()
         }
 
 

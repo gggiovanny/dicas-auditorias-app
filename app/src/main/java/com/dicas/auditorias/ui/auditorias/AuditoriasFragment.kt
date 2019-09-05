@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.*
 import com.dicas.auditorias.ui.login.LoginActivity
@@ -29,7 +32,8 @@ class AuditoriasFragment : Fragment() {
     }
 
     private lateinit var viewModel: AuditoriaViewModel
-    lateinit var userData: LoggedInUser
+    private lateinit var userData: LoggedInUser
+    private lateinit var navController: NavController
 
     private var firstError = true
     private var firstSucess = true
@@ -41,16 +45,17 @@ class AuditoriasFragment : Fragment() {
 
         /** Obteniendo los datos de usuario que vienen del login */
         try {
-            userData = arguments?.getParcelable<LoggedInUser>("user_data")!!
+            userData = arguments?.getParcelable("user_data")!!
         } catch (ex: Throwable) {
             throw Exception("$TAG: No se recibieron los datos del usuario desde el login!", ex)
         }
 
         val view = inflater.inflate(R.layout.fragment_auditoria, container, false)
 
-        // Inicializando view model
+
+        /** Inicializando view model */
         viewModel = ViewModelProviders.of(this, AuditoriasViewModelFactory())
-            .get(com.dicas.auditorias.ui.auditorias.AuditoriaViewModel::class.java)
+            .get(AuditoriaViewModel::class.java)
         setupLoginIfExpiredToken()
 
         return view
@@ -58,6 +63,8 @@ class AuditoriasFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        navController = Navigation.findNavController(view!!)
+
 
         loading.visibility = View.VISIBLE
         setupSpinners()
@@ -148,15 +155,12 @@ class AuditoriasFragment : Fragment() {
                             e
                         )
                     }
-
                 }
             }
         }
-
         with(departamento_spinner) {
             adapter = adapterDeptos
         }
-
     }
 
     private fun setupLoginIfExpiredToken() {
@@ -234,18 +238,29 @@ class AuditoriasFragment : Fragment() {
     }
 
     private fun setupNuevaAuditoriaButton() {
-        nueva_auditoria.setOnClickListener {
+        fab_nueva_auditoria.setOnClickListener {
             Log.d(
                 TAG,
                 "Empresa: ${empresa_spinner.selectedItem}, Depto: ${departamento_spinner.selectedItem}"
             )
+            openActivos()
 
 
         }
     }
 
-}
+    private fun openActivos(
+        auditoriaActiva: Auditoria = Auditoria(
+            id = "1",
+            fechaCreacion = "",
+            status = ""
+        )
+    ) {
+        val bundle = bundleOf("user_data" to userData, "auditoria_activa" to auditoriaActiva)
+        navController.navigate(R.id.action_auditoriasFragment_to_activosFragment, bundle)
+    }
 
+}
 
 
 /**
