@@ -70,7 +70,10 @@ class ActivosFragment : Fragment() {
     private fun setupRecyclerView() {
         rv_activos.adapter = viewModel.recyclerActivosAdapter
 
-        viewModel.callActivosAPI(apiKey = userData.token, auditoriaActual = auditoriaActiva.id)
+        viewModel.callActivosAPI(
+            apiKey = userData.token,
+            auditoriaActual = auditoriaActiva.id
+        )
 
         viewModel.activos.observe(this, Observer { auditorias: List<Activo> ->
             viewModel.setActivosInRecyclerAdapter(auditorias)
@@ -82,7 +85,7 @@ class ActivosFragment : Fragment() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
             Log.d(TAG, "setupLoginIfExpiredToken: ${response.status}: ${response.description}")
-            if (!response.statusOk && firstError) {
+            if (!response.isOk && firstError) {
                 if (!(response.status ?: return@Observer).contains("app")) {
                     firstError = false
                     showSesionCaducada(response)

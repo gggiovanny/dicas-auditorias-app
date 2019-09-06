@@ -48,7 +48,7 @@ class ActivosDataSource {
                 Log.d(TAG, "callActivosAPI: status=${responseObject.status}")
                 Log.d(TAG, "callActivosAPI: description=[${responseObject.description}]")
 
-                if (responseObject.statusOk) {
+                if (responseObject.isOk) {
                     val listJson = responseJson.get("list").asJsonArray
 
                     val activosList = ArrayList<Activo>()

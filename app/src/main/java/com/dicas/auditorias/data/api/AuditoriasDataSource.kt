@@ -11,7 +11,6 @@ import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.io.IOException
 
 class AuditoriasDataSource {
 
@@ -47,7 +46,7 @@ class AuditoriasDataSource {
                 Log.d(TAG, "AuditoriasResponseHandler: status=${responseObject.status}")
                 Log.d(TAG, "AuditoriasResponseHandler: description=[${responseObject.description}]")
 
-                if(responseObject.statusOk) {
+                if (responseObject.isOk) {
                     val listJson = responseJson.get("list").asJsonArray
 
                     val auditoriasList = ArrayList<Auditoria>()
@@ -59,7 +58,12 @@ class AuditoriasDataSource {
                             id = auditoriaJson.get("id").asString,
                             fechaCreacion = auditoriaJson.get("fechaCreacion").asString,
                             status = auditoriaJson.get("status").asString,
-                            descripcion = auditoriaJson.get("descripcion")?.asString
+                            descripcion = auditoriaJson.get("descripcion")?.asString,
+                            username = auditoriaJson.get("username").asString,
+                            idEmpresa = auditoriaJson.get("idEmpresa")?.asString,
+                            idDepartamento = auditoriaJson.get("idDepartamento")?.asString,
+                            idClasificacion = auditoriaJson.get("idClasificacion")?.asString,
+                            terminada = auditoriaJson.get("terminada").asString
                         )
                         auditoriasList.add(auditoria)
                     }
@@ -89,7 +93,7 @@ class AuditoriasDataSource {
                 Log.d(TAG, "EmpresasResponseHandler: status=${responseObject.status}")
                 Log.d(TAG, "EmpresasResponseHandler: description=[${responseObject.description}]")
 
-                if(responseObject.statusOk) {
+                if (responseObject.isOk) {
                     val listJson = responseJson.get("list").asJsonArray
 
                     val empresasList = ArrayList<Empresa>()
@@ -106,7 +110,11 @@ class AuditoriasDataSource {
                     _empresas.value = empresasList
                 }
             }, {
-                throw IOException("Error getting Auditorias from API", it)
+                it.printStackTrace()
+                _response.value = ApiResponse(
+                    status = "error_app",
+                    description = "No se pudo consultar la auditoria"
+                )
 
             })
     }
@@ -126,7 +134,7 @@ class AuditoriasDataSource {
                 Log.d(TAG, "DepartamentosResponseHandler: status=${responseObject.status}")
                 Log.d(TAG, "DepartamentosResponseHandler: description=[${responseObject.description}]")
 
-                if(responseObject.statusOk) {
+                if (responseObject.isOk) {
                     val listJson = responseJson.get("list").asJsonArray
 
                     val deptosList = ArrayList<Departamento>()
@@ -143,7 +151,11 @@ class AuditoriasDataSource {
                     _departamentos.value = deptosList
                 }
             }, {
-                throw IOException("Error getting Auditorias from API", it)
+                it.printStackTrace()
+                _response.value = ApiResponse(
+                    status = "error_app",
+                    description = "No se pudo consultar la auditoria"
+                )
             })
     }
 

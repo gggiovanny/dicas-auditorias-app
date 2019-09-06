@@ -30,7 +30,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 description = responseJson.get("description").asString
             )
 
-            if(apiResponse.statusOk) {
+            if (apiResponse.isOk) {
                 apiResponse.token = responseJson.get("token").asString
                 apiResponse.username = responseJson.get("username").asString
                 Log.d(TAG, "callToken.onResponse: token=${apiResponse.token}")

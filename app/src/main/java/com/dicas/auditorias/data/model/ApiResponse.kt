@@ -6,7 +6,7 @@ data class ApiResponse(
     var token: String? = null,
     var username: String? = null
 ) {
-    val statusOk: Boolean
+    val isOk: Boolean
         get() = status == "ok"
 
     val hasToken: Boolean

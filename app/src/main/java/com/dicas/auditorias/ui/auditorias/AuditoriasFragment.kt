@@ -168,7 +168,7 @@ class AuditoriasFragment : Fragment() {
             val response: ApiResponse = it ?: return@Observer
             loading.visibility = View.GONE
             Log.d(TAG, "setupLoginIfExpiredToken: ${response.status}: ${response.description}")
-            if (response.statusOk) {
+            if (response.isOk) {
                 if (firstSucess && userData.fromMemory) {
                     firstSucess = false
                     Toast.makeText(
@@ -239,21 +239,40 @@ class AuditoriasFragment : Fragment() {
 
     private fun setupNuevaAuditoriaButton() {
         fab_nueva_auditoria.setOnClickListener {
-            Log.d(
-                TAG,
-                "Empresa: ${empresa_spinner.selectedItem}, Depto: ${departamento_spinner.selectedItem}"
-            )
-            openActivos()
+            if (empresa_spinner.selectedItemId > 0) {
+                val empresa = empresa_spinner.selectedItem as? Empresa
+                Log.d(
+                    TAG,
+                    "Empresa_nombre: ${empresa_spinner.selectedItem} Empresa_id: ${empresa?.id} Empresa_pos: ${empresa_spinner.selectedItemPosition}}"
+                )
 
+
+                //TODO("Falta poner texto de descripcion de auditoria")
+/*
+                val nuevaAuditoria = Auditoria(
+                    descripcion = "",
+                    idEmpresa =
+                )
+
+                openActivos()*/
+            }
 
         }
+    }
+
+    private fun newAuditoria(nuevaAuditoria: Auditoria): Boolean {
+        val response: ApiResponse = ApiResponse("ok", "xd")
+        return response.isOk
+        //TODO("Crear metodo post para crear la auditoria")
     }
 
     private fun openActivos(
         auditoriaActiva: Auditoria = Auditoria(
             id = "1",
             fechaCreacion = "",
-            status = ""
+            status = "",
+            terminada = "",
+            username = ""
         )
     ) {
         val bundle = bundleOf("user_data" to userData, "auditoria_activa" to auditoriaActiva)
