@@ -1,6 +1,7 @@
 package com.dicas.auditorias.ui.auditorias
 
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -19,9 +20,14 @@ class RecyclerAuditoriasAdapter(
 ) : RecyclerView.Adapter<RecyclerAuditoriasAdapter.AuditoriaCardHolder>() {
 
     var auditorias: List<Auditoria>? = null
+    lateinit var clickListener: (index: Int) -> Unit
 
     fun setAuditoriasList(auditorias: List<Auditoria>?) {
         this.auditorias = auditorias
+    }
+
+    fun setOnClickListenner(clickListener: (index: Int) -> Unit) {
+        this.clickListener = clickListener
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): AuditoriaCardHolder {
@@ -36,7 +42,7 @@ class RecyclerAuditoriasAdapter(
     }
 
     override fun onBindViewHolder(p0: AuditoriaCardHolder, p1: Int) {
-        p0.setDataCard(auditoriaViewModel, p1)
+        p0.setDataCard(auditoriaViewModel, p1, clickListener)
     }
 
     override fun getItemViewType(index: Int): Int {
@@ -49,14 +55,29 @@ class RecyclerAuditoriasAdapter(
 
     class AuditoriaCardHolder(binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        companion object {
+            private const val TAG = "AuditoriaCardHolder"
+        }
+
         private var binding: ViewDataBinding? = null
 
         init {
             this.binding = binding
         }
 
-        fun setDataCard(auditoriaViewModel: AuditoriaViewModel, index: Int) {
+        fun setDataCard(
+            auditoriaViewModel: AuditoriaViewModel,
+            index: Int,
+            clickListener: (index: Int) -> Unit
+        ) {
 
+            /** Configurando onClickListener */
+            binding?.root?.setOnClickListener {
+                Log.d(TAG, "setDataCard: clicked: $index")
+                clickListener(index)
+            }
+
+            /** Configurando color e icono de chip de status */
             when (auditoriaViewModel.getAuditoriaAt(index)?.status) {
                 "En curso" -> {
                     itemView.chip_status_auditoria.chipBackgroundColor = ColorStateList.valueOf(

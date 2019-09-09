@@ -1,7 +1,7 @@
 package com.dicas.auditorias.ui.auditorias
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.AuditoriasRepository
 import com.dicas.auditorias.data.model.ApiResponse
@@ -28,6 +28,13 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
         recyclerAuditoriasAdapter.setAuditoriasList(auditorias)
         recyclerAuditoriasAdapter.notifyDataSetChanged()
     }
+
+    fun setRecyclerClickListener(listener: (index: Int) -> Unit) {
+        recyclerAuditoriasAdapter.setOnClickListenner(listener)
+        recyclerAuditoriasAdapter.notifyDataSetChanged()
+    }
+
+
 
     fun callEmpresas(apikey: String) {
         repository.callEmpresasApi(apikey)

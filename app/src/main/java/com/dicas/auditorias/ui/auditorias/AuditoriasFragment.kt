@@ -83,6 +83,12 @@ class AuditoriasFragment : Fragment() {
             Log.d(TAG, "setupRecyclerView: observe done!")
             loading.visibility = View.GONE
         })
+
+        /** clickListener */
+        viewModel.setRecyclerClickListener {
+            Log.d(TAG, "setupRecyclerView: awebo")
+        }
+
     }
 
     private fun setupSpinners() {
