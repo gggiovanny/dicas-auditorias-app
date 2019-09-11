@@ -61,7 +61,9 @@ class AuditoriasDataSource {
                             descripcion = auditoriaJson.get("descripcion")?.asString,
                             username = auditoriaJson.get("username").asString,
                             idEmpresa = auditoriaJson.get("idEmpresa")?.asString,
+                            empresa = auditoriaJson.get("empresa")?.asString,
                             idDepartamento = auditoriaJson.get("idDepartamento")?.asString,
+                            departamento = auditoriaJson.get("departamento")?.asString,
                             idClasificacion = auditoriaJson.get("idClasificacion")?.asString,
                             terminada = auditoriaJson.get("terminada").asString
                         )

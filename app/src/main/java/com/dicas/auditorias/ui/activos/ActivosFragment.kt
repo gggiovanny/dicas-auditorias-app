@@ -19,6 +19,7 @@ import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
 import com.dicas.auditorias.data.model.LoggedInUser
 import com.dicas.auditorias.ui.login.LoginActivity
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_activos.*
 
 class ActivosFragment : Fragment() {
@@ -72,6 +73,12 @@ class ActivosFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(ActivosViewModel::class.java)
 
         setupRecyclerView()
+
+
+        setupScrollFade(ArrayList<View>().apply {
+            add(chipDepartamento)
+            add(chipEmpresa)
+        })
     }
 
     private fun setupRecyclerView() {
@@ -128,6 +135,31 @@ class ActivosFragment : Fragment() {
     private fun bindAuditoria(binding: ViewDataBinding) {
         binding.setVariable(BR.auditoriaAct, auditoriaActiva)
         binding.executePendingBindings()
+    }
+
+    private fun setupScrollFade(widgets: List<View>) {
+        app_bar_layout.addOnOffsetChangedListener(object :
+            AppBarLayout.BaseOnOffsetChangedListener<AppBarLayout> {
+            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+                try {
+                    val alpha =
+                        (appBarLayout!!.totalScrollRange + verticalOffset).toFloat() / appBarLayout.totalScrollRange
+                    widgets.forEach { it.alpha = alpha }
+
+                    if (alpha > 0)
+                        widgets.forEach { it.visibility = View.VISIBLE }
+                    else
+                        widgets.forEach { it.visibility = View.INVISIBLE }
+
+                } catch (e: Throwable) {
+                    Exception(
+                        "$TAG:setupScrollFade: No se pudo configurar el fade del los widgets al hacer scroll",
+                        e
+                    )
+                }
+            }
+
+        })
     }
 
 }

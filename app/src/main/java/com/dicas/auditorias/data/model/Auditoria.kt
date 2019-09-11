@@ -11,7 +11,9 @@ data class Auditoria(
     val descripcion: String? = null,
     val username: String,
     val idEmpresa: String? = null,
+    val empresa: String? = null,
     val idDepartamento: String? = null,
+    val departamento: String? = null,
     val idClasificacion: String? = null,
     val terminada: String
 ) : Parcelable
