@@ -85,8 +85,12 @@ class AuditoriasFragment : Fragment() {
         })
 
         /** clickListener */
-        viewModel.setRecyclerClickListener {
-            Log.d(TAG, "setupRecyclerView: awebo")
+        viewModel.setRecyclerClickListener { index ->
+
+            val auditoriaActiva = viewModel.auditorias.value?.get(index)
+            Log.d(TAG, "setupRecyclerView: Auditoria seleccionada: ${auditoriaActiva?.id}")
+            openActivos(auditoriaActiva ?: return@setRecyclerClickListener)
+
         }
 
     }
@@ -272,15 +276,7 @@ class AuditoriasFragment : Fragment() {
         //TODO("Crear metodo post para crear la auditoria")
     }
 
-    private fun openActivos(
-        auditoriaActiva: Auditoria = Auditoria(
-            id = "1",
-            fechaCreacion = "",
-            status = "",
-            terminada = "",
-            username = ""
-        )
-    ) {
+    private fun openActivos(auditoriaActiva: Auditoria) {
         val bundle = bundleOf("user_data" to userData, "auditoria_activa" to auditoriaActiva)
         navController.navigate(R.id.action_auditoriasFragment_to_activosFragment, bundle)
     }
@@ -294,7 +290,7 @@ class AuditoriasFragment : Fragment() {
 fun AdapterView<*>.OnItemSelectedListener(lamdaListener: (parent: AdapterView<*>, position: Int) -> Unit) {
     onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+        override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
             lamdaListener.invoke(parent, position)
         }
 

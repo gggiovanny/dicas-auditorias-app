@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.dicas.auditorias.BR
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
@@ -57,7 +60,11 @@ class ActivosFragment : Fragment() {
             .get(ActivosViewModel::class.java)
         setupLoginIfExpiredToken()
 
-        return inflater.inflate(R.layout.fragment_activos, container, false)
+        val binding: ViewDataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_activos, container, false)
+        bindAuditoria(binding)
+
+        return binding.root //view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -116,6 +123,11 @@ class ActivosFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun bindAuditoria(binding: ViewDataBinding) {
+        binding.setVariable(BR.auditoriaAct, auditoriaActiva)
+        binding.executePendingBindings()
     }
 
 }

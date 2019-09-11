@@ -68,9 +68,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     }
 
     // A placeholder password validation check
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
-    }
+    private fun isPasswordValid(password: String): Boolean = password.isNotEmpty()
 
     fun checkLocalToken() {
         val result = loginRepository.getTokenLocal()
