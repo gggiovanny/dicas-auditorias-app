@@ -65,6 +65,7 @@ class AuditoriasDataSource {
                             idDepartamento = auditoriaJson.get("idDepartamento")?.asString,
                             departamento = auditoriaJson.get("departamento")?.asString,
                             idClasificacion = auditoriaJson.get("idClasificacion")?.asString,
+                            clasificacion = auditoriaJson.get("clasificacion")?.asString,
                             terminada = auditoriaJson.get("terminada").asString
                         )
                         auditoriasList.add(auditoria)

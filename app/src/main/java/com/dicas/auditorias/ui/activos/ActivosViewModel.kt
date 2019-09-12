@@ -6,8 +6,10 @@ import com.dicas.auditorias.R
 import com.dicas.auditorias.data.ActivosRepository
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
+import com.dicas.auditorias.ui.utils.ViewModelRecyclerBinding
 
-class ActivosViewModel(private val repository: ActivosRepository) : ViewModel() {
+class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
+    ViewModelRecyclerBinding<Activo> {
 
     val activos: LiveData<List<Activo>> = repository.activos
     val response: LiveData<ApiResponse> = repository.response
@@ -24,9 +26,9 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel() 
         repository.callActivosAPI(apiKey, auditoriaActual, empresa, departamento, clasificacion)
     }
 
-    fun getActivoAt(position: Int): Activo? = activos.value?.get(position)
+    override fun getObjectAt(position: Int) = activos.value?.get(position)
 
-    fun setActivosInRecyclerAdapter(activos: List<Activo>) {
+    override fun setupRecyclerAdapter(activos: List<Activo>) {
         recyclerActivosAdapter.setActivosList(activos)
         recyclerActivosAdapter.notifyDataSetChanged()
     }

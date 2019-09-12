@@ -3,12 +3,9 @@ package com.dicas.auditorias.ui.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.LoggedInUser
 import com.dicas.auditorias.ui.main.MainActivity
+import com.dicas.auditorias.ui.utils.afterTextChanged
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -152,17 +150,3 @@ class LoginActivity : AppCompatActivity() {
     }
 }
 
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
-}

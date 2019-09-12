@@ -1,26 +1,29 @@
 package com.dicas.auditorias.ui.activos
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import androidx.appcompat.content.res.AppCompatResources.getColorStateList
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.dicas.auditorias.BR
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
 import com.dicas.auditorias.data.model.LoggedInUser
 import com.dicas.auditorias.ui.login.LoginActivity
-import com.google.android.material.appbar.AppBarLayout
+import com.dicas.auditorias.ui.utils.setupAppBarScrollFade
+import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_activos.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ActivosFragment : Fragment() {
 
@@ -61,11 +64,9 @@ class ActivosFragment : Fragment() {
             .get(ActivosViewModel::class.java)
         setupLoginIfExpiredToken()
 
-        val binding: ViewDataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_activos, container, false)
-        bindAuditoria(binding)
+        /*val binding: ViewDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_activos, container, false)*/
 
-        return binding.root //view
+        return inflater.inflate(R.layout.fragment_activos, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -74,11 +75,11 @@ class ActivosFragment : Fragment() {
 
         setupRecyclerView()
 
-
-        setupScrollFade(ArrayList<View>().apply {
-            add(chipDepartamento)
-            add(chipEmpresa)
+        setupAppBarScrollFade(app_bar_layout, ArrayList<View>().apply {
+            add(chip_group)
         })
+
+        addDescriptionChipsInToolbar()
     }
 
     private fun setupRecyclerView() {
@@ -90,7 +91,7 @@ class ActivosFragment : Fragment() {
         )
 
         viewModel.activos.observe(this, Observer { auditorias: List<Activo> ->
-            viewModel.setActivosInRecyclerAdapter(auditorias)
+            viewModel.setupRecyclerAdapter(auditorias)
             Log.d(TAG, "setupRecyclerView: observe done!")
         })
     }
@@ -132,34 +133,37 @@ class ActivosFragment : Fragment() {
         }
     }
 
-    private fun bindAuditoria(binding: ViewDataBinding) {
-        binding.setVariable(BR.auditoriaAct, auditoriaActiva)
-        binding.executePendingBindings()
-    }
+    private fun addDescriptionChipsInToolbar() {
+        val textColor = getColorStateList(context ?: return, R.color.text_primary_light)
 
-    private fun setupScrollFade(widgets: List<View>) {
-        app_bar_layout.addOnOffsetChangedListener(object :
-            AppBarLayout.BaseOnOffsetChangedListener<AppBarLayout> {
-            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-                try {
-                    val alpha =
-                        (appBarLayout!!.totalScrollRange + verticalOffset).toFloat() / appBarLayout.totalScrollRange
-                    widgets.forEach { it.alpha = alpha }
+        chip_group.addView(Chip(chip_group.context).apply {
+            text = (auditoriaActiva.empresa ?: return).toLowerCase(Locale.ENGLISH).capitalize()
+            chipBackgroundColor =
+                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorEmpresa))
+            setTextColor(textColor)
+            setChipIconResource(R.drawable.ic_empresa_black_24dp)
+            chipIconTint = textColor
+        })
 
-                    if (alpha > 0)
-                        widgets.forEach { it.visibility = View.VISIBLE }
-                    else
-                        widgets.forEach { it.visibility = View.INVISIBLE }
+        chip_group.addView(Chip(chip_group.context).apply {
+            text = (auditoriaActiva.departamento ?: return).toLowerCase(Locale.ENGLISH).capitalize()
+            chipBackgroundColor =
+                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorDepartamento))
+            setTextColor(textColor)
+            setChipIconResource(R.drawable.ic_departamento_black_24dp)
+            chipIconTint = textColor
+        })
 
-                } catch (e: Throwable) {
-                    Exception(
-                        "$TAG:setupScrollFade: No se pudo configurar el fade del los widgets al hacer scroll",
-                        e
-                    )
-                }
-            }
-
+        chip_group.addView(Chip(chip_group.context).apply {
+            text =
+                (auditoriaActiva.clasificacion ?: return).toLowerCase(Locale.ENGLISH).capitalize()
+            chipBackgroundColor =
+                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorClasificacion))
+            setTextColor(textColor)
+            setChipIconResource(R.drawable.ic_clasificacion_black_24dp)
+            chipIconTint = textColor
         })
     }
+
 
 }

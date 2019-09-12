@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -18,7 +17,8 @@ import androidx.navigation.Navigation
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.*
 import com.dicas.auditorias.ui.login.LoginActivity
-import com.google.android.material.appbar.AppBarLayout
+import com.dicas.auditorias.ui.utils.OnItemSelectedListener
+import com.dicas.auditorias.ui.utils.setupAppBarScrollFade
 import kotlinx.android.synthetic.main.fragment_auditoria.*
 import kotlinx.android.synthetic.main.layout_nueva_auditoria.*
 
@@ -50,15 +50,12 @@ class AuditoriasFragment : Fragment() {
             throw Exception("$TAG: No se recibieron los datos del usuario desde el login!", ex)
         }
 
-        val view = inflater.inflate(R.layout.fragment_auditoria, container, false)
-
-
         /** Inicializando view model */
         viewModel = ViewModelProviders.of(this, AuditoriasViewModelFactory())
             .get(AuditoriaViewModel::class.java)
         setupLoginIfExpiredToken()
 
-        return view
+        return inflater.inflate(R.layout.fragment_auditoria, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,7 +66,9 @@ class AuditoriasFragment : Fragment() {
         loading.visibility = View.VISIBLE
         setupSpinners()
         setupRecyclerView()
-        setupScrollFade()
+        setupAppBarScrollFade(app_bar_layout, ArrayList<View>().apply {
+            add(toolbar_spinners)
+        })
         setupNuevaAuditoriaButton()
     }
 
@@ -221,32 +220,6 @@ class AuditoriasFragment : Fragment() {
         }
     }
 
-    private fun setupScrollFade() {
-        app_bar_layout.addOnOffsetChangedListener(object :
-            AppBarLayout.BaseOnOffsetChangedListener<AppBarLayout> {
-            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-                try {
-                    val alpha =
-                        (appBarLayout!!.totalScrollRange + verticalOffset).toFloat() / appBarLayout.totalScrollRange
-                    toolbar_spinners.alpha = alpha
-
-                    if (alpha > 0)
-                        toolbar_spinners.visibility = View.VISIBLE
-                    else
-                        toolbar_spinners.visibility = View.INVISIBLE
-
-
-                } catch (e: Throwable) {
-                    Exception(
-                        "$TAG:setupScrollFade: No se pudo configurar el fade del los spinners al hacer scroll",
-                        e
-                    )
-                }
-            }
-
-        })
-    }
-
     private fun setupNuevaAuditoriaButton() {
         fab_nueva_auditoria.setOnClickListener {
             if (empresa_spinner.selectedItemId > 0) {
@@ -284,17 +257,4 @@ class AuditoriasFragment : Fragment() {
 }
 
 
-/**
- * Extension function to simplify setting an OnItemSelectedListener action to EditText components.
- */
-fun AdapterView<*>.OnItemSelectedListener(lamdaListener: (parent: AdapterView<*>, position: Int) -> Unit) {
-    onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
-        override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-            lamdaListener.invoke(parent, position)
-        }
-
-        override fun onNothingSelected(parent: AdapterView<*>) {}
-    }
-}
 

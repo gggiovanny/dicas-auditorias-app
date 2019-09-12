@@ -11,6 +11,9 @@
     <color name="sucess_green">@color/sucess_green_dark</color>
     <color name="error_red">@color/error_red_dark</color>
     <color name="yellow_terminada">@color/yellow_pastel</color>
+    <color name="colorEmpresa">#132C26</color>
+    <color name="colorDepartamento">#313636</color>
+    <color name="colorClasificacion">#362A24</color>
 
 
     <!-- NO INVOCAR COLORES DE ABAJO EN LA APP, SOLO USAR COMO REFERENCIA EN LOS DE ARRIBA -->
@@ -54,6 +57,10 @@
     <color name="error_red_dark">#CF6679</color>
     <color name="azul_kory_dark">#D1F0F2</color>
     <color name="yellow_pastel">#FCF599</color>
+    <color name="yellow_rosy_highlight">#f7d794</color>
+    <color name="peach_creamy">#f3a683</color>
+    <color name="grape_pastel">#778beb</color>
+    <color name="azuldark_kory">#7EA3A6</color>
 
     <color name="disabled">#313131</color>
 
