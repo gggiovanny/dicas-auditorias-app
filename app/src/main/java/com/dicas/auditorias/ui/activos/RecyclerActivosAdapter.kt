@@ -6,7 +6,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
+import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.Activo
+import kotlinx.android.synthetic.main.layout_activo_item.view.*
 
 class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item: Int) :
     RecyclerView.Adapter<RecyclerActivosAdapter.ActivoCardHolder>() {
@@ -52,12 +54,26 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
         }
 
         fun setDataCard(viewModel: ActivosViewModel, position: Int) {
+            setChipsExistenciasValue(viewModel.getObjectAt(position) ?: return)
+
             binding?.setVariable(BR.modelAct, viewModel)
             binding?.setVariable(BR.position, position)
             binding?.executePendingBindings()
         }
 
+        private fun setChipsExistenciasValue(activoActual: Activo) {
+            val trueChar: Char = '\u0001'
+            val falseChar: Char = '\u0000'
 
+            if (activoActual.existencia_guardada == trueChar.toString())
+                itemView.chip_existencia_guardada.text =
+                    itemView.context.getText(R.string.activo_guardado_si)
+            else {
+                if (!activoActual.existencia_guardada.isNullOrEmpty())
+                    itemView.chip_existencia_guardada.text =
+                        itemView.context.getText(R.string.activo_guardado_no)
+            }
+
+        }
     }
-
 }

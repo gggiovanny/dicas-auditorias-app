@@ -49,7 +49,6 @@ class RecyclerAuditoriasAdapter(
         holder.setDataCard(
             auditoriaViewModel,
             position,
-            (auditorias ?: return).get(position),
             clickListener
         )
     }
@@ -70,7 +69,6 @@ class RecyclerAuditoriasAdapter(
         }
 
         private var binding: ViewDataBinding? = null
-        lateinit var auditoriaActiva: Auditoria
 
         init {
             this.binding = binding
@@ -79,10 +77,8 @@ class RecyclerAuditoriasAdapter(
         fun setDataCard(
             auditoriaViewModel: AuditoriaViewModel,
             index: Int,
-            auditoriaActiva: Auditoria,
             clickListener: (index: Int) -> Unit
         ) {
-            this.auditoriaActiva = auditoriaActiva
 
             /** Configurando onClickListener */
             binding?.root?.setOnClickListener {
@@ -122,23 +118,35 @@ class RecyclerAuditoriasAdapter(
                 }
             }
 
-            addDescriptionChipsInToolbar()
+            val auditoriaActiva = auditoriaViewModel.getAuditoriaAt(index) ?: return
+            /** Agregar en el item chips para indicar de que empresa, departamento y categoria es. */
+            addDescriptionChipsInToolbar(auditoriaActiva)
+
             if (auditoriaActiva.descripcion.isNullOrEmpty())
                 itemView.description_auditoria.visibility = View.GONE
 
+            /** Se bindean las variables del layouts */
             binding?.setVariable(BR.model, auditoriaViewModel)
             binding?.setVariable(BR.index, index)
             binding?.executePendingBindings()
         }
 
-        private fun addDescriptionChipsInToolbar() {
+        private fun addDescriptionChipsInToolbar(auditoriaActiva: Auditoria) {
+            if (!itemView.id_auditoria.text.isNullOrEmpty())
+                return
+
             val textColor =
                 getColorStateList(itemView.context ?: return, R.color.text_secondary_dark)
 
             itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
                 text = (auditoriaActiva.empresa ?: return).toLowerCase(Locale.ENGLISH).capitalize()
                 chipBackgroundColor =
-                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorEmpresa))
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.colorEmpresa_dark
+                        )
+                    )
                 setTextColor(textColor)
                 setChipIconResource(R.drawable.ic_empresa_black_24dp)
                 chipIconTint = textColor
@@ -151,7 +159,7 @@ class RecyclerAuditoriasAdapter(
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
                             context,
-                            R.color.colorDepartamento
+                            R.color.colorDepartamento_dark
                         )
                     )
                 setTextColor(textColor)
@@ -167,7 +175,7 @@ class RecyclerAuditoriasAdapter(
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
                             context,
-                            R.color.colorClasificacion
+                            R.color.colorClasificacion_dark
                         )
                     )
                 setTextColor(textColor)

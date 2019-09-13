@@ -159,10 +159,7 @@ class AuditoriasFragment : Fragment() {
                             empresaID = empresa!!.id.toInt()
                         )
                     } catch (e: Throwable) {
-                        Exception(
-                            "No se pudo consultar el spinner de departamentos debido a que la empresa es null",
-                            e
-                        )
+                        e.printStackTrace()
                     }
                 }
             }
