@@ -47,12 +47,7 @@
 
     <string name="activo_title">Activos fijos</string>
 
-    <string name="activo_guardado_sin_registro">Sin registro</string>
-    <string name="activo_guardado_no">Sin existencia</string>
-    <string name="activo_guardado_si">En existencia</string>
-
-    <string name="activo_actual_sin_definir">Sin definir</string>
-    <string name="activo_actual_si_existe">Sin existencia</string>
-    <string name="activo_actual_no_existe">En existencia</string>
+    <string name="existencia_guardada">Guardada</string>
+    <string name="existencia_actual">Actual</string>
 
 </resources>

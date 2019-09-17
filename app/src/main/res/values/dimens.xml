@@ -9,5 +9,5 @@
     <dimen name="shrine_toolbar_offset_top">8dp</dimen>
 
     <dimen name="spinner_height">20dp</dimen>
-    <dimen name="chips_activo_existencia_ancho">100dp</dimen>
+    <dimen name="chips_activo_existencia_ancho">120dp</dimen>
 </resources>
