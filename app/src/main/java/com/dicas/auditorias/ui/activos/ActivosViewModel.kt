@@ -24,6 +24,8 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
         clasificacion: String? = null
     ) {
         repository.callActivosAPI(apiKey, auditoriaActual, empresa, departamento, clasificacion)
+        var xd: String = "1"
+        val anuma = xd.toBoolean()
     }
 
     override fun getObjectAt(position: Int) = activos.value?.get(position)
@@ -31,5 +33,9 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
     override fun setupRecyclerAdapter(activos: List<Activo>) {
         recyclerActivosAdapter.setActivosList(activos)
         recyclerActivosAdapter.notifyDataSetChanged()
+    }
+
+    fun getExistenciaGuardada(position: Int) {
+        activos.value?.get(position)?.existencia_guardada == "1"
     }
 }

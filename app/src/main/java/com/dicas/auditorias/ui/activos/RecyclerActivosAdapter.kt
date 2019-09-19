@@ -62,7 +62,7 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
         }
 
         fun setDataCard(viewModel: ActivosViewModel, position: Int) {
-            setChipsExistenciasValue(viewModel.getObjectAt(position) ?: return)
+            //setChipsExistenciasValue(viewModel.getObjectAt(position) ?: return)
 
             binding?.setVariable(BR.modelAct, viewModel)
             binding?.setVariable(BR.position, position)

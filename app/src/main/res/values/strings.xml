@@ -47,7 +47,13 @@
 
     <string name="activo_title">Activos fijos</string>
 
-    <string name="existencia_guardada">Guardada</string>
-    <string name="existencia_actual">Actual</string>
+
+    <string name="existencia_titulo">Existencia</string>
+
+    <string name="existencia_guardada_true">Existencia registrada</string>
+    <string name="existencia_guardada_false">Existencia no registrada</string>
+    <string name="existencia_guardada_null">Existencia desconocida</string>
+
+    <string name="existencia_actual">Existe</string>
 
 </resources>
