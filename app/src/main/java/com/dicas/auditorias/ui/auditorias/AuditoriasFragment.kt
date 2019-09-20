@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -15,12 +14,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.dicas.auditorias.R
-import com.dicas.auditorias.data.model.*
+import com.dicas.auditorias.data.model.ApiResponse
+import com.dicas.auditorias.data.model.Auditoria
+import com.dicas.auditorias.data.model.LoggedInUser
 import com.dicas.auditorias.ui.login.LoginActivity
-import com.dicas.auditorias.ui.utils.OnItemSelectedListener
-import com.dicas.auditorias.ui.utils.setupAppBarScrollFade
 import kotlinx.android.synthetic.main.fragment_auditoria.*
-import kotlinx.android.synthetic.main.layout_nueva_auditoria.*
 
 
 class AuditoriasFragment : Fragment() {
@@ -64,11 +62,12 @@ class AuditoriasFragment : Fragment() {
 
 
         loading.visibility = View.VISIBLE
-        setupSpinners()
         setupRecyclerView()
+        /*
         setupAppBarScrollFade(app_bar_layout, ArrayList<View>().apply {
             add(toolbar_spinners)
         })
+        */
         setupNuevaAuditoriaButton()
     }
 
@@ -92,81 +91,6 @@ class AuditoriasFragment : Fragment() {
 
         }
 
-    }
-
-    private fun setupSpinners() {
-        /** Creando los adapters */
-        val adapterEmpresas =
-            ArrayAdapter<Empresa>(context ?: return, android.R.layout.simple_spinner_item)
-        with(adapterEmpresas) {
-            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            add(Empresa("-1", getString(R.string.elija_empresa_spinner)))
-        }
-
-        val adapterDeptos =
-            ArrayAdapter<Departamento>(context ?: return, android.R.layout.simple_spinner_item)
-        with(adapterDeptos) {
-            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            add(Departamento("-1", getString(R.string.elija_departamento_spinner)))
-        }
-
-        /** Llamando al API para obtener los datos y creando el observer para añadir la informacion cuando llegue */
-        viewModel.callEmpresas(apikey = userData.token)
-        viewModel.empresas.observe(this, Observer { empresas: List<Empresa> ->
-            for (empresa in empresas)
-                adapterEmpresas.add(empresa)
-            Log.d(TAG, "setupSpinners: Observer empresas done!")
-            loading.visibility = View.GONE
-        })
-        /** Los departamentos se actualizan cuando se cambia la empresa elegida para traer los de la misma*/
-        viewModel.departamento.observe(this, Observer { departamentos: List<Departamento> ->
-            loading.visibility = View.GONE
-            with(adapterDeptos) {
-                clear()
-                add(Departamento("-1", getString(R.string.elija_departamento_spinner)))
-            }
-            departamento_spinner.setSelection(0)
-
-            departamentos.ifEmpty {
-                Toast.makeText(
-                    context,
-                    "Esta empresa no tiene departamentos dados de alta",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            for (depto in departamentos)
-                adapterDeptos.add(depto)
-            Log.d(TAG, "setupSpinners: Observer departamentos done! ")
-        })
-
-        /** Seteando adapters y creando listeners */
-        with(empresa_spinner) {
-            adapter = adapterEmpresas
-            OnItemSelectedListener { parent, position ->
-                if (position > 0) {
-                    loading.visibility = View.VISIBLE
-                    val empresa: Empresa? = parent.getItemAtPosition(position) as? Empresa
-                    Log.d(
-                        TAG,
-                        "setupSpinners: Selected: id=${empresa?.id}, nombre=${empresa?.nombre}"
-                    )
-                    /** Cuando Se elija una empresa, se cargan los departamentos de la misma */
-                    Log.d(TAG, "setupSpinners: $position")
-
-                    try {
-                        viewModel.callDepartamentos(
-                            apikey = userData.token,
-                            empresaID = empresa!!.id.toInt()
-                        )
-                    } catch (e: Throwable) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        }
-        with(departamento_spinner) {
-            adapter = adapterDeptos
-        }
     }
 
     private fun setupLoginIfExpiredToken() {
@@ -219,38 +143,15 @@ class AuditoriasFragment : Fragment() {
 
     private fun setupNuevaAuditoriaButton() {
         fab_nueva_auditoria.setOnClickListener {
-            if (empresa_spinner.selectedItemId > 0) {
-                val empresa = empresa_spinner.selectedItem as? Empresa
-                Log.d(
-                    TAG,
-                    "Empresa_nombre: ${empresa_spinner.selectedItem} Empresa_id: ${empresa?.id} Empresa_pos: ${empresa_spinner.selectedItemPosition}}"
-                )
-
-
-                //TODO("Falta poner texto de descripcion de auditoria")
-/*
-                val nuevaAuditoria = Auditoria(
-                    descripcion = "",
-                    idEmpresa =
-                )
-
-                openActivos()*/
-            }
-
+            val bundle = bundleOf("user_data" to userData)
+            navController.navigate(R.id.action_auditoriasFragment_to_nuevaAuditoria, bundle)
         }
-    }
-
-    private fun newAuditoria(nuevaAuditoria: Auditoria): Boolean {
-        val response: ApiResponse = ApiResponse("ok", "xd")
-        return response.isOk
-        //TODO("Crear metodo post para crear la auditoria")
     }
 
     private fun openActivos(auditoriaActiva: Auditoria) {
         val bundle = bundleOf("user_data" to userData, "auditoria_activa" to auditoriaActiva)
         navController.navigate(R.id.action_auditoriasFragment_to_activosFragment, bundle)
     }
-
 }
 
 

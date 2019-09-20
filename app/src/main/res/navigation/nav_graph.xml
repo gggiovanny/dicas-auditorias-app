@@ -19,6 +19,13 @@
         <argument
             android:name="user_data"
             app:argType="com.dicas.auditorias.data.model.LoggedInUser" />
+        <action
+            android:id="@+id/action_auditoriasFragment_to_nuevaAuditoria"
+            app:destination="@id/nuevaAuditoria"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/activosFragment"
@@ -31,5 +38,17 @@
         <argument
             android:name="auditoria_activa"
             app:argType="com.dicas.auditorias.data.model.Auditoria" />
+    </fragment>
+    <fragment
+        android:id="@+id/nuevaAuditoria"
+        android:name="com.dicas.auditorias.ui.auditorias.NuevaAuditoriaFragment"
+        android:label="NuevaAuditoria">
+        <action
+            android:id="@+id/action_nuevaAuditoria_to_activosFragment"
+            app:destination="@id/activosFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 </navigation>

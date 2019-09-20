@@ -27,33 +27,39 @@
 
     <string name="next">Siguiente</string>
 
-    <string-array name="auditoria_status_options">
-        <item>En curso</item>
-        <item>Terminada</item>
-        <item>Guardada</item>
-    </string-array>
-
     <string name="nueva_auditoria">Nueva auditoria</string>
 
     <string name="spin_empresa_title">Elije una empresa</string>
+
     <string name="spin_depto_title">Elije un departamento</string>
-
     <string name="elija_empresa_spinner">Elija empresa</string>
-    <string name="elija_departamento_spinner">Elija departamento</string>
 
+    <string name="elija_departamento_spinner">Elija departamento</string>
     <string name="error_api">Error al consultar los datos de la base de datos</string>
 
     <string name="created">Creada el</string>
 
     <string name="activo_title">Activos fijos</string>
 
-
     <string name="existencia_titulo">Existencia</string>
 
+
     <string name="existencia_guardada_true">Existencia registrada</string>
+
     <string name="existencia_guardada_false">Existencia no registrada</string>
     <string name="existencia_guardada_null">Existencia desconocida</string>
+    <string name="existencia_actual">Encontrado</string>
 
-    <string name="existencia_actual">Existe</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="auditoria_status_options">
+        <item>En curso</item>
+        <item>Terminada</item>
+        <item>Guardada</item>
+    </string-array>
+
+    <string name="auditoria_descripcion_hint">Ingresa un nombre o descripción</string>
+    <string name="auditoria_nueva_button">Crear nueva auditoria</string>
+    <string name="auditoria_nueva_title">Nueva auditoría</string>
 
 </resources>
