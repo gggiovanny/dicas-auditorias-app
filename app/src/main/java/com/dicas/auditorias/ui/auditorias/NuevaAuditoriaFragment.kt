@@ -20,7 +20,6 @@ import com.dicas.auditorias.data.model.Empresa
 import com.dicas.auditorias.data.model.LoggedInUser
 import com.dicas.auditorias.ui.login.LoginActivity
 import com.dicas.auditorias.ui.utils.OnItemSelectedListener
-import kotlinx.android.synthetic.main.fragment_auditoria.*
 import kotlinx.android.synthetic.main.fragment_nueva_auditoria.*
 
 
@@ -111,11 +110,9 @@ class NuevaAuditoriaFragment : Fragment() {
             for (empresa in empresas)
                 adapterEmpresas.add(empresa)
             Log.d(TAG, "setupSpinners: Observer empresas done!")
-            loading.visibility = View.GONE
         })
         /** Los departamentos se actualizan cuando se cambia la empresa elegida para traer los de la misma*/
         viewModel.departamento.observe(this, Observer { departamentos: List<Departamento> ->
-            loading.visibility = View.GONE
             with(adapterDeptos) {
                 clear()
                 add(Departamento("-1", getString(R.string.elija_departamento_spinner)))
@@ -139,7 +136,6 @@ class NuevaAuditoriaFragment : Fragment() {
             adapter = adapterEmpresas
             OnItemSelectedListener { parent, position ->
                 if (position > 0) {
-                    loading.visibility = View.VISIBLE
                     val empresa: Empresa? = parent.getItemAtPosition(position) as? Empresa
                     Log.d(
                         TAG,
