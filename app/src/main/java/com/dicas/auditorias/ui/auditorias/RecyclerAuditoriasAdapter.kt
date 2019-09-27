@@ -119,7 +119,7 @@ class RecyclerAuditoriasAdapter(
             }
 
             val auditoriaActiva = auditoriaViewModel.getAuditoriaAt(index) ?: return
-            /** Agregar en el item chips para indicar de que empresa, departamento y categoria es. */
+            /** Agregar en el item chips para indicar de que empresa, departamentos y categoria es. */
             addDescriptionChipsInToolbar(auditoriaActiva)
 
             if (auditoriaActiva.descripcion.isNullOrEmpty())

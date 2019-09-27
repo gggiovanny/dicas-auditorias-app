@@ -7,17 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import com.dicas.auditorias.R
-import com.dicas.auditorias.data.model.ApiResponse
-import com.dicas.auditorias.data.model.Departamento
-import com.dicas.auditorias.data.model.Empresa
-import com.dicas.auditorias.data.model.LoggedInUser
+import com.dicas.auditorias.data.model.*
 import com.dicas.auditorias.ui.login.LoginActivity
 import com.dicas.auditorias.ui.utils.OnItemSelectedListener
 import kotlinx.android.synthetic.main.fragment_nueva_auditoria.*
@@ -91,31 +87,40 @@ class NuevaAuditoriaFragment : Fragment() {
 
         /** Creando los adapters */
         val adapterEmpresas =
-            ArrayAdapter<Empresa>(context ?: return, android.R.layout.simple_spinner_item)
+            SpinnerAuditoriasAdapter<Empresa>(context ?: return)
         with(adapterEmpresas) {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            add(Empresa("-1", getString(R.string.elija_empresa_spinner)))
+            add(Empresa("-1", ""))
         }
 
         val adapterDeptos =
-            ArrayAdapter<Departamento>(context ?: return, android.R.layout.simple_spinner_item)
+            SpinnerAuditoriasAdapter<Departamento>(context ?: return)
         with(adapterDeptos) {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            add(Departamento("-1", getString(R.string.elija_departamento_spinner)))
+            add(Departamento("-1", ""))
         }
 
-        /** Llamando al API para obtener los datos y creando el observer para añadir la informacion cuando llegue */
+        val adapterClasif =
+            SpinnerAuditoriasAdapter<Clasificacion>(context ?: return)
+        with(adapterClasif) {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            add(Clasificacion("-1", ""))
+        }
+
+        /** Llamando al API para obtener los datos y creando el observer de empresas*/
         viewModel.callEmpresas(apikey = userData.token)
         viewModel.empresas.observe(this, Observer { empresas: List<Empresa> ->
             for (empresa in empresas)
                 adapterEmpresas.add(empresa)
             Log.d(TAG, "setupSpinners: Observer empresas done!")
         })
+
+        /** Observer de departamentos */
         /** Los departamentos se actualizan cuando se cambia la empresa elegida para traer los de la misma*/
-        viewModel.departamento.observe(this, Observer { departamentos: List<Departamento> ->
+        viewModel.departamentos.observe(this, Observer { departamentos: List<Departamento> ->
             with(adapterDeptos) {
                 clear()
-                add(Departamento("-1", getString(R.string.elija_departamento_spinner)))
+                add(Departamento("-1", ""))
             }
             departamento_spinner.setSelection(0)
 
@@ -129,6 +134,14 @@ class NuevaAuditoriaFragment : Fragment() {
             for (depto in departamentos)
                 adapterDeptos.add(depto)
             Log.d(TAG, "setupSpinners: Observer departamentos done! ")
+        })
+
+        /** Observer de clasificaciones */
+        viewModel.callClasificacionesAPI(apiKey = userData.token)
+        viewModel.clasificaciones.observe(this, Observer { clasificaciones: List<Clasificacion> ->
+            for (clasif in clasificaciones)
+                adapterClasif.add(clasif)
+            Log.d(TAG, "setupSpinners: Observer clasificaciones done! ")
         })
 
         /** Seteando adapters y creando listeners */
@@ -155,9 +168,10 @@ class NuevaAuditoriaFragment : Fragment() {
                 }
             }
         }
-        with(departamento_spinner) {
-            adapter = adapterDeptos
-        }
+        departamento_spinner.adapter = adapterDeptos
+        clasificacion_spinner.adapter = adapterClasif
+
+
 
 
     }

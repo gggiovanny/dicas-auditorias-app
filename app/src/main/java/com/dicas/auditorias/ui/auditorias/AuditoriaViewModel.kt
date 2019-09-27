@@ -4,16 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.AuditoriasRepository
-import com.dicas.auditorias.data.model.ApiResponse
-import com.dicas.auditorias.data.model.Auditoria
-import com.dicas.auditorias.data.model.Departamento
-import com.dicas.auditorias.data.model.Empresa
+import com.dicas.auditorias.data.model.*
 
 class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewModel() {
 
     val auditorias: LiveData<List<Auditoria>> = repository.auditorias
     val empresas: LiveData<List<Empresa>> = repository.empresas
-    val departamento: LiveData<List<Departamento>> = repository.departamento
+    val departamentos: LiveData<List<Departamento>> = repository.departamentos
+    val clasificaciones: LiveData<List<Clasificacion>> = repository.clasificaciones
     val response: LiveData<ApiResponse> = repository.response
 
     val recyclerAuditoriasAdapter = RecyclerAuditoriasAdapter(this, R.layout.layout_auditoria_item)
@@ -42,6 +40,10 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
 
     fun callDepartamentos(apikey: String, empresaID: Int) {
         repository.callDepartamentoApi(apikey, empresaID)
+    }
+
+    fun callClasificacionesAPI(apiKey: String) {
+        repository.callClasificacionesAPI(apiKey)
     }
 
 

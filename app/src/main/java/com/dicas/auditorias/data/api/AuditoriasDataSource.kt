@@ -3,10 +3,7 @@ package com.dicas.auditorias.data.api
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.dicas.auditorias.data.model.ApiResponse
-import com.dicas.auditorias.data.model.Auditoria
-import com.dicas.auditorias.data.model.Departamento
-import com.dicas.auditorias.data.model.Empresa
+import com.dicas.auditorias.data.model.*
 import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -25,11 +22,13 @@ class AuditoriasDataSource {
     val empresas: LiveData<List<Empresa>> = _empresas
 
     private val _departamentos= MutableLiveData<List<Departamento>>()
-    val departamento: LiveData<List<Departamento>> = _departamentos
+    val departamentos: LiveData<List<Departamento>> = _departamentos
+
+    private val _clasificaciones = MutableLiveData<List<Clasificacion>>()
+    val clasificaciones: LiveData<List<Clasificacion>> = _clasificaciones
 
     private val _response = MutableLiveData<ApiResponse>()
     val response: LiveData<ApiResponse> = _response
-
 
     fun callAuditoriasAPI(apiKey: String, user: String =  "", status: String = "") {
         val apiAdapter = ApiAdapter()
@@ -63,7 +62,7 @@ class AuditoriasDataSource {
                             idEmpresa = auditoriaJson.get("idEmpresa")?.asString,
                             empresa = auditoriaJson.get("empresa")?.asString,
                             idDepartamento = auditoriaJson.get("idDepartamento")?.asString,
-                            departamento = auditoriaJson.get("departamento")?.asString,
+                            departamento = auditoriaJson.get("departamentos")?.asString,
                             idClasificacion = auditoriaJson.get("idClasificacion")?.asString,
                             clasificacion = auditoriaJson.get("clasificacion")?.asString,
                             terminada = auditoriaJson.get("terminada").asString
@@ -152,6 +151,49 @@ class AuditoriasDataSource {
                         deptosList.add(departamento)
                     }
                     _departamentos.value = deptosList
+                }
+            }, {
+                it.printStackTrace()
+                _response.value = ApiResponse(
+                    status = "error_app",
+                    description = "No se pudo consultar la auditoria"
+                )
+            })
+    }
+
+    fun callClasificacionesAPI(apiKey: String) {
+        val apiAdapter = ApiAdapter()
+        val apiService = apiAdapter.getApiService(apiKey)
+        val request: Disposable = apiService.getClasificaciones()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe({ responseJson: JsonObject ->
+                val responseObject = ApiResponse(
+                    status = responseJson.get("status").asString,
+                    description = responseJson.get("description").asString
+                )
+                _response.value = responseObject
+                Log.d(TAG, "DepartamentosResponseHandler: status=${responseObject.status}")
+                Log.d(
+                    TAG,
+                    "DepartamentosResponseHandler: description=[${responseObject.description}]"
+                )
+
+                if (responseObject.isOk) {
+                    val listJson = responseJson.get("list").asJsonArray
+
+                    val clasificacionesList = ArrayList<Clasificacion>()
+
+                    listJson?.forEach {
+                        val clasificacionJson = it.asJsonObject
+
+                        val clasificacion = Clasificacion(
+                            clasificacionJson.get("idClasificacion").asString,
+                            clasificacionJson.get("nombre").asString
+                        )
+                        clasificacionesList.add(clasificacion)
+                    }
+                    _clasificaciones.value = clasificacionesList
                 }
             }, {
                 it.printStackTrace()

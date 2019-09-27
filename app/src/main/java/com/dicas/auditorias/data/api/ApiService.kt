@@ -20,7 +20,7 @@ interface ApiService {
     fun getActivos(
         @Query("auditoria_actual") auditoria_actual: String = "",
         @Query("empresa") empresa: String = "",
-        @Query("departamento") departamento: String = "",
+        @Query("departamentos") departamento: String = "",
         @Query("clasificacion") clasificacion: String = ""
     ): Observable<JsonObject>
 
@@ -42,7 +42,7 @@ interface ApiService {
     fun createAuditoria(
         @Query("descripcion") descripcion: String = "",
         @Query("empresa") empresa: String = "",
-        @Query("departamento") departamento: String = "",
+        @Query("departamentos") departamento: String = "",
         @Query("clasificacion") clasificacion: String = ""
     ): Observable<JsonObject>
 
@@ -90,8 +90,7 @@ interface ApiService {
     /** Empresas */
 
     @GET("empresas")
-    fun getEmpresas(
-    ): Observable<JsonObject>
+    fun getEmpresas(): Observable<JsonObject>
 
     /** Departamento */
 
@@ -99,4 +98,7 @@ interface ApiService {
     fun getDepartamentos(
         @Query("empresa") empresaID: String
     ): Observable<JsonObject>
+
+    @GET("clasificaciones")
+    fun getClasificaciones(): Observable<JsonObject>
 }
