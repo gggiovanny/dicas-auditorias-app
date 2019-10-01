@@ -64,3 +64,12 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     })
 }
+
+/*
+
+val empresa = empresa_spinner.selectedItem as? Empresa
+            Log.d(
+                TAG,
+                "Empresa_nombre: ${empresa_spinner.selectedItem} Empresa_id: ${empresa?.id} Empresa_pos: ${empresa_spinner.selectedItemPosition}}"
+            )
+ */

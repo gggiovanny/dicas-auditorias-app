@@ -4,7 +4,8 @@ data class ApiResponse(
     val status: String? = null,
     val description: String? = null,
     var token: String? = null,
-    var username: String? = null
+    var username: String? = null,
+    var idAuditoria: String? = null
 ) {
     val isOk: Boolean
         get() = status == "ok"

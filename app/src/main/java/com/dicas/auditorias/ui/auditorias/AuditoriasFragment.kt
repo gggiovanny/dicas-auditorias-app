@@ -58,7 +58,7 @@ class AuditoriasFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        navController = Navigation.findNavController(view!!)
+        navController = Navigation.findNavController(view ?: return)
 
 
         loading.visibility = View.VISIBLE

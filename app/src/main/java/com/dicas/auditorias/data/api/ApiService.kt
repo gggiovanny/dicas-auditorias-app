@@ -27,6 +27,12 @@ interface ApiService {
     @GET("activos/{id}")
     fun getActivo(@Path("id") id: Int): Observable<JsonObject>
 
+    @PUT("activos/{id}")
+    fun saveAuditoria(
+        @Path("id") id: Int,
+        @Query("guardada") guardada: Boolean
+    ): Observable<JsonObject>
+
     /** Auditorias */
 
     @GET("auditorias")
@@ -35,10 +41,10 @@ interface ApiService {
         @Query("status") status: String = ""
     ): Observable<JsonObject>
 
-    @GET("activos/{id}")
+    @GET("auditorias/{id}")
     fun getAuditoria(@Path("id") id: Int): Observable<JsonObject>
 
-    @POST("activos")
+    @POST("auditorias")
     fun createAuditoria(
         @Query("descripcion") descripcion: String = "",
         @Query("empresa") empresa: String = "",
@@ -46,16 +52,10 @@ interface ApiService {
         @Query("clasificacion") clasificacion: String = ""
     ): Observable<JsonObject>
 
-    @PUT("activos/{id}")
+    @PUT("auditorias/{id}")
     fun finishAuditoria(
         @Path("id") id: Int,
         @Query("terminada") terminada: Boolean
-    ): Observable<JsonObject>
-
-    @PUT("activos/{id}")
-    fun saveAuditoria(
-        @Path("id") id: Int,
-        @Query("guardada") guardada: Boolean
     ): Observable<JsonObject>
 
     /** Auditorias_activos */

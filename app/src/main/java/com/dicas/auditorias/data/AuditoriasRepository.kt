@@ -16,6 +16,16 @@ class AuditoriasRepository(val dataSource: AuditoriasDataSource) {
         dataSource.callAuditoriasAPI(apikey, user, status)
     }
 
+    fun createAuditoriaAPI(
+        apiKey: String,
+        descripcion: String = "",
+        empresa: String = "",
+        departamento: String = "",
+        clasificacion: String = ""
+    ) {
+        dataSource.createAuditoriaAPI(apiKey, descripcion, empresa, departamento, clasificacion)
+    }
+
     fun callEmpresasApi(apikey: String) {
         dataSource.callEmpresasAPI(apikey)
     }

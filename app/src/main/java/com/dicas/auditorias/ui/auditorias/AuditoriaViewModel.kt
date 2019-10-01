@@ -16,8 +16,18 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
 
     val recyclerAuditoriasAdapter = RecyclerAuditoriasAdapter(this, R.layout.layout_auditoria_item)
 
-    fun callAuditorias(apikey: String, user: String =  "", status: String = "") {
+    fun callAuditorias(apikey: String, user: String = "", status: String = "") {
         repository.callAuditoriasAPI(apikey, user, status)
+    }
+
+    fun createAuditoria(
+        apiKey: String,
+        descripcion: String = "",
+        empresa: String = "",
+        departamento: String = "",
+        clasificacion: String = ""
+    ) {
+        repository.createAuditoriaAPI(apiKey, descripcion, empresa, departamento, clasificacion)
     }
 
     fun getAuditoriaAt(index: Int): Auditoria? = auditorias.value?.get(index)
@@ -32,8 +42,6 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
         recyclerAuditoriasAdapter.notifyDataSetChanged()
     }
 
-
-
     fun callEmpresas(apikey: String) {
         repository.callEmpresasApi(apikey)
     }
@@ -42,10 +50,9 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
         repository.callDepartamentoApi(apikey, empresaID)
     }
 
-    fun callClasificacionesAPI(apiKey: String) {
+    fun callClasificaciones(apiKey: String) {
         repository.callClasificacionesAPI(apiKey)
     }
-
 
 
 }

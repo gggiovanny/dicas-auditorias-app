@@ -8,14 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.*
 import com.dicas.auditorias.ui.login.LoginActivity
 import com.dicas.auditorias.ui.utils.OnItemSelectedListener
+import com.dicas.auditorias.ui.utils.afterTextChanged
 import kotlinx.android.synthetic.main.fragment_nueva_auditoria.*
 
 
@@ -55,32 +59,55 @@ class NuevaAuditoriaFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        navController = Navigation.findNavController(view ?: return)
+
         setupSpinners()
+        setupButtonNuevaAuditoria()
+        setupReloadWhenBackButton()
     }
 
-    private fun createAuditorias() {
-        /*
-        fab_nueva_auditoria.setOnClickListener {
-            if (empresa_spinner.selectedItemId > 0) {
-                val empresa = empresa_spinner.selectedItem as? Empresa
-                Log.d(
-                    TAG,
-                    "Empresa_nombre: ${empresa_spinner.selectedItem} Empresa_id: ${empresa?.id} Empresa_pos: ${empresa_spinner.selectedItemPosition}}"
+    private fun setupButtonNuevaAuditoria() {
+        button_nueva_auditoria.setOnClickListener {
+            try {
+                viewModel.createAuditoria(
+                    apiKey = userData.token,
+                    empresa = (empresa_spinner.selectedItem as? Empresa)!!.id,
+                    departamento = (departamento_spinner.selectedItem as? Departamento)!!.id,
+                    clasificacion = (clasificacion_spinner.selectedItem as? Clasificacion)!!.id,
+                    descripcion = text_descripcion.text.toString()
                 )
 
-
-                //TODO("Falta poner texto de descripcion de auditoria")
-/*
-                val nuevaAuditoria = Auditoria(
-                    descripcion = "",
-                    idEmpresa =
-                )
-
-                openActivos()*/
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
             }
-
         }
+
+        /** Creando observer para la respuesta del metodo post
+        viewModel.response.observe(this, Observer {
+        val apiResponse = it ?: return@Observer
+
+        Toast.makeText(
+        context,
+        "${apiResponse.status}: ${apiResponse.description}",
+        Toast.LENGTH_SHORT
+        ).show()
+
+        })
          */
+
+
+    }
+
+    private fun isDataValid(): Boolean {
+        return clasificacion_spinner.selectedItemPosition > 0
+                && empresa_spinner.selectedItemPosition > 0
+                && departamento_spinner.selectedItemPosition > 0
+                && (text_descripcion.text ?: return false).length <= 255
+    }
+
+    private fun openActivos(auditoriaActiva: Auditoria) {
+        val bundle = bundleOf("user_data" to userData, "auditoria_activa" to auditoriaActiva)
+        navController.navigate(R.id.action_nuevaAuditoria_to_activosFragment, bundle)
     }
 
     private fun setupSpinners() {
@@ -137,7 +164,7 @@ class NuevaAuditoriaFragment : Fragment() {
         })
 
         /** Observer de clasificaciones */
-        viewModel.callClasificacionesAPI(apiKey = userData.token)
+        viewModel.callClasificaciones(apiKey = userData.token)
         viewModel.clasificaciones.observe(this, Observer { clasificaciones: List<Clasificacion> ->
             for (clasif in clasificaciones)
                 adapterClasif.add(clasif)
@@ -166,31 +193,30 @@ class NuevaAuditoriaFragment : Fragment() {
                         e.printStackTrace()
                     }
                 }
+
+                button_nueva_auditoria.isEnabled =
+                    isDataValid() // Para habilitar o desabilitar el boton de creacion de auditoria
             }
         }
         departamento_spinner.adapter = adapterDeptos
         clasificacion_spinner.adapter = adapterClasif
 
-
-
-
+        /** Listeners para habilitar o desabilitar el boton de creacion de auditoria */
+        departamento_spinner.OnItemSelectedListener { parent, position ->
+            button_nueva_auditoria.isEnabled = isDataValid()
+        }
+        clasificacion_spinner.OnItemSelectedListener { parent, position ->
+            button_nueva_auditoria.isEnabled = isDataValid()
+        }
+        text_descripcion.afterTextChanged { button_nueva_auditoria.isEnabled = isDataValid() }
     }
 
     private fun setupLoginIfExpiredToken() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
             Log.d(TAG, "setupLoginIfExpiredToken: ${response.status}: ${response.description}")
-            if (response.isOk) {
-                if (firstSucess && userData.fromMemory) {
-                    firstSucess = false
-                    Toast.makeText(
-                        context,
-                        "${getString(R.string.welcome)} ${userData.name}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            } else {
-                if (firstError && !(response.status ?: return@Observer).contains("app")) {
+            if (!response.isOk && firstError) {
+                if (!(response.status ?: return@Observer).contains("app")) {
                     firstError = false
                     showSesionCaducada(response)
                     val login = Intent(context, LoginActivity::class.java).apply {
@@ -205,7 +231,6 @@ class NuevaAuditoriaFragment : Fragment() {
                     ).show()
                 }
             }
-
         })
         Log.d(TAG, "setupLoginIfExpiredToken: created observer done!")
     }
@@ -220,6 +245,14 @@ class NuevaAuditoriaFragment : Fragment() {
                 "${response.status}: ${response.description}",
                 Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+
+    private fun setupReloadWhenBackButton() {
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            /*val bundle = bundleOf("user_data" to userData)
+            navController.navigate(R.id.action_nuevaAuditoria_to_auditoriasFragment, bundle)*/
+            navController.popBackStack()
         }
     }
 }

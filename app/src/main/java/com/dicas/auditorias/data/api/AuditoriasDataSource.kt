@@ -21,7 +21,7 @@ class AuditoriasDataSource {
     private val _empresas = MutableLiveData<List<Empresa>>()
     val empresas: LiveData<List<Empresa>> = _empresas
 
-    private val _departamentos= MutableLiveData<List<Departamento>>()
+    private val _departamentos = MutableLiveData<List<Departamento>>()
     val departamentos: LiveData<List<Departamento>> = _departamentos
 
     private val _clasificaciones = MutableLiveData<List<Clasificacion>>()
@@ -30,14 +30,14 @@ class AuditoriasDataSource {
     private val _response = MutableLiveData<ApiResponse>()
     val response: LiveData<ApiResponse> = _response
 
-    fun callAuditoriasAPI(apiKey: String, user: String =  "", status: String = "") {
+    fun callAuditoriasAPI(apiKey: String, user: String = "", status: String = "") {
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getApiService(apiKey)
-        val request: Disposable  = apiService.getAuditorias(user, status)
+        val request: Disposable = apiService.getAuditorias(user, status)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe({responseJson: JsonObject ->
-                val responseObject = ApiResponse (
+            .subscribe({ responseJson: JsonObject ->
+                val responseObject = ApiResponse(
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
@@ -80,14 +80,55 @@ class AuditoriasDataSource {
             })
     }
 
+    fun createAuditoriaAPI(
+        apiKey: String,
+        descripcion: String = "",
+        empresa: String = "",
+        departamento: String = "",
+        clasificacion: String = ""
+    ) {
+        val apiAdapter = ApiAdapter()
+        val apiService = apiAdapter.getApiService(apiKey)
+        val request: Disposable = apiService.createAuditoria(
+            descripcion = descripcion,
+            empresa = empresa,
+            departamento = departamento,
+            clasificacion = clasificacion
+        ).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe({ responseJson: JsonObject ->
+                val responseObject = ApiResponse(
+                    status = responseJson.get("status").asString,
+                    description = responseJson.get("description").asString
+                )
+
+                Log.d(TAG, "createAuditoriaAPI: status=${responseObject.status}")
+                Log.d(TAG, "createAuditoriaAPI: description=[${responseObject.description}]")
+
+                if (responseObject.isOk) {
+                    responseObject.idAuditoria = responseJson.get("id").asString
+                    _response.value = responseObject
+                    Log.d(TAG, "createAuditoriaAPI: idAuditoria=[${responseObject.idAuditoria}]")
+
+                }
+            }, {
+                it.printStackTrace()
+                _response.value = ApiResponse(
+                    status = "error_app",
+                    description = "No se pudo crear la nueva auditoria"
+                )
+
+            })
+    }
+
     fun callEmpresasAPI(apiKey: String) {
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getApiService(apiKey)
-        val request: Disposable  = apiService.getEmpresas()
+        val request: Disposable = apiService.getEmpresas()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe({responseJson: JsonObject ->
-                val responseObject = ApiResponse (
+            .subscribe({ responseJson: JsonObject ->
+                val responseObject = ApiResponse(
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
@@ -124,17 +165,20 @@ class AuditoriasDataSource {
     fun callDepartamentosAPI(apiKey: String, idEmpresa: Int) {
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getApiService(apiKey)
-        val request: Disposable  = apiService.getDepartamentos(idEmpresa.toString())
+        val request: Disposable = apiService.getDepartamentos(idEmpresa.toString())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe({responseJson: JsonObject ->
-                val responseObject = ApiResponse (
+            .subscribe({ responseJson: JsonObject ->
+                val responseObject = ApiResponse(
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
                 _response.value = responseObject
                 Log.d(TAG, "DepartamentosResponseHandler: status=${responseObject.status}")
-                Log.d(TAG, "DepartamentosResponseHandler: description=[${responseObject.description}]")
+                Log.d(
+                    TAG,
+                    "DepartamentosResponseHandler: description=[${responseObject.description}]"
+                )
 
                 if (responseObject.isOk) {
                     val listJson = responseJson.get("list").asJsonArray
