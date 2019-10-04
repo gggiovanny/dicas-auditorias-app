@@ -105,7 +105,14 @@ class NuevaAuditoriaFragment : Fragment() {
                 && (text_descripcion.text ?: return false).length <= 255
     }
 
-    private fun openActivos(auditoriaActiva: Auditoria) {
+    private fun openActivos() {
+        val auditoriaActiva = Auditoria(
+            idEmpresa = (empresa_spinner.selectedItem as? Empresa)!!.id,
+            idDepartamento = (departamento_spinner.selectedItem as? Departamento)!!.id,
+            idClasificacion = (clasificacion_spinner.selectedItem as? Clasificacion)!!.id,
+            descripcion = text_descripcion.text.toString()
+        )
+
         val bundle = bundleOf("user_data" to userData, "auditoria_activa" to auditoriaActiva)
         navController.navigate(R.id.action_nuevaAuditoria_to_activosFragment, bundle)
     }
@@ -231,6 +238,11 @@ class NuevaAuditoriaFragment : Fragment() {
                     ).show()
                 }
             }
+
+            if (response.isOk && response.description?.contains("Entry sucessfuly created") == true) {
+                openActivos()
+            }
+
         })
         Log.d(TAG, "setupLoginIfExpiredToken: created observer done!")
     }

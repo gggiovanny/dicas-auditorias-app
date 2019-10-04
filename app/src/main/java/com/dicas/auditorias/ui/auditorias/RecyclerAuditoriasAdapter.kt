@@ -139,7 +139,7 @@ class RecyclerAuditoriasAdapter(
                 getColorStateList(itemView.context ?: return, R.color.text_secondary_dark)
 
             itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
-                text = (auditoriaActiva.empresa ?: return).toLowerCase(Locale.ENGLISH).capitalize()
+                text = (auditoriaActiva.empresa ?: "").toLowerCase(Locale.ENGLISH).capitalize()
                 chipBackgroundColor =
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
@@ -153,7 +153,7 @@ class RecyclerAuditoriasAdapter(
             })
 
             itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
-                text = (auditoriaActiva.departamento ?: return).toLowerCase(Locale.ENGLISH)
+                text = (auditoriaActiva.departamento ?: "").toLowerCase(Locale.ENGLISH)
                     .capitalize()
                 chipBackgroundColor =
                     ColorStateList.valueOf(
@@ -169,7 +169,7 @@ class RecyclerAuditoriasAdapter(
 
             itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
                 text =
-                    (auditoriaActiva.clasificacion ?: return).toLowerCase(Locale.ENGLISH)
+                    (auditoriaActiva.clasificacion ?: "").toLowerCase(Locale.ENGLISH)
                         .capitalize()
                 chipBackgroundColor =
                     ColorStateList.valueOf(

@@ -48,7 +48,7 @@ interface ApiService {
     fun createAuditoria(
         @Query("descripcion") descripcion: String = "",
         @Query("empresa") empresa: String = "",
-        @Query("departamentos") departamento: String = "",
+        @Query("departamento") departamento: String = "",
         @Query("clasificacion") clasificacion: String = ""
     ): Observable<JsonObject>
 

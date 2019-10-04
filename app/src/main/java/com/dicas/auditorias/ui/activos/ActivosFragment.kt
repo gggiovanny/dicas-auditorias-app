@@ -87,7 +87,10 @@ class ActivosFragment : Fragment() {
 
         viewModel.callActivosAPI(
             apiKey = userData.token,
-            auditoriaActual = auditoriaActiva.id
+            clasificacion = auditoriaActiva.idClasificacion,
+            departamento = auditoriaActiva.idDepartamento,
+            empresa = auditoriaActiva.idEmpresa,
+            auditoriaActual = auditoriaActiva.id ?: ""
         )
 
         viewModel.activos.observe(this, Observer { auditorias: List<Activo> ->
@@ -137,7 +140,7 @@ class ActivosFragment : Fragment() {
         val textColor = getColorStateList(context ?: return, R.color.text_primary_light)
 
         chip_group.addView(Chip(chip_group.context).apply {
-            text = (auditoriaActiva.empresa ?: return).toLowerCase(Locale.ENGLISH).capitalize()
+            text = (auditoriaActiva.empresa ?: "").toLowerCase(Locale.ENGLISH).capitalize()
             chipBackgroundColor =
                 ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorEmpresa))
             setTextColor(textColor)
@@ -146,7 +149,7 @@ class ActivosFragment : Fragment() {
         })
 
         chip_group.addView(Chip(chip_group.context).apply {
-            text = (auditoriaActiva.departamento ?: return).toLowerCase(Locale.ENGLISH).capitalize()
+            text = (auditoriaActiva.departamento ?: "").toLowerCase(Locale.ENGLISH).capitalize()
             chipBackgroundColor =
                 ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorDepartamento))
             setTextColor(textColor)
@@ -156,7 +159,7 @@ class ActivosFragment : Fragment() {
 
         chip_group.addView(Chip(chip_group.context).apply {
             text =
-                (auditoriaActiva.clasificacion ?: return).toLowerCase(Locale.ENGLISH).capitalize()
+                (auditoriaActiva.clasificacion ?: "").toLowerCase(Locale.ENGLISH).capitalize()
             chipBackgroundColor =
                 ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorClasificacion))
             setTextColor(textColor)
