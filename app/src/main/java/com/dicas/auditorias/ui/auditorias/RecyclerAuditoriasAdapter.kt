@@ -138,53 +138,56 @@ class RecyclerAuditoriasAdapter(
             val textColor =
                 getColorStateList(itemView.context ?: return, R.color.text_secondary_dark)
 
-            itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
-                text = (auditoriaActiva.empresa ?: "").toLowerCase(Locale.ENGLISH).capitalize()
-                chipBackgroundColor =
-                    ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.colorEmpresa_dark
+            if (!auditoriaActiva.empresa.isNullOrEmpty()) {
+                itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
+                    text = auditoriaActiva.empresa.toLowerCase(Locale.ENGLISH).capitalize()
+                    chipBackgroundColor =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.colorEmpresa_dark
+                            )
                         )
-                    )
-                setTextColor(textColor)
-                setChipIconResource(R.drawable.ic_empresa_black_24dp)
-                chipIconTint = textColor
-            })
+                    setTextColor(textColor)
+                    setChipIconResource(R.drawable.ic_empresa_black_24dp)
+                    chipIconTint = textColor
+                })
+            }
 
-            itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
-                text = (auditoriaActiva.departamento ?: "").toLowerCase(Locale.ENGLISH)
-                    .capitalize()
-                chipBackgroundColor =
-                    ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.colorDepartamento_dark
-                        )
-                    )
-                setTextColor(textColor)
-                setChipIconResource(R.drawable.ic_departamento_black_24dp)
-                chipIconTint = textColor
-            })
-
-            itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
-                text =
-                    (auditoriaActiva.clasificacion ?: "").toLowerCase(Locale.ENGLISH)
+            if (!auditoriaActiva.departamento.isNullOrEmpty()) {
+                itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
+                    text = auditoriaActiva.departamento.toLowerCase(Locale.ENGLISH)
                         .capitalize()
-                chipBackgroundColor =
-                    ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.colorClasificacion_dark
+                    chipBackgroundColor =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.colorDepartamento_dark
+                            )
                         )
-                    )
-                setTextColor(textColor)
-                setChipIconResource(R.drawable.ic_clasificacion_black_24dp)
-                chipIconTint = textColor
-            })
+                    setTextColor(textColor)
+                    setChipIconResource(R.drawable.ic_departamento_black_24dp)
+                    chipIconTint = textColor
+                })
+            }
+
+            if (!auditoriaActiva.clasificacion.isNullOrEmpty()) {
+                itemView.chip_group.addView(Chip(itemView.chip_group.context).apply {
+                    text =
+                        auditoriaActiva.clasificacion.toLowerCase(Locale.ENGLISH)
+                            .capitalize()
+                    chipBackgroundColor =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.colorClasificacion_dark
+                            )
+                        )
+                    setTextColor(textColor)
+                    setChipIconResource(R.drawable.ic_clasificacion_black_24dp)
+                    chipIconTint = textColor
+                })
+            }
         }
-
-
     }
-
 }

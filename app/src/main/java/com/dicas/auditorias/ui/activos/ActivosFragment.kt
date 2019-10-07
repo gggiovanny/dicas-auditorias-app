@@ -139,34 +139,48 @@ class ActivosFragment : Fragment() {
     private fun addDescriptionChipsInToolbar() {
         val textColor = getColorStateList(context ?: return, R.color.text_primary_light)
 
-        chip_group.addView(Chip(chip_group.context).apply {
-            text = (auditoriaActiva.empresa ?: "").toLowerCase(Locale.ENGLISH).capitalize()
-            chipBackgroundColor =
-                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorEmpresa))
-            setTextColor(textColor)
-            setChipIconResource(R.drawable.ic_empresa_black_24dp)
-            chipIconTint = textColor
-        })
+        if (!auditoriaActiva.empresa.isNullOrEmpty()) {
+            chip_group.addView(Chip(chip_group.context).apply {
+                text = (auditoriaActiva.empresa ?: "").toLowerCase(Locale.ENGLISH).capitalize()
+                chipBackgroundColor =
+                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorEmpresa))
+                setTextColor(textColor)
+                setChipIconResource(R.drawable.ic_empresa_black_24dp)
+                chipIconTint = textColor
+            })
+        }
 
-        chip_group.addView(Chip(chip_group.context).apply {
-            text = (auditoriaActiva.departamento ?: "").toLowerCase(Locale.ENGLISH).capitalize()
-            chipBackgroundColor =
-                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorDepartamento))
-            setTextColor(textColor)
-            setChipIconResource(R.drawable.ic_departamento_black_24dp)
-            chipIconTint = textColor
-        })
+        if (!auditoriaActiva.departamento.isNullOrEmpty()) {
+            chip_group.addView(Chip(chip_group.context).apply {
+                text = (auditoriaActiva.departamento ?: "").toLowerCase(Locale.ENGLISH).capitalize()
+                chipBackgroundColor =
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.colorDepartamento
+                        )
+                    )
+                setTextColor(textColor)
+                setChipIconResource(R.drawable.ic_departamento_black_24dp)
+                chipIconTint = textColor
+            })
+        }
 
-        chip_group.addView(Chip(chip_group.context).apply {
-            text =
-                (auditoriaActiva.clasificacion ?: "").toLowerCase(Locale.ENGLISH).capitalize()
-            chipBackgroundColor =
-                ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorClasificacion))
-            setTextColor(textColor)
-            setChipIconResource(R.drawable.ic_clasificacion_black_24dp)
-            chipIconTint = textColor
-        })
+        if (!auditoriaActiva.clasificacion.isNullOrEmpty()) {
+            chip_group.addView(Chip(chip_group.context).apply {
+                text =
+                    (auditoriaActiva.clasificacion ?: "").toLowerCase(Locale.ENGLISH).capitalize()
+                chipBackgroundColor =
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.colorClasificacion
+                        )
+                    )
+                setTextColor(textColor)
+                setChipIconResource(R.drawable.ic_clasificacion_black_24dp)
+                chipIconTint = textColor
+            })
+        }
     }
-
-
 }
