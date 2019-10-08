@@ -1,11 +1,19 @@
 # Descripción
-Aplicación en Android para hacer auditorias de los activos fijos del consorcio empresarias. La app funciona como una adición a un sistema de inventariado ya existente y está construida para ser interoperativa con él.
+Aplicación en Android para hacer auditorias de los activos fijos del consorcio empresarial. La app funciona como una adición a un sistema de inventariado ya existente y está construida para ser interoperativa con él.
+
+# Objetivo
+Hacer una aplicación que permita validar que un activo fijo existe realmente en la empresa y departamento donde se supone que debe estar. La mecánica consiste en que cada activo tiene pegado un sticker con un código QR que contiene la ID de dicho activo en el sistema de inventarios. La aplicación usará la cámara del dispositivo para escanear dicho QR y marcar como válida su existencia.
+
+# Antecedentes
+Grupo Dicas es un consorcio de empresas [...] quen ya tiene un sistema [...]
+
 ### Proyecto asocioado
 API RESTful: https://github.com/gggiovanny/dicas-auditorias-api
+
 ## Requerimientos funcionales
-+ Elegir a qué area se le realizará la auditoria. Puede ser una empresa o un departamento.
-+ Filtrar los activos por clasificación, descripción o categoría.
-+ Mostrar la cantidad en existencia conocida de los activos.
++ Ser iteroperativo con el sistema web de activos fijos que existe actualmente en el consorcio.
++ Permitir especificar en que empresa y departamento se realizarán las auditorias, así como filtrar por la clasificación de los activos fijos.
++ Indicar cuando un activo fijo está en existencia.
 + Marcar los activos como revisados escaneando un codigo QR. Dicho código se encuentra adeherido con etiquetas en los activos y son generados por el sistema de inventariado.
 + Permitir ingresar la cantidad observada de los activos.
 + Organizar las auditorias en status: 
