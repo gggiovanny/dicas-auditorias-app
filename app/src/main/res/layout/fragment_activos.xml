@@ -63,6 +63,8 @@
                         app:singleLine="true" />
                 </HorizontalScrollView>
             </androidx.appcompat.widget.Toolbar>
+
+            <include layout="@layout/layout_toolbar_general" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
@@ -22,6 +24,7 @@ import com.dicas.auditorias.ui.login.LoginActivity
 import com.dicas.auditorias.ui.utils.setupAppBarScrollFade
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_activos.*
+import kotlinx.android.synthetic.main.layout_toolbar_general.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -36,6 +39,7 @@ class ActivosFragment : Fragment() {
     private lateinit var viewModel: ActivosViewModel
     private lateinit var userData: LoggedInUser
     private lateinit var auditoriaActiva: Auditoria
+    private lateinit var navController: NavController
 
     private var firstError = true
 
@@ -72,6 +76,7 @@ class ActivosFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ActivosViewModel::class.java)
+        navController = Navigation.findNavController(view ?: return)
 
         setupRecyclerView()
 
@@ -80,6 +85,7 @@ class ActivosFragment : Fragment() {
         })
 
         addDescriptionChipsInToolbar()
+        setupScannerButton()
     }
 
     private fun setupRecyclerView() {
@@ -181,6 +187,12 @@ class ActivosFragment : Fragment() {
                 setChipIconResource(R.drawable.ic_clasificacion_black_24dp)
                 chipIconTint = textColor
             })
+        }
+    }
+
+    private fun setupScannerButton() {
+        img_scanner.setOnClickListener {
+            navController.navigate(R.id.action_activosFragment_to_scannerFragment)
         }
     }
 }

@@ -103,6 +103,8 @@ class NuevaAuditoriaFragment : Fragment() {
                 && empresa_spinner.selectedItemPosition > 0
                 && departamento_spinner.selectedItemPosition > 0
                 && (text_descripcion.text ?: return false).length <= 255
+                && (text_descripcion.text ?: return false).length >= 3
+
     }
 
     private fun openActivos() {

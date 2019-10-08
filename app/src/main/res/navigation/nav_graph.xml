@@ -26,6 +26,9 @@
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_auditoriasFragment_to_scannerFragment"
+            app:destination="@id/scannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/activosFragment"
@@ -38,6 +41,9 @@
         <argument
             android:name="auditoria_activa"
             app:argType="com.dicas.auditorias.data.model.Auditoria" />
+        <action
+            android:id="@+id/action_activosFragment_to_scannerFragment"
+            app:destination="@id/scannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/nuevaAuditoria"
@@ -51,8 +57,9 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popUpTo="@id/auditoriasFragment" />
-        <action
-            android:id="@+id/action_nuevaAuditoria_to_auditoriasFragment"
-            app:destination="@+id/auditoriasFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/scannerFragment"
+        android:name="com.dicas.auditorias.ui.scanner.ScannerFragment"
+        android:label="ScannerFragment" />
 </navigation>

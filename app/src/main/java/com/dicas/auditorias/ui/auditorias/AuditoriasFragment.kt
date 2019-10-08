@@ -19,6 +19,7 @@ import com.dicas.auditorias.data.model.Auditoria
 import com.dicas.auditorias.data.model.LoggedInUser
 import com.dicas.auditorias.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_auditoria.*
+import kotlinx.android.synthetic.main.layout_toolbar_general.*
 
 
 class AuditoriasFragment : Fragment() {
@@ -63,12 +64,8 @@ class AuditoriasFragment : Fragment() {
 
         loading.visibility = View.VISIBLE
         setupRecyclerView()
-        /*
-        setupAppBarScrollFade(app_bar_layout, ArrayList<View>().apply {
-            add(toolbar_spinners)
-        })
-        */
         setupNuevaAuditoriaButton()
+        setupScannerButton()
     }
 
 
@@ -151,6 +148,12 @@ class AuditoriasFragment : Fragment() {
     private fun openActivos(auditoriaActiva: Auditoria) {
         val bundle = bundleOf("user_data" to userData, "auditoria_activa" to auditoriaActiva)
         navController.navigate(R.id.action_auditoriasFragment_to_activosFragment, bundle)
+    }
+
+    private fun setupScannerButton() {
+        img_scanner.setOnClickListener {
+            navController.navigate(R.id.action_auditoriasFragment_to_scannerFragment)
+        }
     }
 }
 
