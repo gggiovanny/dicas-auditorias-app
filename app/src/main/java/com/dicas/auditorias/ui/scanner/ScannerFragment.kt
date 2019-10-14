@@ -23,6 +23,8 @@ class ScannerFragment : Fragment() {
 
     companion object {
         private const val TAG = "ScannerFragment"
+        private const val baseUrl = "grupodicas.com.mx/a/index.php?f="
+
     }
 
     private lateinit var codeScanner: CodeScanner
@@ -37,19 +39,22 @@ class ScannerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController = Navigation.findNavController(view)
-        val openWeb: Boolean = arguments?.getBoolean("open_web")!!
+        val returnId: Boolean = arguments?.getBoolean("return_id")!!
         val scannerView = view.findViewById<CodeScannerView>(R.id.scanner_view)
         val activity = requireActivity()
         codeScanner = CodeScanner(activity, scannerView)
         codeScanner.decodeCallback = DecodeCallback {
 
-            if (openWeb) {
-                openWebPage(it.text)
-            } else {
+            if (returnId) {
                 val idActivo = extractID(it.text)
-                val bundle = bundleOf("text_display" to idActivo.toString())
-                navController.navigate(R.id.action_scannerFragment_to_testFragment, bundle)
+                navController.navigate(
+                    R.id.action_scannerFragment_to_testFragment,
+                    bundleOf("text_display" to idActivo.toString())
+                )
+            } else {
+                openWebPage(it.text)
             }
+
         }
         scannerView.setOnClickListener {
             codeScanner.startPreview()
@@ -68,18 +73,21 @@ class ScannerFragment : Fragment() {
 
     private fun openWebPage(url: String) {
         lateinit var webpage: Uri
-        if (!url.startsWith("http://")) {
+        if (url.startsWith(baseUrl)) {
             webpage = Uri.parse("http://$url")
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            startActivity(intent)
+            navController.popBackStack()
         } else {
-            webpage = Uri.parse(url)
+            activity?.runOnUiThread {
+                Toast.makeText(context, "¡Código QR no válido!", Toast.LENGTH_LONG).show()
+            }
+            navController.popBackStack()
         }
-        Log.d(TAG, "openWebPage: text_scanned=[$url], uri=[$webpage]")
-        val intent = Intent(Intent.ACTION_VIEW, webpage)
-        startActivity(intent)
+        Log.d(TAG, "openWebPage: text_scanned=[$url]")
     }
 
     private fun extractID(textQR: String): Int {
-        val baseUrl = "grupodicas.com.mx/a/index.php?f="
 
         if (textQR.startsWith(baseUrl)) {
             return Integer.parseInt(textQR.substring(baseUrl.length))

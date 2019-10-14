@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getColorStateList
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -50,17 +51,22 @@ class ActivosFragment : Fragment() {
     ): View? {
 
         /** Obteniendo los datos de usuario que vienen del login */
+
         try {
             userData = arguments?.getParcelable<LoggedInUser>("user_data")!!
         } catch (ex: Throwable) {
-            throw Exception("$TAG: No se recibieron los datos del usuario desde el login!", ex)
+            val msg = "No se recibieron los datos del usuario desde el login!"
+            Log.d(TAG, "onCreateView: $msg")
+            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
         }
 
         /** Obteniendo auditoria activa */
         try {
             auditoriaActiva = arguments?.getParcelable<Auditoria>("auditoria_activa")!!
         } catch (ex: Throwable) {
-            throw Exception("$TAG: No se recibió la auditoria activa!", ex)
+            val msg = "No se recibió la auditoria activa!"
+            Log.d(TAG, "onCreateView: $msg")
+            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
         }
 
         /** Inicializando view model */
@@ -86,6 +92,12 @@ class ActivosFragment : Fragment() {
 
         addDescriptionChipsInToolbar()
         setupScannerButton()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val idActivo = arguments?.getInt("id_activo")
+        Toast.makeText(context, "idActivo=$idActivo", Toast.LENGTH_SHORT).show()
     }
 
     private fun setupRecyclerView() {
@@ -192,7 +204,10 @@ class ActivosFragment : Fragment() {
 
     private fun setupScannerButton() {
         img_scanner.setOnClickListener {
-            navController.navigate(R.id.action_activosFragment_to_scannerFragment)
+            navController.navigate(
+                R.id.action_activosFragment_to_scannerFragment,
+                bundleOf("return_id" to true)
+            )
         }
     }
 }

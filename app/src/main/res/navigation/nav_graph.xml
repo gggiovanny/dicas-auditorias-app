@@ -52,11 +52,11 @@
         <action
             android:id="@+id/action_nuevaAuditoria_to_activosFragment"
             app:destination="@id/activosFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popUpTo="@id/auditoriasFragment" />
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/auditoriasFragment" />
     </fragment>
     <fragment
         android:id="@+id/scannerFragment"
@@ -66,9 +66,12 @@
             android:id="@+id/action_scannerFragment_to_testFragment"
             app:destination="@id/testFragment" />
         <argument
-            android:name="open_web"
+            android:name="return_id"
             app:argType="boolean"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_scannerFragment_to_activosFragment"
+            app:destination="@id/activosFragment" />
     </fragment>
     <fragment
         android:id="@+id/testFragment"
