@@ -20,4 +20,13 @@ class ActivosRepository(val dataSource: ActivosDataSource) {
         dataSource.callActivosAPI(apiKey, auditoriaActual, empresa, departamento, clasificacion)
     }
 
+    fun setActivoExistenciaActualAPI(
+        apiKey: String,
+        idAuditoria: Int,
+        idActivo: Int,
+        existencia: Boolean
+    ) {
+        dataSource.setActivoExistenciaActualAPI(apiKey, idAuditoria, idActivo, existencia)
+    }
+
 }

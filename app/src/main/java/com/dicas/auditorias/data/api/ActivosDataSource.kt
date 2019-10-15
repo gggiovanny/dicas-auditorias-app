@@ -80,4 +80,37 @@ class ActivosDataSource {
         throw IOException("Error getting token from API", error)
     }
 
+    fun setActivoExistenciaActualAPI(
+        apiKey: String,
+        idAuditoria: Int,
+        idActivo: Int,
+        existencia: Boolean
+    ) {
+        val apiAdapter = ApiAdapter()
+        val apiService = apiAdapter.getApiService(apiKey)
+        val request: Disposable = apiService.setActivoExistenciaActual(
+            id_auditoria = idAuditoria,
+            id_activo = idActivo,
+            existencia = existencia
+        ).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe({ responseJson: JsonObject ->
+                val responseObject = ApiResponse(
+                    status = responseJson.get("status").asString,
+                    description = responseJson.get("description").asString
+                )
+                /** La respuesta de la API se manda como objeto de respuesta directamente */
+                Log.d(TAG, "setActivoExistenciaActual: status=${responseObject.status}")
+                Log.d(TAG, "setActivoExistenciaActual: description=[${responseObject.description}]")
+                _response.value = responseObject
+            }, {
+                it.printStackTrace()
+                _response.value = ApiResponse(
+                    status = "error_app",
+                    description = "No se pudo crear la nueva auditoria"
+                )
+
+            })
+    }
+
 }

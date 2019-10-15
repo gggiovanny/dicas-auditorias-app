@@ -1,6 +1,7 @@
 package com.dicas.auditorias.ui.activos
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.ActivosRepository
@@ -14,6 +15,9 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
     val activos: LiveData<List<Activo>> = repository.activos
     val response: LiveData<ApiResponse> = repository.response
 
+    private val _idActivoExistente: MutableLiveData<Int> = MutableLiveData()
+    val idActivoExistente: LiveData<Int> = _idActivoExistente
+
     val recyclerActivosAdapter = RecyclerActivosAdapter(this, R.layout.layout_activo_item)
 
     fun callActivosAPI(
@@ -24,8 +28,6 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
         clasificacion: String? = null
     ) {
         repository.callActivosAPI(apiKey, auditoriaActual, empresa, departamento, clasificacion)
-        var xd: String = "1"
-        val anuma = xd.toBoolean()
     }
 
     override fun getObjectAt(position: Int) = activos.value?.get(position)
@@ -37,5 +39,21 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
 
     fun getExistenciaGuardada(position: Int) {
         activos.value?.get(position)?.existencia_guardada == "1"
+    }
+
+    fun setActivoExistente(idActivo: Int) {
+        _idActivoExistente.value = idActivo
+        // TODO("Handle cuando de marque como existente")
+    }
+
+
+    fun setActivoExistenciaActualAPI(
+        apiKey: String,
+        idAuditoria: Int,
+        idActivo: Int,
+        existencia: Boolean
+    ) {
+        //TODO("Borrar y llamar directamente del repositorio si no es necesario llamar a este metodo desde fuera")
+        repository.setActivoExistenciaActualAPI(apiKey, idAuditoria, idActivo, existencia)
     }
 }

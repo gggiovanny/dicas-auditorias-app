@@ -9,14 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.dicas.auditorias.R
+import com.dicas.auditorias.ui.activos.ActivosViewModel
+import com.dicas.auditorias.ui.activos.ActivosViewModelFactory
 
 
 class ScannerFragment : Fragment() {
@@ -29,6 +31,8 @@ class ScannerFragment : Fragment() {
 
     private lateinit var codeScanner: CodeScanner
     private lateinit var navController: NavController
+    private lateinit var viewModel: ActivosViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +42,30 @@ class ScannerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Inicializando variables lateinit
+        viewModel = activity.run {
+            ViewModelProviders.of(
+                this ?: throw Exception("Invalid fragment activity"),
+                ActivosViewModelFactory()
+            ).get(ActivosViewModel::class.java)
+        }
         navController = Navigation.findNavController(view)
         val returnId: Boolean = arguments?.getBoolean("return_id")!!
         val scannerView = view.findViewById<CodeScannerView>(R.id.scanner_view)
         val activity = requireActivity()
         codeScanner = CodeScanner(activity, scannerView)
+
+        //Configurando callback para cuando el scanner encuentre algo
         codeScanner.decodeCallback = DecodeCallback {
 
-            if (returnId) {
-                val idActivo = extractID(it.text)
-                navController.navigate(
-                    R.id.action_scannerFragment_to_testFragment,
-                    bundleOf("text_display" to idActivo.toString())
-                )
-            } else {
+            if (returnId) { // si se solicita a traves del parametro que se regrese la ID, se navega al fragment anterior y se le pasa dicho parametro.
+                activity.runOnUiThread { viewModel.setActivoExistente(extractID(it.text)) }
+            } else { // Si no, por defecto se abre el QR como pagina web para consulta.
                 openWebPage(it.text)
             }
 
+            // Sin importar el resultado o la accion, regresar a la actividad anterior al terminar de usarse el scanner
+            navController.popBackStack()
         }
         scannerView.setOnClickListener {
             codeScanner.startPreview()
@@ -77,12 +88,10 @@ class ScannerFragment : Fragment() {
             webpage = Uri.parse("http://$url")
             val intent = Intent(Intent.ACTION_VIEW, webpage)
             startActivity(intent)
-            navController.popBackStack()
         } else {
             activity?.runOnUiThread {
                 Toast.makeText(context, "¡Código QR no válido!", Toast.LENGTH_LONG).show()
             }
-            navController.popBackStack()
         }
         Log.d(TAG, "openWebPage: text_scanned=[$url]")
     }
