@@ -43,7 +43,12 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
 
     fun setActivoExistente(idActivo: Int) {
         _idActivoExistente.value = idActivo
+        /** Esto actualiza el valor del livedata y hace que se refleje el cambio en la UI */
         // TODO("Handle cuando de marque como existente")
+    }
+
+    private fun setActivoNoEncontrado(idActivo: Int) {
+        //TODO()
     }
 
 

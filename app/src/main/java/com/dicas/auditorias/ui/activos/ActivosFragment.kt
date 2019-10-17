@@ -70,9 +70,12 @@ class ActivosFragment : Fragment() {
         }
 
         /** Inicializando view model */
-        viewModel = ViewModelProviders.of(this, ActivosViewModelFactory())
-            .get(ActivosViewModel::class.java)
-        setupLoginIfExpiredToken()
+        viewModel = activity.run {
+            ViewModelProviders.of(
+                this ?: throw Exception("Invalid fragment activity"),
+                ActivosViewModelFactory()
+            ).get(ActivosViewModel::class.java)
+        }
 
         /*val binding: ViewDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_activos, container, false)*/
 
@@ -81,12 +84,7 @@ class ActivosFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = activity.run {
-            ViewModelProviders.of(
-                this ?: throw Exception("Invalid fragment activity"),
-                ActivosViewModelFactory()
-            ).get(ActivosViewModel::class.java)
-        }
+
         navController = Navigation.findNavController(view ?: return)
 
         setupRecyclerView()
@@ -98,6 +96,7 @@ class ActivosFragment : Fragment() {
         addDescriptionChipsInToolbar()
         setupScannerButton()
         setupExistenciaStatusObserver()
+        setupLoginIfExpiredToken()
     }
 
     private fun setupRecyclerView() {
@@ -214,8 +213,8 @@ class ActivosFragment : Fragment() {
     private fun setupExistenciaStatusObserver() {
         viewModel.idActivoExistente.observe(this, Observer {
             val idActivo = it ?: return@Observer
-            val msg = "idActivo scanned=[$idActivo]"
-            Log.d(TAG, "setupExistenciaStatusObserver: $msg")
+            Log.d(TAG, "setupExistenciaStatusObserver: idActivo scanned=[$idActivo]")
+
 
 
         })

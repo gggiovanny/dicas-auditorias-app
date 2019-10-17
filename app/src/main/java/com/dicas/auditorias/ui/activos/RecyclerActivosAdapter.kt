@@ -1,11 +1,8 @@
 package com.dicas.auditorias.ui.activos
 
 
-import android.content.res.ColorStateList
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
@@ -62,40 +59,33 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
         }
 
         fun setDataCard(viewModel: ActivosViewModel, position: Int) {
-            //setChipsExistenciasValue(viewModel.getObjectAt(position) ?: return)
+
+            /** Configurando chip_existencia_actual en del recycler (no se pude en el bindeo) */
+            when (viewModel.getObjectAt(position)?.existencia_actual) {
+                "1" -> false
+                else -> binding?.root?.chip_existencia_actual?.setCheckedIconResource(R.drawable.ic_line_white_24dp)
+
+            }
+
+
+            /** Cuando se da click en el chip_existencia_actual */
+            binding?.root?.chip_existencia_actual?.setOnClickListener {
+                /** Cuando se intente cambiar el estatus de existencia en la interfaz,
+                 * conservar el status del modelo de datos y solo permitir alterarlo cuando no halla
+                 * un estatus definido en el modelo*/
+                when (viewModel.getObjectAt(position)?.existencia_actual) {
+                    "1", "0" -> binding?.root?.chip_existencia_actual?.isChecked = true
+                    else -> {
+
+                    }
+                }
+
+
+            }
 
             binding?.setVariable(BR.modelAct, viewModel)
             binding?.setVariable(BR.position, position)
             binding?.executePendingBindings()
-        }
-
-        private fun setChipsExistenciasValue(activoActual: Activo) {
-
-            if (activoActual.id == "65") {
-                Log.d(TAG, "setChipsExistenciasValue: anuma")
-            }
-
-            if (activoActual.existencia_guardada == "1") {
-                itemView.chip_existencia_guardada.chipIcon =
-                    itemView.context.getDrawable(R.drawable.ic_check_box_true_black_24dp)
-                itemView.chip_existencia_guardada.chipIconTint = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        itemView.context,
-                        R.color.sucess_green
-                    )
-                )
-            }
-            if (activoActual.existencia_guardada == "0") {
-                itemView.chip_existencia_guardada.chipIcon =
-                    itemView.context.getDrawable(R.drawable.ic_check_box_false_blank_black_24dp)
-                itemView.chip_existencia_guardada.chipIconTint = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        itemView.context,
-                        R.color.error_red
-                    )
-                )
-            }
-
         }
     }
 }

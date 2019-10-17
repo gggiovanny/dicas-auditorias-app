@@ -25,21 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/description_activo"
-                android:layout_width="189dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@{modelAct.getObjectAt(position).descripcion}"
-                android:textColor="?android:attr/textColorSecondary"
-                app:layout_constraintBottom_toTopOf="@+id/chip_existencia_guardada"
-                app:layout_constraintEnd_toStartOf="@+id/chip_existencia_actual"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline_id"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/linearLayoutCompat2"
                 android:layout_width="0dp"
@@ -78,36 +63,53 @@
                 app:layout_constraintGuide_percent="0.12" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_existencia_actual"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:checkable='true'
+                android:checked='@{modelAct.getObjectAt(position).existencia_actual != null}'
+                android:text='@{modelAct.getObjectAt(position).existencia_actual.contains("1") ? @string/existencia_actual_true : modelAct.getObjectAt(position).existencia_actual.contains("0") ? @string/existencia_actual_false : @string/existencia_actual_null}'
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintStart_toEndOf="@+id/linearLayoutCompat2"
+                app:layout_constraintTop_toBottomOf="@+id/chip_existencia_guardada" />
+
+            <com.google.android.material.chip.Chip
                 android:id="@+id/chip_existencia_guardada"
                 style="@style/Widget.MaterialComponents.Chip.Action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @string/existencia_guardada_true : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @string/existencia_guardada_false : @string/existencia_guardada_null}'
                 app:chipBackgroundColor="@color/transparent"
+                android:text='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @string/existencia_guardada_true : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @string/existencia_guardada_false : @string/existencia_guardada_null}'
                 app:chipIcon='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @drawable/ic_check_box_true_black_24dp : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @drawable/ic_check_box_false_blank_black_24dp : @drawable/ic_check_box_indeterminate_black_24dp}'
                 app:chipIconTint='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @color/sucess_green_dark : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @color/error_red_light : @color/text_secondary_dark}'
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/chip_existencia_actual"
+                app:layout_constraintBottom_toTopOf="@+id/chip_existencia_actual"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline_id"
+                app:layout_constraintStart_toEndOf="@+id/linearLayoutCompat2"
                 app:layout_constraintTop_toBottomOf="@+id/description_activo" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_existencia_actual"
-                style="@style/Widget.MaterialComponents.Chip.Action"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/description_activo"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
-
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:checkable="true"
-                android:text="@string/existencia_actual"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@{modelAct.getObjectAt(position).descripcion}"
+                android:textAlignment="viewStart"
+                android:textColor="?android:attr/textColorSecondary"
+                app:layout_constraintBottom_toTopOf="@+id/chip_existencia_guardada"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/linearLayoutCompat2"
                 app:layout_constraintTop_toTopOf="parent" />
 
 

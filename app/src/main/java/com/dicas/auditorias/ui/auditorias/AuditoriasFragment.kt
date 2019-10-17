@@ -41,7 +41,6 @@ class AuditoriasFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         /** Obteniendo los datos de usuario que vienen del login */
         try {
             userData = arguments?.getParcelable("user_data")!!
