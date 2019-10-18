@@ -89,31 +89,15 @@ class RecyclerAuditoriasAdapter(
             /** Configurando color e icono de chip de status */
             when (auditoriaViewModel.getAuditoriaAt(index)?.status) {
                 "En curso" -> {
-                    itemView.chip_status_auditoria.chipBackgroundColor = ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.sucess_green
-                        )
-                    )
+                    itemView.chip_status_auditoria.setChipBackgroundColorResource(R.color.sucess_green)
                     itemView.chip_status_auditoria.setChipIconResource(R.drawable.ic_in_progres_white_24dp)
                 }
                 "Terminada" -> {
-                    itemView.chip_status_auditoria.chipBackgroundColor = ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.yellow_pastel
-                        )
-                    )
+                    itemView.chip_status_auditoria.setChipBackgroundColorResource(R.color.yellow_pastel)
                     itemView.chip_status_auditoria.setChipIconResource(R.drawable.ic_finished_white_24dp)
                 }
                 "Guardada" -> {
-                    itemView.chip_status_auditoria.chipBackgroundColor =
-                        ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                itemView.context,
-                                R.color.error_red
-                            )
-                        )
+                    itemView.chip_status_auditoria.setChipBackgroundColorResource(R.color.error_red)
                     itemView.chip_status_auditoria.setChipIconResource(R.drawable.ic_saved_white_24dp)
                 }
             }

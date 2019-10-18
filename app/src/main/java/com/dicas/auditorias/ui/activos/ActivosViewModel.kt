@@ -1,6 +1,5 @@
 package com.dicas.auditorias.ui.activos
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
@@ -11,12 +10,13 @@ import com.dicas.auditorias.ui.utils.ViewModelRecyclerBinding
 
 class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
     ViewModelRecyclerBinding<Activo> {
+    companion object {
+        private const val TAG = "ActivosViewModel"
+    }
 
-    val activos: LiveData<List<Activo>> = repository.activos
-    val response: LiveData<ApiResponse> = repository.response
+    val activos: MutableLiveData<ArrayList<Activo>> = repository.activos
+    val response: MutableLiveData<ApiResponse> = repository.response
 
-    private val _idActivoExistente: MutableLiveData<Int> = MutableLiveData()
-    val idActivoExistente: LiveData<Int> = _idActivoExistente
 
     val recyclerActivosAdapter = RecyclerActivosAdapter(this, R.layout.layout_activo_item)
 
@@ -32,25 +32,31 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
 
     override fun getObjectAt(position: Int) = activos.value?.get(position)
 
-    override fun setupRecyclerAdapter(activos: List<Activo>) {
-        recyclerActivosAdapter.setActivosList(activos)
-        recyclerActivosAdapter.notifyDataSetChanged()
-    }
-
-    fun getExistenciaGuardada(position: Int) {
-        activos.value?.get(position)?.existencia_guardada == "1"
-    }
-
+    /** Esto actualiza el valor del livedata y ya que este esta siendo observado,
+     * hace que se refleje el cambio en la UI */
     fun setActivoExistente(idActivo: Int) {
-        _idActivoExistente.value = idActivo
-        /** Esto actualiza el valor del livedata y hace que se refleje el cambio en la UI */
-        // TODO("Handle cuando de marque como existente")
-    }
+        val activosList = activos.value
+        /** Se busca la id del activo proporcionada en los elementos de la lista del livedata  */
+        val activoUpdating: Activo? = activosList?.find { activo -> activo.id.toInt() == idActivo }
 
-    private fun setActivoNoEncontrado(idActivo: Int) {
-        //TODO()
-    }
+        /** Si se encuentra, se actualiza su valor */
+        if (activoUpdating != null) {
+            val indexForUpdate = activosList.indexOf(activoUpdating)
+            activoUpdating.existencia_actual = "1"
+            activosList[indexForUpdate] = activoUpdating
+            activos.value = activosList
+            recyclerActivosAdapter.setActivosList(activosList)
+            recyclerActivosAdapter.notifyItemChanged(indexForUpdate)
+        } else {
+            response.value = ApiResponse(
+                status = "alert_show",
+                description = "¡El activo escaneado no se encuentra en esta auditoria!"
 
+            )
+        }
+
+
+    }
 
     fun setActivoExistenciaActualAPI(
         apiKey: String,

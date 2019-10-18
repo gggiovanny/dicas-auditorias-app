@@ -1,7 +1,6 @@
 package com.dicas.auditorias.data.api
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
@@ -17,11 +16,10 @@ class ActivosDataSource {
         private const val TAG = "ActivosDataSource"
     }
 
-    private val _activos = MutableLiveData<List<Activo>>()
-    val activos: LiveData<List<Activo>> = _activos
+    val activos = MutableLiveData<ArrayList<Activo>>()
 
     private val _response = MutableLiveData<ApiResponse>()
-    val response: LiveData<ApiResponse> = _response
+    val response: MutableLiveData<ApiResponse> = _response
 
     fun callActivosAPI(
         apiKey: String,
@@ -71,7 +69,7 @@ class ActivosDataSource {
                         )
                         activosList.add(activo)
                     }
-                    _activos.value = activosList
+                    this.activos.value = activosList
                 }
             }, this::ErrorHandler)
     }

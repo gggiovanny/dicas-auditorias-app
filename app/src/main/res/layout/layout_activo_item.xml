@@ -69,13 +69,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:checkable='true'
-                android:checked='@{modelAct.getObjectAt(position).existencia_actual != null}'
                 android:text='@{modelAct.getObjectAt(position).existencia_actual.contains("1") ? @string/existencia_actual_true : modelAct.getObjectAt(position).existencia_actual.contains("0") ? @string/existencia_actual_false : @string/existencia_actual_null}'
+                app:chipIcon='@{modelAct.getObjectAt(position).existencia_actual.contains("1") ? @drawable/ic_rounded_chip_true_black : modelAct.getObjectAt(position).existencia_actual.contains("0") ? @drawable/ic_rounded_chip_false_black : @drawable/ic_rounded_chip_null_black}'
+                app:chipIconTint='@{modelAct.getObjectAt(position).existencia_actual.contains("1") ? @color/sucess_green_dark : modelAct.getObjectAt(position).existencia_actual.contains("0") ? @color/yellow_terminada : @color/text_secondary_dark}'
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toEndOf="@+id/linearLayoutCompat2"
                 app:layout_constraintTop_toBottomOf="@+id/chip_existencia_guardada" />
 

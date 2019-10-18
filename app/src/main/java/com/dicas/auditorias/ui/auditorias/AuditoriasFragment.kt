@@ -51,7 +51,7 @@ class AuditoriasFragment : Fragment() {
         /** Inicializando view model */
         viewModel = ViewModelProviders.of(this, AuditoriasViewModelFactory())
             .get(AuditoriaViewModel::class.java)
-        setupLoginIfExpiredToken()
+        setupResponseHandler()
 
         return inflater.inflate(R.layout.fragment_auditoria, container, false)
     }
@@ -89,11 +89,24 @@ class AuditoriasFragment : Fragment() {
 
     }
 
-    private fun setupLoginIfExpiredToken() {
+    private fun setupResponseHandler() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
+            if (response.status == null) return@Observer
+
             loading.visibility = View.GONE
-            Log.d(TAG, "setupLoginIfExpiredToken: ${response.status}: ${response.description}")
+            Log.d(TAG, "setupResponseHandler: ${response.status}: ${response.description}")
+
+            /*
+            if(response.status.contains("show")) {
+                Toast.makeText(
+                    context, response.description,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+             */
+
             if (response.isOk) {
                 if (firstSucess && userData.fromMemory) {
                     firstSucess = false
@@ -104,7 +117,7 @@ class AuditoriasFragment : Fragment() {
                     ).show()
                 }
             } else {
-                if (firstError && !(response.status ?: return@Observer).contains("app")) {
+                if (firstError && !response.status.contains("app")) {
                     firstError = false
                     showSesionCaducada(response)
                     val login = Intent(context, LoginActivity::class.java).apply {
@@ -121,7 +134,7 @@ class AuditoriasFragment : Fragment() {
             }
 
         })
-        Log.d(TAG, "setupLoginIfExpiredToken: created observer done!")
+        Log.d(TAG, "setupResponseHandler: created observer done!")
     }
 
     private fun showSesionCaducada(response: ApiResponse) {

@@ -1,14 +1,14 @@
 package com.dicas.auditorias.data
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.dicas.auditorias.data.api.ActivosDataSource
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
 
 class ActivosRepository(val dataSource: ActivosDataSource) {
 
-    val activos: LiveData<List<Activo>> = dataSource.activos
-    val response: LiveData<ApiResponse> = dataSource.response
+    val activos: MutableLiveData<ArrayList<Activo>> = dataSource.activos
+    val response: MutableLiveData<ApiResponse> = dataSource.response
 
     fun callActivosAPI(
         apiKey: String,

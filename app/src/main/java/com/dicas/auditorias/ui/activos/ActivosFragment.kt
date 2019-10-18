@@ -95,8 +95,7 @@ class ActivosFragment : Fragment() {
 
         addDescriptionChipsInToolbar()
         setupScannerButton()
-        setupExistenciaStatusObserver()
-        setupLoginIfExpiredToken()
+        setupResponseHandler()
     }
 
     private fun setupRecyclerView() {
@@ -110,18 +109,28 @@ class ActivosFragment : Fragment() {
             auditoriaActual = auditoriaActiva.id ?: ""
         )
 
-        viewModel.activos.observe(this, Observer { auditorias: List<Activo> ->
-            viewModel.setupRecyclerAdapter(auditorias)
+        viewModel.activos.observe(this, Observer { activos: List<Activo> ->
+            viewModel.recyclerActivosAdapter.setActivosList(activos)
+            viewModel.recyclerActivosAdapter.notifyDataSetChanged()
             Log.d(TAG, "setupRecyclerView: observe done!")
         })
     }
 
-    private fun setupLoginIfExpiredToken() {
+    private fun setupResponseHandler() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
-            Log.d(TAG, "setupLoginIfExpiredToken: ${response.status}: ${response.description}")
+            if (response.status == null) return@Observer
+
+            if (response.status.contains("show")) {
+                Log.d(TAG, "setupResponseHandler: show: ${response.description}")
+                Toast.makeText(this.requireContext(), response.description, Toast.LENGTH_LONG)
+                    .show()
+                return@Observer
+            }
+
+            Log.d(TAG, "setupResponseHandler: ${response.status}: ${response.description}")
             if (!response.isOk && firstError) {
-                if (!(response.status ?: return@Observer).contains("app")) {
+                if (!response.status.contains("app")) {
                     firstError = false
                     showSesionCaducada(response)
                     val login = Intent(context, LoginActivity::class.java).apply {
@@ -130,14 +139,17 @@ class ActivosFragment : Fragment() {
                     startActivity(login)
                     this.activity?.finish()
                 } else {
+
                     Toast.makeText(
                         context, R.string.error_api,
                         Toast.LENGTH_LONG
                     ).show()
                 }
             }
+
+
         })
-        Log.d(TAG, "setupLoginIfExpiredToken: created observer done!")
+        Log.d(TAG, "setupResponseHandler: created observer done!")
     }
 
     private fun showSesionCaducada(response: ApiResponse) {
@@ -210,13 +222,5 @@ class ActivosFragment : Fragment() {
         }
     }
 
-    private fun setupExistenciaStatusObserver() {
-        viewModel.idActivoExistente.observe(this, Observer {
-            val idActivo = it ?: return@Observer
-            Log.d(TAG, "setupExistenciaStatusObserver: idActivo scanned=[$idActivo]")
 
-
-
-        })
-    }
 }

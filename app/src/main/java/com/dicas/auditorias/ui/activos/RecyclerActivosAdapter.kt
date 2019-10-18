@@ -60,13 +60,6 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
 
         fun setDataCard(viewModel: ActivosViewModel, position: Int) {
 
-            /** Configurando chip_existencia_actual en del recycler (no se pude en el bindeo) */
-            when (viewModel.getObjectAt(position)?.existencia_actual) {
-                "1" -> false
-                else -> binding?.root?.chip_existencia_actual?.setCheckedIconResource(R.drawable.ic_line_white_24dp)
-
-            }
-
 
             /** Cuando se da click en el chip_existencia_actual */
             binding?.root?.chip_existencia_actual?.setOnClickListener {
@@ -74,8 +67,10 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
                  * conservar el status del modelo de datos y solo permitir alterarlo cuando no halla
                  * un estatus definido en el modelo*/
                 when (viewModel.getObjectAt(position)?.existencia_actual) {
-                    "1", "0" -> binding?.root?.chip_existencia_actual?.isChecked = true
-                    else -> {
+                    null -> {
+                        binding?.root?.chip_existencia_actual?.setChipIconResource(R.drawable.ic_rounded_chip_false_black)
+                        binding?.root?.chip_existencia_actual?.setChipIconTintResource(R.color.yellow_terminada)
+                        binding?.root?.chip_existencia_actual?.setText(R.string.existencia_actual_false)
 
                     }
                 }
