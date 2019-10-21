@@ -8,7 +8,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
 import com.dicas.auditorias.R
-import com.dicas.auditorias.data.model.Activo
 import kotlinx.android.synthetic.main.layout_activo_item.view.*
 
 class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item: Int) :
@@ -17,8 +16,6 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
     companion object {
         private const val TAG = "RecyclerActivosAdapter"
     }
-
-    var activos: List<Activo>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivoCardHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -34,12 +31,8 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
         holder.setDataCard(viewModel, position)
     }
 
-    fun setActivosList(activos: List<Activo>?) {
-        this.activos = activos
-    }
-
     override fun getItemCount(): Int {
-        return activos?.size ?: 0
+        return viewModel.activos.value?.count() ?: 0
     }
 
     override fun getItemViewType(index: Int): Int {
@@ -74,9 +67,11 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
 
                     }
                 }
-
-
             }
+
+            itemView.test.text = viewModel.getObjectAt(position)?.existencia_actual
+
+
 
             binding?.setVariable(BR.modelAct, viewModel)
             binding?.setVariable(BR.position, position)

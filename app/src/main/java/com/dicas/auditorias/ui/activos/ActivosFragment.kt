@@ -110,9 +110,13 @@ class ActivosFragment : Fragment() {
         )
 
         viewModel.activos.observe(this, Observer { activos: List<Activo> ->
-            viewModel.recyclerActivosAdapter.setActivosList(activos)
             viewModel.recyclerActivosAdapter.notifyDataSetChanged()
-            Log.d(TAG, "setupRecyclerView: observe done!")
+            Log.d(TAG, "activos observer: RecyclerView updated!")
+
+            Log.d(
+                TAG,
+                "setupRecyclerView: activos[3].id: ${activos[3].id}, activos[3].existencia_actual: ${activos[3].existencia_actual} "
+            )
         })
     }
 

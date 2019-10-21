@@ -35,18 +35,28 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
     /** Esto actualiza el valor del livedata y ya que este esta siendo observado,
      * hace que se refleje el cambio en la UI */
     fun setActivoExistente(idActivo: Int) {
+        activos.value!![1].existencia_actual = "1"
+        "setActivoExistente: activos[3].id: ${activos.value!![3].id}, activos[3].existencia_actual: ${activos.value!![3].existencia_actual} "
+
+
+        /*
         val activosList = activos.value
         /** Se busca la id del activo proporcionada en los elementos de la lista del livedata  */
         val activoUpdating: Activo? = activosList?.find { activo -> activo.id.toInt() == idActivo }
 
+        Log.d(TAG, "setActivoExistente: activoUpdating: id=[${activoUpdating?.id}], description=[${activoUpdating?.descripcion}]")
+
         /** Si se encuentra, se actualiza su valor */
         if (activoUpdating != null) {
+
             val indexForUpdate = activosList.indexOf(activoUpdating)
             activoUpdating.existencia_actual = "1"
             activosList[indexForUpdate] = activoUpdating
-            activos.value = activosList
-            recyclerActivosAdapter.setActivosList(activosList)
-            recyclerActivosAdapter.notifyItemChanged(indexForUpdate)
+
+            Log.d(TAG, "setActivoExistente: indexForUpdate=[$indexForUpdate]")
+            
+            activos.value = activosList*
+            activos.value!![1].existencia_actual = "1"
         } else {
             response.value = ApiResponse(
                 status = "alert_show",
@@ -55,6 +65,8 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
             )
         }
 
+
+         */
 
     }
 

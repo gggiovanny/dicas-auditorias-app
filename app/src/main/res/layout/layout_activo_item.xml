@@ -86,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                app:chipBackgroundColor="@color/transparent"
                 android:text='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @string/existencia_guardada_true : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @string/existencia_guardada_false : @string/existencia_guardada_null}'
+                app:chipBackgroundColor="@color/transparent"
                 app:chipIcon='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @drawable/ic_check_box_true_black_24dp : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @drawable/ic_check_box_false_blank_black_24dp : @drawable/ic_check_box_indeterminate_black_24dp}'
                 app:chipIconTint='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @color/sucess_green_dark : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @color/error_red_light : @color/text_secondary_dark}'
                 app:layout_constraintBottom_toTopOf="@+id/chip_existencia_actual"
@@ -111,6 +111,18 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/linearLayoutCompat2"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline_id" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
