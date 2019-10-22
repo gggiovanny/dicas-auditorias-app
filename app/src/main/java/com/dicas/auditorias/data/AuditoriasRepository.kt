@@ -1,16 +1,16 @@
 package com.dicas.auditorias.data
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.dicas.auditorias.data.api.AuditoriasDataSource
 import com.dicas.auditorias.data.model.*
 
 class AuditoriasRepository(val dataSource: AuditoriasDataSource) {
 
-    val auditorias: LiveData<List<Auditoria>> = dataSource.auditorias
-    val empresas: LiveData<List<Empresa>> = dataSource.empresas
-    val departamentos: LiveData<List<Departamento>> = dataSource.departamentos
-    val clasificaciones: LiveData<List<Clasificacion>> = dataSource.clasificaciones
-    val response: LiveData<ApiResponse> = dataSource.response
+    val auditorias: MutableLiveData<ArrayList<Auditoria>> = dataSource.auditorias
+    val empresas: MutableLiveData<ArrayList<Empresa>> = dataSource.empresas
+    val departamentos: MutableLiveData<ArrayList<Departamento>> = dataSource.departamentos
+    val clasificaciones: MutableLiveData<ArrayList<Clasificacion>> = dataSource.clasificaciones
+    val response: MutableLiveData<ApiResponse> = dataSource.response
 
     fun callAuditoriasAPI(apikey: String, user: String =  "", status: String = "") {
         dataSource.callAuditoriasAPI(apikey, user, status)

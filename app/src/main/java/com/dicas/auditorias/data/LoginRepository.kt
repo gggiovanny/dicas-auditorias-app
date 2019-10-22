@@ -9,8 +9,8 @@ import com.dicas.auditorias.data.model.LoggedInUser
 import com.google.gson.JsonObject
 
 /**
- * Class that requests authentication and user information from the remote data source and
- * maintains an in-memory cache of login status and user credentials information.
+ * Class that requests authentication and userDataSource information from the remote data source and
+ * maintains an in-memory cache of login status and userDataSource credentials information.
  */
 
 class LoginRepository(val dataSource: LoginDataSource) {
@@ -37,7 +37,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
 
     fun setLoggedInUser(token: String, username: String) {
         this.token = token
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
+        // If userDataSource credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
         storeTokenLocal(token, username)
     }

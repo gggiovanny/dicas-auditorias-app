@@ -7,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 
 /**
- * Class that handles authentication w/ login credentials and retrieves user information.
+ * Class that handles authentication w/ login credentials and retrieves userDataSource information.
  */
 class LoginDataSource {
 

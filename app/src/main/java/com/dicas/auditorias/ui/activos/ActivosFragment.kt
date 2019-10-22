@@ -17,12 +17,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.dicas.auditorias.R
-import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
-import com.dicas.auditorias.data.model.LoggedInUser
+import com.dicas.auditorias.ui.common.SharedDataViewModel
+import com.dicas.auditorias.ui.common.setupAppBarScrollFade
 import com.dicas.auditorias.ui.login.LoginActivity
-import com.dicas.auditorias.ui.utils.setupAppBarScrollFade
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_activos.*
 import kotlinx.android.synthetic.main.layout_toolbar_general.*
@@ -38,7 +37,7 @@ class ActivosFragment : Fragment() {
     }
 
     private lateinit var viewModel: ActivosViewModel
-    private lateinit var userData: LoggedInUser
+    private lateinit var sharedData: SharedDataViewModel
     private lateinit var auditoriaActiva: Auditoria
     private lateinit var navController: NavController
 
@@ -49,17 +48,6 @@ class ActivosFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        /** Obteniendo los datos de usuario que vienen del login */
-
-        try {
-            userData = arguments?.getParcelable<LoggedInUser>("user_data")!!
-        } catch (ex: Throwable) {
-            val msg = "No se recibieron los datos del usuario desde el login!"
-            Log.d(TAG, "onCreateView: $msg")
-            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-        }
-
         /** Obteniendo auditoria activa */
         try {
             auditoriaActiva = arguments?.getParcelable<Auditoria>("auditoria_activa")!!
@@ -68,6 +56,11 @@ class ActivosFragment : Fragment() {
             Log.d(TAG, "onCreateView: $msg")
             Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
         }
+
+        /** Obteniendo los datos de usuario compartidos */
+        sharedData = activity?.run {
+            ViewModelProviders.of(this)[SharedDataViewModel::class.java]
+        } ?: throw Exception("No se recibieron los datos del usuario desde el login!")
 
         /** Inicializando view model */
         viewModel = activity.run {
@@ -101,22 +94,20 @@ class ActivosFragment : Fragment() {
     private fun setupRecyclerView() {
         rv_activos.adapter = viewModel.recyclerActivosAdapter
 
-        viewModel.callActivosAPI(
-            apiKey = userData.token,
-            clasificacion = auditoriaActiva.idClasificacion,
-            departamento = auditoriaActiva.idDepartamento,
-            empresa = auditoriaActiva.idEmpresa,
-            auditoriaActual = auditoriaActiva.id ?: ""
-        )
+        if (viewModel.activos.value == null) {
+            viewModel.callActivosAPI(
+                apiKey = sharedData.token,
+                clasificacion = auditoriaActiva.idClasificacion,
+                departamento = auditoriaActiva.idDepartamento,
+                empresa = auditoriaActiva.idEmpresa,
+                auditoriaActual = auditoriaActiva.id ?: ""
+            )
+        }
 
-        viewModel.activos.observe(this, Observer { activos: List<Activo> ->
+        viewModel.activos.observe(this, Observer {
             viewModel.recyclerActivosAdapter.notifyDataSetChanged()
             Log.d(TAG, "activos observer: RecyclerView updated!")
 
-            Log.d(
-                TAG,
-                "setupRecyclerView: activos[3].id: ${activos[3].id}, activos[3].existencia_actual: ${activos[3].existencia_actual} "
-            )
         })
     }
 

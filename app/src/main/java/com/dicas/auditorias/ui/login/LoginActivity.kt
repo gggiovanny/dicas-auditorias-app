@@ -13,8 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.LoggedInUser
+import com.dicas.auditorias.ui.common.afterTextChanged
 import com.dicas.auditorias.ui.main.MainActivity
-import com.dicas.auditorias.ui.utils.afterTextChanged
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
-            .get(com.dicas.auditorias.ui.login.LoginViewModel::class.java)
+            .get(LoginViewModel::class.java)
 
         val loginFailed = intent.getBooleanExtra("login_failed", false)
         checkForSavedToken(loginFailed)

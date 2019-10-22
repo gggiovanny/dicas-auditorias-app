@@ -1,6 +1,6 @@
 package com.dicas.auditorias.ui.auditorias
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.AuditoriasRepository
@@ -8,11 +8,11 @@ import com.dicas.auditorias.data.model.*
 
 class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewModel() {
 
-    val auditorias: LiveData<List<Auditoria>> = repository.auditorias
-    val empresas: LiveData<List<Empresa>> = repository.empresas
-    val departamentos: LiveData<List<Departamento>> = repository.departamentos
-    val clasificaciones: LiveData<List<Clasificacion>> = repository.clasificaciones
-    val response: LiveData<ApiResponse> = repository.response
+    val auditorias: MutableLiveData<ArrayList<Auditoria>> = repository.auditorias
+    val empresas: MutableLiveData<ArrayList<Empresa>> = repository.empresas
+    val departamentos: MutableLiveData<ArrayList<Departamento>> = repository.departamentos
+    val clasificaciones: MutableLiveData<ArrayList<Clasificacion>> = repository.clasificaciones
+    val response: MutableLiveData<ApiResponse> = repository.response
 
     val recyclerAuditoriasAdapter = RecyclerAuditoriasAdapter(this, R.layout.layout_auditoria_item)
 

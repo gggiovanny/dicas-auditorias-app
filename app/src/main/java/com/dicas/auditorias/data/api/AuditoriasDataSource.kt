@@ -1,7 +1,6 @@
 package com.dicas.auditorias.data.api
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dicas.auditorias.data.model.*
 import com.google.gson.JsonObject
@@ -15,20 +14,11 @@ class AuditoriasDataSource {
         private const val TAG = "AuditoriasDataSource"
     }
 
-    private val _auditorias = MutableLiveData<List<Auditoria>>()
-    val auditorias: LiveData<List<Auditoria>> = _auditorias
-
-    private val _empresas = MutableLiveData<List<Empresa>>()
-    val empresas: LiveData<List<Empresa>> = _empresas
-
-    private val _departamentos = MutableLiveData<List<Departamento>>()
-    val departamentos: LiveData<List<Departamento>> = _departamentos
-
-    private val _clasificaciones = MutableLiveData<List<Clasificacion>>()
-    val clasificaciones: LiveData<List<Clasificacion>> = _clasificaciones
-
-    private val _response = MutableLiveData<ApiResponse>()
-    val response: LiveData<ApiResponse> = _response
+    val auditorias: MutableLiveData<ArrayList<Auditoria>> = MutableLiveData()
+    val empresas: MutableLiveData<ArrayList<Empresa>> = MutableLiveData()
+    val departamentos: MutableLiveData<ArrayList<Departamento>> = MutableLiveData()
+    val clasificaciones: MutableLiveData<ArrayList<Clasificacion>> = MutableLiveData()
+    val response: MutableLiveData<ApiResponse> = MutableLiveData()
 
     fun callAuditoriasAPI(apiKey: String, user: String = "", status: String = "") {
         val apiAdapter = ApiAdapter()
@@ -41,7 +31,7 @@ class AuditoriasDataSource {
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
-                _response.value = responseObject
+                response.value = responseObject
                 Log.d(TAG, "AuditoriasResponseHandler: status=${responseObject.status}")
                 Log.d(TAG, "AuditoriasResponseHandler: description=[${responseObject.description}]")
 
@@ -69,11 +59,11 @@ class AuditoriasDataSource {
                         )
                         auditoriasList.add(auditoria)
                     }
-                    _auditorias.value = auditoriasList
+                    auditorias.value = auditoriasList
                 }
             }, {
                 it.printStackTrace()
-                _response.value = ApiResponse(
+                response.value = ApiResponse(
                     status = "error_app",
                     description = "No se pudo consultar la auditoria"
                 )
@@ -107,13 +97,13 @@ class AuditoriasDataSource {
 
                 if (responseObject.isOk) {
                     responseObject.idAuditoria = responseJson.get("id").asString
-                    _response.value = responseObject
+                    response.value = responseObject
                     Log.d(TAG, "createAuditoriaAPI: idAuditoria=[${responseObject.idAuditoria}]")
 
                 }
             }, {
                 it.printStackTrace()
-                _response.value = ApiResponse(
+                response.value = ApiResponse(
                     status = "error_app",
                     description = "No se pudo crear la nueva auditoria"
                 )
@@ -132,7 +122,7 @@ class AuditoriasDataSource {
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
-                _response.value = responseObject
+                response.value = responseObject
                 Log.d(TAG, "EmpresasResponseHandler: status=${responseObject.status}")
                 Log.d(TAG, "EmpresasResponseHandler: description=[${responseObject.description}]")
 
@@ -150,11 +140,11 @@ class AuditoriasDataSource {
                         )
                         empresasList.add(empresa)
                     }
-                    _empresas.value = empresasList
+                    empresas.value = empresasList
                 }
             }, {
                 it.printStackTrace()
-                _response.value = ApiResponse(
+                response.value = ApiResponse(
                     status = "error_app",
                     description = "No se pudo consultar la auditoria"
                 )
@@ -173,7 +163,7 @@ class AuditoriasDataSource {
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
-                _response.value = responseObject
+                response.value = responseObject
                 Log.d(TAG, "DepartamentosResponseHandler: status=${responseObject.status}")
                 Log.d(
                     TAG,
@@ -194,11 +184,11 @@ class AuditoriasDataSource {
                         )
                         deptosList.add(departamento)
                     }
-                    _departamentos.value = deptosList
+                    departamentos.value = deptosList
                 }
             }, {
                 it.printStackTrace()
-                _response.value = ApiResponse(
+                response.value = ApiResponse(
                     status = "error_app",
                     description = "No se pudo consultar la auditoria"
                 )
@@ -216,7 +206,7 @@ class AuditoriasDataSource {
                     status = responseJson.get("status").asString,
                     description = responseJson.get("description").asString
                 )
-                _response.value = responseObject
+                response.value = responseObject
                 Log.d(TAG, "DepartamentosResponseHandler: status=${responseObject.status}")
                 Log.d(
                     TAG,
@@ -237,11 +227,11 @@ class AuditoriasDataSource {
                         )
                         clasificacionesList.add(clasificacion)
                     }
-                    _clasificaciones.value = clasificacionesList
+                    clasificaciones.value = clasificacionesList
                 }
             }, {
                 it.printStackTrace()
-                _response.value = ApiResponse(
+                response.value = ApiResponse(
                     status = "error_app",
                     description = "No se pudo consultar la auditoria"
                 )

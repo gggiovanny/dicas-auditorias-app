@@ -19,6 +19,7 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.dicas.auditorias.R
 import com.dicas.auditorias.ui.activos.ActivosViewModel
 import com.dicas.auditorias.ui.activos.ActivosViewModelFactory
+import com.dicas.auditorias.ui.common.SharedDataViewModel
 
 
 class ScannerFragment : Fragment() {
@@ -32,7 +33,7 @@ class ScannerFragment : Fragment() {
     private lateinit var codeScanner: CodeScanner
     private lateinit var navController: NavController
     private lateinit var viewModel: ActivosViewModel
-
+    private lateinit var sharedData: SharedDataViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +43,7 @@ class ScannerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Inicializando variables lateinit
+        /** Inicializando variables lateinit */
         viewModel = activity.run {
             ViewModelProviders.of(
                 this ?: throw Exception("Invalid fragment activity"),
@@ -54,12 +55,21 @@ class ScannerFragment : Fragment() {
         val scannerView = view.findViewById<CodeScannerView>(R.id.scanner_view)
         val activity = requireActivity()
         codeScanner = CodeScanner(activity, scannerView)
+        /** Obteniendo los datos de usuario compartidos */
+        sharedData = activity.run {
+            ViewModelProviders.of(this)[SharedDataViewModel::class.java]
+        }
 
-        //Configurando callback para cuando el scanner encuentre algo
+        /** Configurando callback para cuando el scanner encuentre algo */
         codeScanner.decodeCallback = DecodeCallback {
 
             if (returnId) { // si se solicita a traves del parametro que se regrese la ID, se navega al fragment anterior y se le pasa dicho parametro.
-                activity.runOnUiThread { viewModel.setActivoExistente(extractID(it.text)) }
+                activity.runOnUiThread {
+                    viewModel.setActivoExistente(
+                        sharedData.token,
+                        extractID(it.text)
+                    )
+                }
             } else { // Si no, por defecto se abre el QR como pagina web para consulta.
                 openWebPage(it.text)
             }

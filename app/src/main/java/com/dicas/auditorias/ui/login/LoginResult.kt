@@ -3,7 +3,7 @@ package com.dicas.auditorias.ui.login
 import com.dicas.auditorias.data.model.LoggedInUser
 
 /**
- * Authentication result : success (user details) or error message.
+ * Authentication result : success (userDataSource details) or error message.
  */
 data class LoginResult(
     val success: LoggedInUser? = null,

@@ -1,4 +1,4 @@
-package com.dicas.auditorias.ui.utils
+package com.dicas.auditorias.ui.common
 
 import android.text.Editable
 import android.text.TextWatcher

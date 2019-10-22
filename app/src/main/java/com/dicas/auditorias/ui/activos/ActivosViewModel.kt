@@ -1,12 +1,13 @@
 package com.dicas.auditorias.ui.activos
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.ActivosRepository
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
-import com.dicas.auditorias.ui.utils.ViewModelRecyclerBinding
+import com.dicas.auditorias.ui.common.ViewModelRecyclerBinding
 
 class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
     ViewModelRecyclerBinding<Activo> {
@@ -32,31 +33,35 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
 
     override fun getObjectAt(position: Int) = activos.value?.get(position)
 
-    /** Esto actualiza el valor del livedata y ya que este esta siendo observado,
-     * hace que se refleje el cambio en la UI */
-    fun setActivoExistente(idActivo: Int) {
-        activos.value!![1].existencia_actual = "1"
-        "setActivoExistente: activos[3].id: ${activos.value!![3].id}, activos[3].existencia_actual: ${activos.value!![3].existencia_actual} "
-
-
-        /*
-        val activosList = activos.value
+    /**
+     * Esto actualiza el valor del livedata y ya que este esta siendo observado,
+     * hace que se refleje el cambio en la UI
+     * */
+    fun setActivoExistente(apiKey: String, idActivo: Int) {
         /** Se busca la id del activo proporcionada en los elementos de la lista del livedata  */
-        val activoUpdating: Activo? = activosList?.find { activo -> activo.id.toInt() == idActivo }
+        val activoUpdating: Activo? =
+            activos.value?.find { activo -> activo.id.toInt() == idActivo }
 
-        Log.d(TAG, "setActivoExistente: activoUpdating: id=[${activoUpdating?.id}], description=[${activoUpdating?.descripcion}]")
-
-        /** Si se encuentra, se actualiza su valor */
+        /** Si se encuentra, se actualiza su valor en la interfaz y en la UI */
         if (activoUpdating != null) {
 
-            val indexForUpdate = activosList.indexOf(activoUpdating)
-            activoUpdating.existencia_actual = "1"
-            activosList[indexForUpdate] = activoUpdating
+            val indexForUpdate = activos.value?.indexOf(activoUpdating)
 
-            Log.d(TAG, "setActivoExistente: indexForUpdate=[$indexForUpdate]")
-            
-            activos.value = activosList*
-            activos.value!![1].existencia_actual = "1"
+            try {
+                activos.value!![indexForUpdate!!].existencia_actual = "1"
+                //TODO("Actualizar en la API")
+
+                Log.d(
+                    TAG,
+                    "setActivoExistente: activos[$indexForUpdate].id: ${activos.value!![indexForUpdate].id}, activos[$indexForUpdate].existencia_actual: ${activos.value!![indexForUpdate].existencia_actual} "
+                )
+            } catch (e: Throwable) {
+                response.value = ApiResponse(
+                    status = "error_show",
+                    description = "¡El activo escaneado no se encuentra en esta auditoria!"
+                )
+            }
+
         } else {
             response.value = ApiResponse(
                 status = "alert_show",
@@ -64,19 +69,7 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
 
             )
         }
-
-
-         */
-
     }
 
-    fun setActivoExistenciaActualAPI(
-        apiKey: String,
-        idAuditoria: Int,
-        idActivo: Int,
-        existencia: Boolean
-    ) {
-        //TODO("Borrar y llamar directamente del repositorio si no es necesario llamar a este metodo desde fuera")
-        repository.setActivoExistenciaActualAPI(apiKey, idAuditoria, idActivo, existencia)
-    }
+
 }

@@ -10,7 +10,7 @@ interface ApiService {
 
     @GET("auth")
     fun getToken(
-        @Query("user") user: String,
+        @Query("userDataSource") user: String,
         @Query("passwd") passwd: String
     ): Observable<JsonObject>
 
@@ -37,7 +37,7 @@ interface ApiService {
 
     @GET("auditorias")
     fun getAuditorias(
-        @Query("user") user: String = "",
+        @Query("userDataSource") user: String = "",
         @Query("status") status: String = ""
     ): Observable<JsonObject>
 

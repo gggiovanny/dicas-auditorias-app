@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,9 +16,10 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.*
+import com.dicas.auditorias.ui.common.OnItemSelectedListener
+import com.dicas.auditorias.ui.common.SharedDataViewModel
+import com.dicas.auditorias.ui.common.afterTextChanged
 import com.dicas.auditorias.ui.login.LoginActivity
-import com.dicas.auditorias.ui.utils.OnItemSelectedListener
-import com.dicas.auditorias.ui.utils.afterTextChanged
 import kotlinx.android.synthetic.main.fragment_nueva_auditoria.*
 
 
@@ -30,8 +30,9 @@ class NuevaAuditoriaFragment : Fragment() {
     }
 
     private lateinit var viewModel: AuditoriaViewModel
-    private lateinit var userData: LoggedInUser
     private lateinit var navController: NavController
+    private lateinit var sharedData: SharedDataViewModel
+
 
     private var firstError = true
     private var firstSucess = true
@@ -40,16 +41,20 @@ class NuevaAuditoriaFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /** Obteniendo los datos de usuario que vienen del login */
-        try {
-            userData = arguments?.getParcelable<LoggedInUser>("user_data")!!
-        } catch (ex: Throwable) {
-            throw Exception("$TAG: No se recibieron los datos del usuario desde el login!", ex)
-        }
+
+        /** Obteniendo los datos de usuario compartidos */
+        sharedData = activity?.run {
+            ViewModelProviders.of(this)[SharedDataViewModel::class.java]
+        } ?: throw Exception("No se recibieron los datos del usuario desde el login!")
 
         /** Inicializando view model */
-        viewModel = ViewModelProviders.of(this, AuditoriasViewModelFactory())
-            .get(AuditoriaViewModel::class.java)
+        viewModel = activity.run {
+            ViewModelProviders.of(
+                this ?: throw Exception("Invalid fragment activity"),
+                AuditoriasViewModelFactory()
+            ).get(AuditoriaViewModel::class.java)
+        }
+
         setupLoginIfExpiredToken()
 
 
@@ -70,7 +75,7 @@ class NuevaAuditoriaFragment : Fragment() {
         button_nueva_auditoria.setOnClickListener {
             try {
                 viewModel.createAuditoria(
-                    apiKey = userData.token,
+                    apiKey = sharedData.token,
                     empresa = (empresa_spinner.selectedItem as? Empresa)!!.id,
                     departamento = (departamento_spinner.selectedItem as? Departamento)!!.id,
                     clasificacion = (clasificacion_spinner.selectedItem as? Clasificacion)!!.id,
@@ -115,8 +120,7 @@ class NuevaAuditoriaFragment : Fragment() {
             descripcion = text_descripcion.text.toString()
         )
 
-        val bundle = bundleOf("user_data" to userData, "auditoria_activa" to auditoriaActiva)
-        navController.navigate(R.id.action_nuevaAuditoria_to_activosFragment, bundle)
+        navController.navigate(R.id.action_nuevaAuditoria_to_activosFragment)
     }
 
     private fun setupSpinners() {
@@ -144,7 +148,7 @@ class NuevaAuditoriaFragment : Fragment() {
         }
 
         /** Llamando al API para obtener los datos y creando el observer de empresas*/
-        viewModel.callEmpresas(apikey = userData.token)
+        viewModel.callEmpresas(apikey = sharedData.token)
         viewModel.empresas.observe(this, Observer { empresas: List<Empresa> ->
             for (empresa in empresas)
                 adapterEmpresas.add(empresa)
@@ -173,7 +177,7 @@ class NuevaAuditoriaFragment : Fragment() {
         })
 
         /** Observer de clasificaciones */
-        viewModel.callClasificaciones(apiKey = userData.token)
+        viewModel.callClasificaciones(apiKey = sharedData.token)
         viewModel.clasificaciones.observe(this, Observer { clasificaciones: List<Clasificacion> ->
             for (clasif in clasificaciones)
                 adapterClasif.add(clasif)
@@ -195,7 +199,7 @@ class NuevaAuditoriaFragment : Fragment() {
 
                     try {
                         viewModel.callDepartamentos(
-                            apikey = userData.token,
+                            apikey = sharedData.token,
                             empresaID = empresa!!.id.toInt()
                         )
                     } catch (e: Throwable) {
@@ -264,7 +268,7 @@ class NuevaAuditoriaFragment : Fragment() {
 
     private fun setupReloadWhenBackButton() {
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            /*val bundle = bundleOf("user_data" to userData)
+            /*val bundle = bundleOf("user_data" to userDataSource)
             navController.navigate(R.id.action_nuevaAuditoria_to_auditoriasFragment, bundle)*/
             navController.popBackStack()
         }

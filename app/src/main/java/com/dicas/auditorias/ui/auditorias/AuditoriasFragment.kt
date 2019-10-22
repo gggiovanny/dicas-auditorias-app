@@ -16,7 +16,7 @@ import androidx.navigation.Navigation
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
-import com.dicas.auditorias.data.model.LoggedInUser
+import com.dicas.auditorias.ui.common.SharedDataViewModel
 import com.dicas.auditorias.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_auditoria.*
 import kotlinx.android.synthetic.main.layout_toolbar_general.*
@@ -31,7 +31,7 @@ class AuditoriasFragment : Fragment() {
     }
 
     private lateinit var viewModel: AuditoriaViewModel
-    private lateinit var userData: LoggedInUser
+    private lateinit var sharedData: SharedDataViewModel
     private lateinit var navController: NavController
 
     private var firstError = true
@@ -42,15 +42,25 @@ class AuditoriasFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         /** Obteniendo los datos de usuario que vienen del login */
+        sharedData = activity?.run {
+            ViewModelProviders.of(this)[SharedDataViewModel::class.java]
+        } ?: throw Exception("Invalid Activity")
         try {
-            userData = arguments?.getParcelable("user_data")!!
+            sharedData.userDataSource.value = arguments?.getParcelable("user_data")!!
         } catch (ex: Throwable) {
             throw Exception("$TAG: No se recibieron los datos del usuario desde el login!", ex)
         }
 
         /** Inicializando view model */
-        viewModel = ViewModelProviders.of(this, AuditoriasViewModelFactory())
-            .get(AuditoriaViewModel::class.java)
+        viewModel = activity.run {
+            ViewModelProviders.of(
+                this ?: throw Exception("Invalid fragment activity"),
+                AuditoriasViewModelFactory()
+            ).get(AuditoriaViewModel::class.java)
+        }
+
+
+
         setupResponseHandler()
 
         return inflater.inflate(R.layout.fragment_auditoria, container, false)
@@ -69,9 +79,13 @@ class AuditoriasFragment : Fragment() {
 
 
     private fun setupRecyclerView() {
-        rvAuditorias.adapter = viewModel.recyclerAuditoriasAdapter
+        if (viewModel.auditorias.value == null) {
+            viewModel.callAuditorias(apikey = sharedData.token)
 
-        viewModel.callAuditorias(apikey = userData.token)
+        }
+
+
+        rvAuditorias.adapter = viewModel.recyclerAuditoriasAdapter
         viewModel.auditorias.observe(this, Observer { auditorias: List<Auditoria> ->
             viewModel.setAuditoriasInRecyclerAdapter(auditorias)
             Log.d(TAG, "setupRecyclerView: observe done!")
@@ -97,22 +111,23 @@ class AuditoriasFragment : Fragment() {
             loading.visibility = View.GONE
             Log.d(TAG, "setupResponseHandler: ${response.status}: ${response.description}")
 
-            /*
+
             if(response.status.contains("show")) {
+                Log.d(TAG, "setupResponseHandler: showing: ${response.description}")
                 Toast.makeText(
                     context, response.description,
                     Toast.LENGTH_LONG
                 ).show()
             }
 
-             */
+
 
             if (response.isOk) {
-                if (firstSucess && userData.fromMemory) {
+                if (firstSucess && sharedData.isDataFromMemory) {
                     firstSucess = false
                     Toast.makeText(
                         context,
-                        "${getString(R.string.welcome)} ${userData.name}",
+                        "${getString(R.string.welcome)} ${sharedData.username}",
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -152,13 +167,12 @@ class AuditoriasFragment : Fragment() {
 
     private fun setupNuevaAuditoriaButton() {
         fab_nueva_auditoria.setOnClickListener {
-            val bundle = bundleOf("user_data" to userData)
-            navController.navigate(R.id.action_auditoriasFragment_to_nuevaAuditoria, bundle)
+            navController.navigate(R.id.action_auditoriasFragment_to_nuevaAuditoria)
         }
     }
 
     private fun openActivos(auditoriaActiva: Auditoria) {
-        val bundle = bundleOf("user_data" to userData, "auditoria_activa" to auditoriaActiva)
+        val bundle = bundleOf("auditoria_activa" to auditoriaActiva)
         navController.navigate(R.id.action_auditoriasFragment_to_activosFragment, bundle)
     }
 
