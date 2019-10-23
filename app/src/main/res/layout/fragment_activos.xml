@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.activos.ActivosFragment">
 
+    <TextView
+        android:id="@+id/text_auditoria_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:gravity="center"
+        android:text="@string/auditoria_vacia"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_activos"
         android:layout_width="match_parent"
@@ -14,6 +25,7 @@
         android:paddingTop="@dimen/default_padding"
         android:paddingRight="@dimen/default_padding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:visibility="gone"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     <com.google.android.material.appbar.AppBarLayout

@@ -64,4 +64,6 @@
     <string name="auditoria_nueva_button">Crear nueva auditoria</string>
     <string name="auditoria_nueva_title">Nueva auditoría</string>
 
+    <string name="auditoria_vacia">¡Auditoría vacía! No hay nigún activo fijo con los filtros especificados.</string>
+
 </resources>

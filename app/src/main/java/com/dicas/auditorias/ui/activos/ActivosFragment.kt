@@ -82,14 +82,18 @@ class ActivosFragment : Fragment() {
         navController = Navigation.findNavController(view ?: return)
 
         setupRecyclerView()
-
         setupAppBarScrollFade(app_bar_layout, ArrayList<View>().apply {
             add(chip_group)
         })
-
         addDescriptionChipsInToolbar()
         setupScannerButton()
         setupResponseHandler()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        rv_activos.visibility = View.GONE
+        text_auditoria_empty.visibility = View.GONE
     }
 
     private fun setupRecyclerView() {
@@ -106,6 +110,8 @@ class ActivosFragment : Fragment() {
         }
 
         viewModel.activos.observe(this, Observer {
+
+            setupHideTextAuditoriaEmpty()
             viewModel.recyclerActivosAdapter.notifyDataSetChanged()
             Log.d(TAG, "activos observer: RecyclerView updated!")
 
@@ -217,6 +223,18 @@ class ActivosFragment : Fragment() {
                 bundleOf("return_id" to true)
             )
         }
+    }
+
+    private fun setupHideTextAuditoriaEmpty() {
+
+        if (viewModel.activos.value.isNullOrEmpty()) {
+            rv_activos.visibility = View.GONE
+            text_auditoria_empty.visibility = View.VISIBLE
+        } else {
+            rv_activos.visibility = View.VISIBLE
+            text_auditoria_empty.visibility = View.GONE
+        }
+
     }
 
 
