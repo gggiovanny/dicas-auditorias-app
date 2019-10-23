@@ -25,10 +25,15 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         // can be launched in a separate asynchronous job
         loginRepository.login(username, password) {responseJson ->
 
-            var apiResponse = ApiResponse(
+            val apiResponse = ApiResponse(
                 status = responseJson.get("status").asString,
                 description = responseJson.get("description").asString
             )
+            Log.d(
+                TAG,
+                "callToken.onResponse: status=[${apiResponse.status}], description=[${apiResponse.description}]"
+            )
+
 
             if (apiResponse.isOk) {
                 apiResponse.token = responseJson.get("token").asString
@@ -43,6 +48,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                     throw Exception("$TAG: No token on response object!", e)
                 }
             } else {
+                Log.d(TAG, "login: username=[$username], password=[$password]")
                 _loginResult.value = LoginResult(error = R.string.login_failed, description = apiResponse.description)
             }
         }
