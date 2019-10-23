@@ -53,8 +53,8 @@ class ActivosFragment : Fragment() {
             auditoriaActiva = arguments?.getParcelable<Auditoria>("auditoria_activa")!!
         } catch (ex: Throwable) {
             val msg = "No se recibió la auditoria activa!"
-            Log.d(TAG, "onCreateView: $msg")
             Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+            throw Exception(msg, ex)
         }
 
         /** Obteniendo los datos de usuario compartidos */
@@ -69,15 +69,16 @@ class ActivosFragment : Fragment() {
                 ActivosViewModelFactory()
             ).get(ActivosViewModel::class.java)
         }
-
-        /*val binding: ViewDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_activos, container, false)*/
+//        //No usar aqui, porque causa conflicto con el recycler view y no se muestra :c
+//        val viewBinding: ViewDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_activos, container, false)
+//        viewBinding.setVariable(BR.modelActFr, viewModel)
+//        viewBinding.executePendingBindings()
 
         return inflater.inflate(R.layout.fragment_activos, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         navController = Navigation.findNavController(view ?: return)
 
         setupRecyclerView()
@@ -94,7 +95,7 @@ class ActivosFragment : Fragment() {
     private fun setupRecyclerView() {
         rv_activos.adapter = viewModel.recyclerActivosAdapter
 
-        if (viewModel.activos.value == null) {
+        if (viewModel.activos.value == null || auditoriaActiva.id != viewModel.auditoriaConsultada) {
             viewModel.callActivosAPI(
                 apiKey = sharedData.token,
                 clasificacion = auditoriaActiva.idClasificacion,
@@ -110,6 +111,7 @@ class ActivosFragment : Fragment() {
 
         })
     }
+
 
     private fun setupResponseHandler() {
         viewModel.response.observe(this, Observer {

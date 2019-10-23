@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -120,7 +121,8 @@ class NuevaAuditoriaFragment : Fragment() {
             descripcion = text_descripcion.text.toString()
         )
 
-        navController.navigate(R.id.action_nuevaAuditoria_to_activosFragment)
+        val bundle = bundleOf("auditoria_activa" to auditoriaActiva)
+        navController.navigate(R.id.action_nuevaAuditoria_to_activosFragment, bundle)
     }
 
     private fun setupSpinners() {
@@ -268,8 +270,6 @@ class NuevaAuditoriaFragment : Fragment() {
 
     private fun setupReloadWhenBackButton() {
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            /*val bundle = bundleOf("user_data" to userDataSource)
-            navController.navigate(R.id.action_nuevaAuditoria_to_auditoriasFragment, bundle)*/
             navController.popBackStack()
         }
     }
