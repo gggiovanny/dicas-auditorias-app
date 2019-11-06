@@ -42,6 +42,7 @@ class ActivosFragment : Fragment() {
     private lateinit var navController: NavController
 
     private var firstError = true
+    private var mismaAuditoria = false
 
 
     override fun onCreateView(
@@ -81,6 +82,12 @@ class ActivosFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         navController = Navigation.findNavController(view ?: return)
 
+        if (auditoriaActiva.id == viewModel.ultimaAuditoriaConsultada) mismaAuditoria = true
+
+        Log.d(
+            TAG,
+            "onActivityCreated: ${auditoriaActiva.id} ${viewModel.ultimaAuditoriaConsultada} progressbar: ${progressBar.visibility}"
+        )
         setupRecyclerView()
         setupAppBarScrollFade(app_bar_layout, ArrayList<View>().apply {
             add(chip_group)
@@ -92,14 +99,24 @@ class ActivosFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        rv_activos.visibility = View.GONE
-        text_auditoria_empty.visibility = View.GONE
+        Log.d(
+            TAG,
+            "onResume: ${auditoriaActiva.id} ${viewModel.ultimaAuditoriaConsultada} progressbar: ${progressBar.visibility}"
+        )
+        setLoading(true)
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy: ${auditoriaActiva.id} ${viewModel.ultimaAuditoriaConsultada}")
     }
 
     private fun setupRecyclerView() {
         rv_activos.adapter = viewModel.recyclerActivosAdapter
 
-        if (viewModel.activos.value == null || auditoriaActiva.id != viewModel.auditoriaConsultada) {
+        /** Solo actualizar el modelo si su valor es nulo o es diferente a a la anteriormente consultada */
+        if (viewModel.activos.value == null || auditoriaActiva.id != viewModel.ultimaAuditoriaConsultada) {
             viewModel.callActivosAPI(
                 apiKey = sharedData.token,
                 clasificacion = auditoriaActiva.idClasificacion,
@@ -110,11 +127,10 @@ class ActivosFragment : Fragment() {
         }
 
         viewModel.activos.observe(this, Observer {
-
-            setupHideTextAuditoriaEmpty()
             viewModel.recyclerActivosAdapter.notifyDataSetChanged()
+            viewModel.ultimaAuditoriaConsultada = auditoriaActiva.id!!
+            setLoading(false)
             Log.d(TAG, "activos observer: RecyclerView updated!")
-
         })
     }
 
@@ -225,16 +241,35 @@ class ActivosFragment : Fragment() {
         }
     }
 
-    private fun setupHideTextAuditoriaEmpty() {
+    private fun setLoading(loaing: Boolean) {
 
-        if (viewModel.activos.value.isNullOrEmpty()) {
-            rv_activos.visibility = View.GONE
-            text_auditoria_empty.visibility = View.VISIBLE
-        } else {
-            rv_activos.visibility = View.VISIBLE
-            text_auditoria_empty.visibility = View.GONE
+
+        when (loaing) {
+            true -> {
+                // Solo se ejecuta cuando no sea la misma pantalla que la anteriormente abierta, pues cuando regresa a la misma pantalla, no tiene sentido estar en "loading"
+                if (mismaAuditoria)
+                    return
+
+                rv_activos.visibility = View.GONE
+                text_auditoria_empty.visibility = View.GONE
+                progressBar.visibility = View.VISIBLE
+
+            }
+
+            false -> {
+                if (viewModel.activos.value.isNullOrEmpty()) {
+                    rv_activos.visibility = View.GONE
+                    text_auditoria_empty.visibility = View.VISIBLE
+                } else {
+                    rv_activos.visibility = View.VISIBLE
+                    text_auditoria_empty.visibility = View.GONE
+                }
+
+                progressBar.visibility = View.GONE
+            }
         }
 
+        Log.d(TAG, "onSetLoading($loaing): Progressbar: ${progressBar.visibility}")
     }
 
 

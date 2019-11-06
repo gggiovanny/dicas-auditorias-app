@@ -18,7 +18,7 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
     val activos: MutableLiveData<ArrayList<Activo>> = repository.activos
     val response: MutableLiveData<ApiResponse> = repository.response
 
-    var auditoriaConsultada: String = "-1"
+    var ultimaAuditoriaConsultada: String = "-1"
 
     val recyclerActivosAdapter = RecyclerActivosAdapter(this, R.layout.layout_activo_item)
 
@@ -29,7 +29,6 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
         departamento: String? = null,
         clasificacion: String? = null
     ) {
-        auditoriaConsultada = auditoriaActual
         repository.callActivosAPI(apiKey, auditoriaActual, empresa, departamento, clasificacion)
     }
 
