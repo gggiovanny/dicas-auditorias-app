@@ -38,7 +38,6 @@ class ActivosFragment : Fragment() {
 
     private lateinit var viewModel: ActivosViewModel
     private lateinit var sharedData: SharedDataViewModel
-    private lateinit var auditoriaActiva: Auditoria
     private lateinit var navController: NavController
 
     private var firstError = true
@@ -49,19 +48,19 @@ class ActivosFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        /** Obteniendo los datos de usuario compartidos */
+        sharedData = activity?.run {
+            ViewModelProviders.of(this)[SharedDataViewModel::class.java]
+        } ?: throw Exception("No se recibieron los datos del usuario desde el login!")
+
         /** Obteniendo auditoria activa */
         try {
-            auditoriaActiva = arguments?.getParcelable<Auditoria>("auditoria_activa")!!
+            sharedData.auditoriaActiva = arguments?.getParcelable<Auditoria>("auditoria_activa")!!
         } catch (ex: Throwable) {
             val msg = "No se recibió la auditoria activa!"
             Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
             throw Exception(msg, ex)
         }
-
-        /** Obteniendo los datos de usuario compartidos */
-        sharedData = activity?.run {
-            ViewModelProviders.of(this)[SharedDataViewModel::class.java]
-        } ?: throw Exception("No se recibieron los datos del usuario desde el login!")
 
         /** Inicializando view model */
         viewModel = activity.run {
@@ -82,11 +81,11 @@ class ActivosFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         navController = Navigation.findNavController(view ?: return)
 
-        if (auditoriaActiva.id == viewModel.ultimaAuditoriaConsultada) mismaAuditoria = true
+        if (sharedData.auditoriaActiva?.id == viewModel.ultimaAuditoriaConsultada) mismaAuditoria = true
 
         Log.d(
             TAG,
-            "onActivityCreated: ${auditoriaActiva.id} ${viewModel.ultimaAuditoriaConsultada} progressbar: ${progressBar.visibility}"
+            "onActivityCreated: ${sharedData.auditoriaActiva?.id} ${viewModel.ultimaAuditoriaConsultada} progressbar: ${progressBar.visibility}"
         )
         setupRecyclerView()
         setupAppBarScrollFade(app_bar_layout, ArrayList<View>().apply {
@@ -101,7 +100,7 @@ class ActivosFragment : Fragment() {
         super.onResume()
         Log.d(
             TAG,
-            "onResume: ${auditoriaActiva.id} ${viewModel.ultimaAuditoriaConsultada} progressbar: ${progressBar.visibility}"
+            "onResume: ${sharedData.auditoriaActiva?.id} ${viewModel.ultimaAuditoriaConsultada} progressbar: ${progressBar.visibility}"
         )
         setLoading(true)
     }
@@ -109,26 +108,26 @@ class ActivosFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy: ${auditoriaActiva.id} ${viewModel.ultimaAuditoriaConsultada}")
+        Log.d(TAG, "onDestroy: ${sharedData.auditoriaActiva?.id} ${viewModel.ultimaAuditoriaConsultada}")
     }
 
     private fun setupRecyclerView() {
         rv_activos.adapter = viewModel.recyclerActivosAdapter
 
         /** Solo actualizar el modelo si su valor es nulo o es diferente a a la anteriormente consultada */
-        if (viewModel.activos.value == null || auditoriaActiva.id != viewModel.ultimaAuditoriaConsultada) {
+        if (viewModel.activos.value == null || sharedData.auditoriaActiva?.id != viewModel.ultimaAuditoriaConsultada) {
             viewModel.callActivosAPI(
                 apiKey = sharedData.token,
-                clasificacion = auditoriaActiva.idClasificacion,
-                departamento = auditoriaActiva.idDepartamento,
-                empresa = auditoriaActiva.idEmpresa,
-                auditoriaActual = auditoriaActiva.id ?: ""
+                clasificacion = sharedData.auditoriaActiva?.idClasificacion,
+                departamento = sharedData.auditoriaActiva?.idDepartamento,
+                empresa = sharedData.auditoriaActiva?.idEmpresa,
+                auditoriaActual = sharedData.auditoriaActiva?.id ?: ""
             )
         }
 
         viewModel.activos.observe(this, Observer {
             viewModel.recyclerActivosAdapter.notifyDataSetChanged()
-            viewModel.ultimaAuditoriaConsultada = auditoriaActiva.id!!
+            viewModel.ultimaAuditoriaConsultada = sharedData.auditoriaActiva?.id!!
             setLoading(false)
             Log.d(TAG, "activos observer: RecyclerView updated!")
         })
@@ -187,9 +186,9 @@ class ActivosFragment : Fragment() {
     private fun addDescriptionChipsInToolbar() {
         val textColor = getColorStateList(context ?: return, R.color.text_primary_light)
 
-        if (!auditoriaActiva.empresa.isNullOrEmpty()) {
+        if (!sharedData.auditoriaActiva?.empresa.isNullOrEmpty()) {
             chip_group.addView(Chip(chip_group.context).apply {
-                text = (auditoriaActiva.empresa ?: "").toLowerCase(Locale.ENGLISH).capitalize()
+                text = (sharedData.auditoriaActiva?.empresa ?: "").toLowerCase(Locale.ENGLISH).capitalize()
                 chipBackgroundColor =
                     ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorEmpresa))
                 setTextColor(textColor)
@@ -198,9 +197,9 @@ class ActivosFragment : Fragment() {
             })
         }
 
-        if (!auditoriaActiva.departamento.isNullOrEmpty()) {
+        if (!sharedData.auditoriaActiva?.departamento.isNullOrEmpty()) {
             chip_group.addView(Chip(chip_group.context).apply {
-                text = (auditoriaActiva.departamento ?: "").toLowerCase(Locale.ENGLISH).capitalize()
+                text = (sharedData.auditoriaActiva?.departamento ?: "").toLowerCase(Locale.ENGLISH).capitalize()
                 chipBackgroundColor =
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
@@ -214,10 +213,10 @@ class ActivosFragment : Fragment() {
             })
         }
 
-        if (!auditoriaActiva.clasificacion.isNullOrEmpty()) {
+        if (!sharedData.auditoriaActiva?.clasificacion.isNullOrEmpty()) {
             chip_group.addView(Chip(chip_group.context).apply {
                 text =
-                    (auditoriaActiva.clasificacion ?: "").toLowerCase(Locale.ENGLISH).capitalize()
+                    (sharedData.auditoriaActiva?.clasificacion ?: "").toLowerCase(Locale.ENGLISH).capitalize()
                 chipBackgroundColor =
                     ColorStateList.valueOf(
                         ContextCompat.getColor(

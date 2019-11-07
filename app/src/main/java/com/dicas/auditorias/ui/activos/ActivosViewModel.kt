@@ -7,6 +7,7 @@ import com.dicas.auditorias.R
 import com.dicas.auditorias.data.ActivosRepository
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
+import com.dicas.auditorias.data.model.Auditoria
 import com.dicas.auditorias.ui.common.ViewModelRecyclerBinding
 
 class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
@@ -38,23 +39,31 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
      * Esto actualiza el valor del livedata y ya que este esta siendo observado,
      * hace que se refleje el cambio en la UI
      * */
-    fun setActivoExistente(apiKey: String, idActivo: Int) {
-        /** Se busca la id del activo proporcionada en los elementos de la lista del livedata  */
+    fun setActivoExistente(apiKey: String, idAuditoria: Int, idActivo: Int) {
+        // Se busca la id del activo proporcionada en los elementos de la lista del livedata
         val activoUpdating: Activo? =
             activos.value?.find { activo -> activo.id.toInt() == idActivo }
 
-        /** Si se encuentra, se actualiza su valor en la interfaz y en la UI */
+        // Si se encuentra, se actualiza su valor en la interfaz y en la UI
         if (activoUpdating != null) {
 
             val indexForUpdate = activos.value?.indexOf(activoUpdating)
 
             try {
-                activos.value!![indexForUpdate!!].existencia_actual = "1"
-                //TODO("Actualizar en la API")
+                // Actualizando la existencia en la API
+                repository.setActivoExistenciaActualAPI(
+                    apiKey = apiKey,
+                    idAuditoria = idAuditoria,
+                    idActivo = idActivo,
+                    existencia = true
+                )
+
+                //TODO("MARCAR EN LA INTERFAZ COMO ACTIVO CUANDO HAYA RESPUESTA DE LA API")
+                /** activos.value!![indexForUpdate!!].existencia_actual = "1" */
 
                 Log.d(
                     TAG,
-                    "setActivoExistente: activos[$indexForUpdate].id: ${activos.value!![indexForUpdate].id}, activos[$indexForUpdate].existencia_actual: ${activos.value!![indexForUpdate].existencia_actual} "
+                    "setActivoExistente: activos[$indexForUpdate].id: ${activos.value!![indexForUpdate!!].id}, activos[$indexForUpdate].existencia_actual: ${activos.value!![indexForUpdate].existencia_actual} "
                 )
             } catch (e: Throwable) {
                 response.value = ApiResponse(
