@@ -73,7 +73,7 @@ interface ApiService {
         @Path("id_activo") id_activo: Int
     ): Observable<JsonObject>
 
-    @POST("activos/{id_auditoria}/activos/{id_activo}")
+    @POST("auditorias/{id_auditoria}/activos/{id_activo}")
     fun setActivoExistenciaActual(
         @Path("id_auditoria") id_auditoria: Int,
         @Path("id_activo") id_activo: Int,

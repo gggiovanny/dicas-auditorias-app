@@ -7,8 +7,8 @@ import com.dicas.auditorias.R
 import com.dicas.auditorias.data.ActivosRepository
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
-import com.dicas.auditorias.data.model.Auditoria
 import com.dicas.auditorias.ui.common.ViewModelRecyclerBinding
+import com.google.gson.JsonObject
 
 class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
     ViewModelRecyclerBinding<Activo> {
@@ -55,16 +55,25 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
                     apiKey = apiKey,
                     idAuditoria = idAuditoria,
                     idActivo = idActivo,
-                    existencia = true
+                    existencia = true,
+                    onResponse = { responseJson: JsonObject ->
+                        val responseObject = ApiResponse(
+                            status = responseJson.get("status").asString,
+                            description = responseJson.get("description").asString
+                        )
+
+                        Log.d(TAG, "setActivoExistenciaActual: status=${responseObject.status}")
+                        Log.d(
+                            TAG,
+                            "setActivoExistenciaActual: description=[${responseObject.description}]"
+                        )
+
+                    }
                 )
 
-                //TODO("MARCAR EN LA INTERFAZ COMO ACTIVO CUANDO HAYA RESPUESTA DE LA API")
-                /** activos.value!![indexForUpdate!!].existencia_actual = "1" */
+                activos.value!![indexForUpdate!!].existencia_actual = "1"
 
-                Log.d(
-                    TAG,
-                    "setActivoExistente: activos[$indexForUpdate].id: ${activos.value!![indexForUpdate!!].id}, activos[$indexForUpdate].existencia_actual: ${activos.value!![indexForUpdate].existencia_actual} "
-                )
+
             } catch (e: Throwable) {
                 response.value = ApiResponse(
                     status = "error_show",

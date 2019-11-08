@@ -82,7 +82,8 @@ class ActivosDataSource {
         apiKey: String,
         idAuditoria: Int,
         idActivo: Int,
-        existencia: Boolean
+        existencia: Boolean,
+        onResponse: (responseJson: JsonObject) -> Unit
     ) {
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getApiService(apiKey)
@@ -92,16 +93,7 @@ class ActivosDataSource {
             existencia = existencia
         ).observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe({ responseJson: JsonObject ->
-                val responseObject = ApiResponse(
-                    status = responseJson.get("status").asString,
-                    description = responseJson.get("description").asString
-                )
-                /** La respuesta de la API se manda como objeto de respuesta directamente */
-                Log.d(TAG, "setActivoExistenciaActual: status=${responseObject.status}")
-                Log.d(TAG, "setActivoExistenciaActual: description=[${responseObject.description}]")
-                _response.value = responseObject
-            }, {
+            .subscribe(onResponse, {
                 it.printStackTrace()
                 _response.value = ApiResponse(
                     status = "error_app",

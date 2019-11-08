@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.dicas.auditorias.data.api.ActivosDataSource
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
+import com.google.gson.JsonObject
 
 class ActivosRepository(val dataSource: ActivosDataSource) {
 
@@ -24,9 +25,16 @@ class ActivosRepository(val dataSource: ActivosDataSource) {
         apiKey: String,
         idAuditoria: Int,
         idActivo: Int,
-        existencia: Boolean
+        existencia: Boolean,
+        onResponse: (responseJson: JsonObject) -> Unit
     ) {
-        dataSource.setActivoExistenciaActualAPI(apiKey, idAuditoria, idActivo, existencia)
+        dataSource.setActivoExistenciaActualAPI(
+            apiKey,
+            idAuditoria,
+            idActivo,
+            existencia,
+            onResponse
+        )
     }
 
 }

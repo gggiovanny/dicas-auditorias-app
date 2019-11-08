@@ -129,7 +129,7 @@ class ActivosFragment : Fragment() {
             viewModel.recyclerActivosAdapter.notifyDataSetChanged()
             viewModel.ultimaAuditoriaConsultada = sharedData.auditoriaActiva?.id!!
             setLoading(false)
-            Log.d(TAG, "activos observer: RecyclerView updated!")
+            Log.d(TAG, "activos observer: RecyclerView updated! WIII")
         })
     }
 
