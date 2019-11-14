@@ -21,7 +21,8 @@ interface ApiService {
         @Query("auditoria_actual") auditoria_actual: String = "",
         @Query("empresa") empresa: String = "",
         @Query("departamentos") departamento: String = "",
-        @Query("clasificacion") clasificacion: String = ""
+        @Query("clasificacion") clasificacion: String = "",
+        @Query("page_size") page_size: String = "100000"
     ): Observable<JsonObject>
 
     @GET("activos/{id}")
@@ -38,7 +39,8 @@ interface ApiService {
     @GET("auditorias")
     fun getAuditorias(
         @Query("user") user: String = "",
-        @Query("status") status: String = ""
+        @Query("status") status: String = "",
+        @Query("page_size") page_size: String = "100000"
     ): Observable<JsonObject>
 
     @GET("auditorias/{id}")
