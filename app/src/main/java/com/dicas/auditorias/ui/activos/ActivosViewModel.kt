@@ -39,7 +39,7 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
      * Esto actualiza el valor del livedata y ya que este esta siendo observado,
      * hace que se refleje el cambio en la UI
      * */
-    fun setActivoExistente(apiKey: String, idAuditoria: Int, idActivo: Int) {
+    fun setActivoExistencia(apiKey: String, idAuditoria: Int, idActivo: Int, existe: Boolean) {
         // Se busca la id del activo proporcionada en los elementos de la lista del livedata
         val activoUpdating: Activo? =
             activos.value?.find { activo -> activo.id.toInt() == idActivo }
@@ -68,10 +68,15 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
                             "setActivoExistenciaActual: description=[${responseObject.description}]"
                         )
 
+                        if (existe)
+                            activos.value!![indexForUpdate!!].existencia_actual = "1"
+                        else
+                            activos.value!![indexForUpdate!!].existencia_actual = "0"
+
+                        recyclerActivosAdapter.notifyDataSetChanged()
                     }
                 )
 
-                activos.value!![indexForUpdate!!].existencia_actual = "1"
 
 
             } catch (e: Throwable) {

@@ -65,10 +65,11 @@ class ScannerFragment : Fragment() {
 
             if (returnId) { // si se solicita a traves del parametro que se regrese la ID, se navega al fragment anterior y se le pasa dicho parametro.
                 activity.runOnUiThread {
-                    viewModel.setActivoExistente(
+                    viewModel.setActivoExistencia(
                         apiKey = sharedData.token,
                         idAuditoria = sharedData.auditoriaActiva?.id?.toInt()!!,
-                        idActivo = extractID(it.text)
+                        idActivo = extractID(it.text),
+                        existe = true
                     )
                 }
             } else { // Si no, por defecto se abre el QR como pagina web para consulta.

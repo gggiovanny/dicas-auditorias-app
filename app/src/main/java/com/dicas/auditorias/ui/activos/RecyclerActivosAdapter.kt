@@ -54,7 +54,7 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
         fun setDataCard(viewModel: ActivosViewModel, position: Int) {
 
 
-            /** Cuando se da click en el chip_existencia_actual */
+            //Cuando se da click en el chip_existencia_actual
             binding?.root?.chip_existencia_actual?.setOnClickListener {
                 /** Cuando se intente cambiar el estatus de existencia en la interfaz,
                  * conservar el status del modelo de datos y solo permitir alterarlo cuando no halla
