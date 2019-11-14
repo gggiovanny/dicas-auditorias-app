@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
-import com.dicas.auditorias.R
 import kotlinx.android.synthetic.main.layout_activo_item.view.*
 
 class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item: Int) :
@@ -61,10 +60,16 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
                  * un estatus definido en el modelo*/
                 when (viewModel.getObjectAt(position)?.existencia_actual) {
                     null -> {
+                        /*
                         binding?.root?.chip_existencia_actual?.setChipIconResource(R.drawable.ic_rounded_chip_false_black)
                         binding?.root?.chip_existencia_actual?.setChipIconTintResource(R.color.yellow_terminada)
                         binding?.root?.chip_existencia_actual?.setText(R.string.existencia_actual_false)
+                        */
 
+                        viewModel.setActivoExistencia(
+                            idActivo = viewModel.getObjectAt(position)?.id?.toInt()!!,
+                            existe = false
+                        )
                     }
                 }
             }

@@ -66,8 +66,6 @@ class ScannerFragment : Fragment() {
             if (returnId) { // si se solicita a traves del parametro que se regrese la ID, se navega al fragment anterior y se le pasa dicho parametro.
                 activity.runOnUiThread {
                     viewModel.setActivoExistencia(
-                        apiKey = sharedData.token,
-                        idAuditoria = sharedData.auditoriaActiva?.id?.toInt()!!,
                         idActivo = extractID(it.text),
                         existe = true
                     )
