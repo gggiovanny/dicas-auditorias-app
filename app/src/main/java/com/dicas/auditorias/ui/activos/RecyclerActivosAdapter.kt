@@ -74,10 +74,6 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
                 }
             }
 
-            itemView.test.text = viewModel.getObjectAt(position)?.existencia_actual
-
-
-
             binding?.setVariable(BR.modelAct, viewModel)
             binding?.setVariable(BR.position, position)
             binding?.executePendingBindings()

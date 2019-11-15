@@ -56,7 +56,7 @@ class NuevaAuditoriaFragment : Fragment() {
             ).get(AuditoriaViewModel::class.java)
         }
 
-        setupLoginIfExpiredToken()
+        setupResponseHandler()
 
 
         // Inflate the layout for this fragment
@@ -113,8 +113,9 @@ class NuevaAuditoriaFragment : Fragment() {
 
     }
 
-    private fun openActivos() {
+    private fun openActivos(idNuevaAuditoria: String) {
         val auditoriaActiva = Auditoria(
+            id = idNuevaAuditoria,
             idEmpresa = (empresa_spinner.selectedItem as? Empresa)!!.id,
             idDepartamento = (departamento_spinner.selectedItem as? Departamento)!!.id,
             idClasificacion = (clasificacion_spinner.selectedItem as? Clasificacion)!!.id,
@@ -226,10 +227,10 @@ class NuevaAuditoriaFragment : Fragment() {
         text_descripcion.afterTextChanged { button_nueva_auditoria.isEnabled = isDataValid() }
     }
 
-    private fun setupLoginIfExpiredToken() {
+    private fun setupResponseHandler() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
-            Log.d(TAG, "setupLoginIfExpiredToken: ${response.status}: ${response.description}")
+            Log.d(TAG, "setupResponseHandler: ${response.status}: ${response.description}")
             if (!response.isOk && firstError) {
                 if (!(response.status ?: return@Observer).contains("app")) {
                     firstError = false
@@ -248,11 +249,20 @@ class NuevaAuditoriaFragment : Fragment() {
             }
 
             if (response.isOk && response.description?.contains("Entry sucessfuly created") == true) {
-                openActivos()
+
+                try {
+                    openActivos(response.idAuditoria!!)
+                } catch (e: Exception) {
+                    viewModel.response.value = ApiResponse(
+                        status = "error_show",
+                        description = "¡Error! No se obtuvo de la base de datos el ID de la nueva auditoria creada."
+                    )
+                    return@Observer
+                }
             }
 
         })
-        Log.d(TAG, "setupLoginIfExpiredToken: created observer done!")
+        Log.d(TAG, "setupResponseHandler: created observer done!")
     }
 
     private fun showSesionCaducada(response: ApiResponse) {

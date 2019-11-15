@@ -75,7 +75,7 @@ class ActivosDataSource {
     }
 
     private fun ErrorHandler(error: Throwable) {
-        throw IOException("Error getting token from API", error)
+        throw IOException("Error al hacer la consulta a la API!!", error)
     }
 
     fun setActivoExistenciaActualAPI(
