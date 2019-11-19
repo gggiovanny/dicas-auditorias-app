@@ -70,26 +70,36 @@ class AuditoriasFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         navController = Navigation.findNavController(view ?: return)
 
-
-        loading.visibility = View.VISIBLE
         setupRecyclerView()
         setupNuevaAuditoriaButton()
         setupScannerButton()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setLoading(true)
+    }
+
+    private fun callAPI() {
+        viewModel.callAuditorias(apikey = sharedData.token)
+    }
 
     private fun setupRecyclerView() {
-        if (viewModel.auditorias.value == null) {
-            viewModel.callAuditorias(apikey = sharedData.token)
+        rv_auditorias.adapter = viewModel.recyclerAuditoriasAdapter
 
+        refresh_layout_auditoria.setOnRefreshListener {
+            callAPI()
+        }
+
+        if (viewModel.auditorias.value == null) {
+            callAPI()
         }
 
 
-        rvAuditorias.adapter = viewModel.recyclerAuditoriasAdapter
         viewModel.auditorias.observe(this, Observer { auditorias: List<Auditoria> ->
-            viewModel.setAuditoriasInRecyclerAdapter(auditorias)
-            Log.d(TAG, "setupRecyclerView: observe done!")
-            loading.visibility = View.GONE
+            viewModel.recyclerAuditoriasAdapter.notifyDataSetChanged()
+            setLoading(false)
+            Log.d(TAG, "auditorias observer: RecyclerView updated!")
         })
 
         /** clickListener */
@@ -108,7 +118,6 @@ class AuditoriasFragment : Fragment() {
             val response: ApiResponse = it ?: return@Observer
             if (response.status == null) return@Observer
 
-            loading.visibility = View.GONE
             Log.d(TAG, "setupResponseHandler: ${response.status}: ${response.description}")
 
 
@@ -180,6 +189,35 @@ class AuditoriasFragment : Fragment() {
         img_scanner.setOnClickListener {
             navController.navigate(R.id.action_auditoriasFragment_to_scannerFragment)
         }
+    }
+
+    private fun setLoading(loading: Boolean) {
+
+
+        when (loading) {
+            true -> {
+                if (viewModel.auditorias.value != null)
+                    return
+
+                rv_auditorias.visibility = View.GONE
+                text_auditoria_activos_empty.visibility = View.GONE
+                refresh_layout_auditoria.isRefreshing = true
+            }
+
+            false -> {
+                if (viewModel.auditorias.value.isNullOrEmpty()) {
+                    rv_auditorias.visibility = View.GONE
+                    text_auditoria_activos_empty.visibility = View.VISIBLE
+                } else {
+                    rv_auditorias.visibility = View.VISIBLE
+                    text_auditoria_activos_empty.visibility = View.GONE
+                }
+
+                refresh_layout_auditoria.isRefreshing = false
+            }
+        }
+
+
     }
 }
 

@@ -23,12 +23,7 @@ class RecyclerAuditoriasAdapter(
     var id_layout_item: Int
 ) : RecyclerView.Adapter<RecyclerAuditoriasAdapter.AuditoriaCardHolder>() {
 
-    var auditorias: List<Auditoria>? = null
     lateinit var clickListener: (index: Int) -> Unit
-
-    fun setAuditoriasList(auditorias: List<Auditoria>?) {
-        this.auditorias = auditorias
-    }
 
     fun setOnClickListenner(clickListener: (index: Int) -> Unit) {
         this.clickListener = clickListener
@@ -41,8 +36,7 @@ class RecyclerAuditoriasAdapter(
     }
 
     override fun getItemCount(): Int {
-
-        return auditorias?.size ?: 0
+        return auditoriaViewModel.auditorias.value?.count() ?: 0
     }
 
     override fun onBindViewHolder(holder: AuditoriaCardHolder, position: Int) {

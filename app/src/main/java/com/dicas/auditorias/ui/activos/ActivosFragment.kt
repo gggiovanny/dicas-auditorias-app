@@ -87,11 +87,6 @@ class ActivosFragment : Fragment() {
 
         if (viewModel.auditoriaActiva?.id == viewModel.ultimaAuditoriaConsultada) mismaAuditoria =
             true
-
-        Log.d(
-            TAG,
-            "onActivityCreated: ${viewModel.auditoriaActiva?.id} ${viewModel.ultimaAuditoriaConsultada} progressbar: ${progressBar.visibility}"
-        )
         setupRecyclerView()
         setupAppBarScrollFade(app_bar_layout, ArrayList<View>().apply {
             add(chip_group)
@@ -103,42 +98,38 @@ class ActivosFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d(
-            TAG,
-            "onResume: ${viewModel.auditoriaActiva?.id} ${viewModel.ultimaAuditoriaConsultada} progressbar: ${progressBar.visibility}"
-        )
         setLoading(true)
     }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(
-            TAG,
-            "onDestroy: ${viewModel.auditoriaActiva?.id} ${viewModel.ultimaAuditoriaConsultada}"
-        )
-    }
-
     private fun setupRecyclerView() {
         rv_activos.adapter = viewModel.recyclerActivosAdapter
 
+        refresh_layout_activos.setOnRefreshListener {
+            callAPI()
+        }
+
         /** Solo actualizar el modelo si su valor es nulo o es diferente a a la anteriormente consultada */
         if (viewModel.activos.value == null || viewModel.auditoriaActiva?.id != viewModel.ultimaAuditoriaConsultada) {
-            viewModel.callActivosAPI(
-                apiKey = sharedData.token,
-                clasificacion = viewModel.auditoriaActiva?.idClasificacion,
-                departamento = viewModel.auditoriaActiva?.idDepartamento,
-                empresa = viewModel.auditoriaActiva?.idEmpresa,
-                auditoriaActual = viewModel.auditoriaActiva?.id ?: ""
-            )
+            callAPI()
         }
 
         viewModel.activos.observe(this, Observer {
             viewModel.recyclerActivosAdapter.notifyDataSetChanged()
             viewModel.ultimaAuditoriaConsultada = viewModel.auditoriaActiva?.id!!
             setLoading(false)
-            Log.d(TAG, "activos observer: RecyclerView updated! WIII")
+            Log.d(TAG, "activos observer: RecyclerView updated!")
         })
+    }
+
+    fun callAPI() {
+        viewModel.callActivosAPI(
+            apiKey = sharedData.token,
+            clasificacion = viewModel.auditoriaActiva?.idClasificacion,
+            departamento = viewModel.auditoriaActiva?.idDepartamento,
+            empresa = viewModel.auditoriaActiva?.idEmpresa,
+            auditoriaActual = viewModel.auditoriaActiva?.id ?: ""
+        )
     }
 
 
@@ -251,35 +242,35 @@ class ActivosFragment : Fragment() {
         }
     }
 
-    private fun setLoading(loaing: Boolean) {
+    private fun setLoading(loading: Boolean) {
 
 
-        when (loaing) {
+        when (loading) {
             true -> {
                 // Solo se ejecuta cuando no sea la misma pantalla que la anteriormente abierta, pues cuando regresa a la misma pantalla, no tiene sentido estar en "loading"
                 if (mismaAuditoria)
                     return
 
                 rv_activos.visibility = View.GONE
-                text_auditoria_empty.visibility = View.GONE
-                progressBar.visibility = View.VISIBLE
+                text_auditoria_activos_empty.visibility = View.GONE
+                refresh_layout_activos.isRefreshing = true
 
             }
 
             false -> {
                 if (viewModel.activos.value.isNullOrEmpty()) {
                     rv_activos.visibility = View.GONE
-                    text_auditoria_empty.visibility = View.VISIBLE
+                    text_auditoria_activos_empty.visibility = View.VISIBLE
                 } else {
                     rv_activos.visibility = View.VISIBLE
-                    text_auditoria_empty.visibility = View.GONE
+                    text_auditoria_activos_empty.visibility = View.GONE
                 }
 
-                progressBar.visibility = View.GONE
+                refresh_layout_activos.isRefreshing = false
             }
         }
 
-        Log.d(TAG, "onSetLoading($loaing): Progressbar: ${progressBar.visibility}")
+
     }
 
 
