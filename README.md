@@ -1,7 +1,3 @@
----
-title: Aplicación para auditorias
----
-
 Descripción
 ===========
 
