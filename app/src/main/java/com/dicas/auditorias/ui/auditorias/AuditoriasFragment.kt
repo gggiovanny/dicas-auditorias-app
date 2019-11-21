@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
@@ -86,6 +87,10 @@ class AuditoriasFragment : Fragment() {
 
     private fun setupRecyclerView() {
         rv_auditorias.adapter = viewModel.recyclerAuditoriasAdapter
+        val itemTouchHelper = ItemTouchHelper(SwipeHandler()).apply {
+            attachToRecyclerView(rv_auditorias)
+        }
+
 
         refresh_layout_auditoria.setOnRefreshListener {
             callAPI()
