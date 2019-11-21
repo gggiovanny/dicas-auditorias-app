@@ -24,10 +24,7 @@ class RecyclerAuditoriasAdapter(
 ) : RecyclerView.Adapter<RecyclerAuditoriasAdapter.AuditoriaCardHolder>() {
 
     lateinit var clickListener: (index: Int) -> Unit
-
-    fun setOnClickListenner(clickListener: (index: Int) -> Unit) {
-        this.clickListener = clickListener
-    }
+    lateinit var statusChipClickListener: (index: Int) -> Unit
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): AuditoriaCardHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(p0.context)
@@ -43,15 +40,12 @@ class RecyclerAuditoriasAdapter(
         holder.setDataCard(
             auditoriaViewModel,
             position,
-            clickListener
+            clickListener,
+            statusChipClickListener
         )
     }
 
     override fun getItemViewType(index: Int): Int {
-        return getLayoutIdForIndex(index)
-    }
-
-    fun getLayoutIdForIndex(index: Int): Int {
         return id_layout_item
     }
 
@@ -71,14 +65,27 @@ class RecyclerAuditoriasAdapter(
         fun setDataCard(
             auditoriaViewModel: AuditoriaViewModel,
             index: Int,
-            clickListener: (index: Int) -> Unit
+            clickListener: (index: Int) -> Unit,
+            statusChipClickListener: (index: Int) -> Unit
         ) {
 
-            /** Configurando onClickListener */
-            binding?.root?.setOnClickListener {
+            /** Configurando onClickListener del cardholder*/
+            itemView.setOnClickListener {
                 Log.d(TAG, "setDataCard: clicked: $index")
                 clickListener(index)
             }
+
+            /** Configurando onClickListener del chip de estatus (para cambiar el estatus) */
+            itemView.chip_status_auditoria.setOnClickListener {
+                Log.d(
+                    TAG,
+                    "setDataCard: PRESSED CHIP $index ${auditoriaViewModel.getAuditoriaAt(index)?.id}"
+                )
+
+                statusChipClickListener(index)
+            }
+
+            /** Configurando */
 
             /** Configurando color e icono de chip de status */
             when (auditoriaViewModel.getAuditoriaAt(index)?.status) {
@@ -96,11 +103,10 @@ class RecyclerAuditoriasAdapter(
                 }
             }
 
-            val auditoriaActiva = auditoriaViewModel.getAuditoriaAt(index) ?: return
             /** Agregar en el item chips para indicar de que empresa, departamentos y categoria es. */
-            addDescriptionChipsInToolbar(auditoriaActiva)
+            addDescriptionChipsInToolbar(auditoriaViewModel.getAuditoriaAt(index)!!)
 
-            if (auditoriaActiva.descripcion.isNullOrEmpty())
+            if (auditoriaViewModel.getAuditoriaAt(index)?.descripcion.isNullOrEmpty())
                 itemView.description_auditoria.visibility = View.GONE
 
             /** Se bindean las variables del layouts */
@@ -110,8 +116,6 @@ class RecyclerAuditoriasAdapter(
         }
 
         private fun addDescriptionChipsInToolbar(auditoriaActiva: Auditoria) {
-            if (!itemView.id_auditoria.text.isNullOrEmpty())
-                return
 
             val textColor =
                 getColorStateList(itemView.context ?: return, R.color.text_secondary_dark)

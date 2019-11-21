@@ -33,7 +33,12 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
     fun getAuditoriaAt(index: Int): Auditoria? = auditorias.value?.get(index)
 
     fun setRecyclerClickListener(listener: (index: Int) -> Unit) {
-        recyclerAuditoriasAdapter.setOnClickListenner(listener)
+        recyclerAuditoriasAdapter.clickListener = listener
+        recyclerAuditoriasAdapter.notifyDataSetChanged()
+    }
+
+    fun setRecyclerStatusChipClickListener(listener: (index: Int) -> Unit) {
+        recyclerAuditoriasAdapter.statusChipClickListener = listener
         recyclerAuditoriasAdapter.notifyDataSetChanged()
     }
 

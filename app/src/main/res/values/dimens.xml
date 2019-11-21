@@ -5,9 +5,12 @@
 
     <dimen name="tall_toolbar_height">113dp</dimen>
     <dimen name="default_padding">8dp</dimen>
+    <dimen name="default_padding_double">8dp</dimen>
     <dimen name="shrine_toolbar_offset_start">8dp</dimen>
     <dimen name="shrine_toolbar_offset_top">8dp</dimen>
 
     <dimen name="spinner_height">20dp</dimen>
     <dimen name="chips_activo_existencia_ancho">140dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
 </resources>

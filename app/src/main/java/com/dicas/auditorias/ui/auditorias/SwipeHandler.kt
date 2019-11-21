@@ -1,9 +1,9 @@
 package com.dicas.auditorias.ui.auditorias
 
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.layout_auditoria_item.view.*
 
 class SwipeHandler : ItemTouchHelper.Callback() {
 
@@ -11,9 +11,7 @@ class SwipeHandler : ItemTouchHelper.Callback() {
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
-        if (viewHolder.itemView.id_auditoria.isPressed)
-            return makeMovementFlags(0, RIGHT)
-        else return makeMovementFlags(0, 0)
+        return makeMovementFlags(0, LEFT or RIGHT)
     }
 
     override fun onMove(
@@ -25,6 +23,7 @@ class SwipeHandler : ItemTouchHelper.Callback() {
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
 
     }
 
