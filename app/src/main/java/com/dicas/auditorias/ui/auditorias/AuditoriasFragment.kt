@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
@@ -22,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_auditoria.*
 import kotlinx.android.synthetic.main.layout_toolbar_general.*
 
 
-class AuditoriasFragment : Fragment(), StatusListDialogFragment.Listener {
+class AuditoriasFragment : Fragment() {
 
     companion object {
         fun newInstance() = AuditoriasFragment()
@@ -86,11 +87,11 @@ class AuditoriasFragment : Fragment(), StatusListDialogFragment.Listener {
 
     private fun setupRecyclerView() {
         rv_auditorias.adapter = viewModel.recyclerAuditoriasAdapter
-        /*
+
         val itemTouchHelper = ItemTouchHelper(SwipeHandler()).apply {
             attachToRecyclerView(rv_auditorias)
         }
-        */
+
 
         refresh_layout_auditoria.setOnRefreshListener {
             callAPI()
@@ -118,13 +119,35 @@ class AuditoriasFragment : Fragment(), StatusListDialogFragment.Listener {
 
         /** statusChipClickListener */
         viewModel.setRecyclerStatusChipClickListener { index ->
-            StatusListDialogFragment.newInstance(30).show(requireFragmentManager(), "dialog")
+            val idAuditoria: String =
+                viewModel.getAuditoriaAt(index)?.id ?: return@setRecyclerStatusChipClickListener
+            StatusDialogFragment.newInstance(idAuditoria).apply {
+
+                setOnTerminadaListener { idAuditoria ->
+                    viewModel.updateAuditoriaTerminadaStatus(
+                        apiKey = sharedData.token,
+                        idAuditoria = idAuditoria.toInt(),
+                        terminada = true,
+                        onResponse = {
+                            Toast.makeText(context, "#$idAuditoria terminada!", Toast.LENGTH_SHORT)
+                                .show()
+
+                        }
+                    )
+
+                }
+
+                setOnGuardadaListener { idAuditoria ->
+                    Toast.makeText(context, "#$idAuditoria guardada!", Toast.LENGTH_SHORT).show()
+                }
+
+                setOnEnCursoListener { idAuditoria ->
+                    Toast.makeText(context, "#$idAuditoria en curso!", Toast.LENGTH_SHORT).show()
+                }
+
+            }.show(requireFragmentManager(), "dialog")
         }
 
-    }
-
-    override fun onStatusClicked(position: Int) {
-        Toast.makeText(context, "Anomax2 $position", Toast.LENGTH_SHORT).show()
     }
 
     private fun setupResponseHandler() {

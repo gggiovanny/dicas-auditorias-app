@@ -238,5 +238,49 @@ class AuditoriasDataSource {
             })
     }
 
+    fun updateAuditoriaTerminadaStatus(
+        apiKey: String,
+        idAuditoria: Int,
+        terminada: Boolean,
+        onResponse: (responseJson: JsonObject) -> Unit
+    ) {
+        val apiAdapter = ApiAdapter()
+        val apiService = apiAdapter.getApiService(apiKey)
+        val request: Disposable = apiService.updateAuditoriaTerminadaStatus(
+            id = idAuditoria,
+            terminada = terminada
+        ).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(onResponse, {
+                it.printStackTrace()
+                response.value = ApiResponse(
+                    status = "error_app",
+                    description = "No se pudo actualizar el estatus de la auditoria!"
+                )
+            })
+    }
+
+    fun saveAuditoria(
+        apiKey: String,
+        idAuditoria: Int,
+        onResponse: (responseJson: JsonObject) -> Unit
+    ) {
+        val apiAdapter = ApiAdapter()
+        val apiService = apiAdapter.getApiService(apiKey)
+        val request: Disposable = apiService.saveAuditoria(
+            id = idAuditoria
+        ).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(onResponse, {
+                it.printStackTrace()
+                response.value = ApiResponse(
+                    status = "error_app",
+                    description = "No se pudo finalizar y guardar la auditoria!"
+                )
+            })
+    }
+
+
+
 
 }

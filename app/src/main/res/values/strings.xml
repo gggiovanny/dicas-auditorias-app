@@ -67,4 +67,9 @@
     <string name="auditoria_sin_activos">¡Auditoría vacía! No hay nigún activo fijo con los filtros especificados.</string>
     <string name="auditoria_vacia">¡Sin auditorías! Aún no hay ninguna auditoria, presione el botón con el simbolo de "+" para agregar crear una nueva.</string>
 
+    <string name="auditoria_actualizar_estatus">Actualizar estatus</string>
+    <string name="auditoria_no">Auditoria #</string>
+    <string name="marcar_auditoria_encurso">Marcar como en curso</string>
+    <string name="marcar_auditoria_terminada">Marcar como terminada</string>
+    <string name="marcar_auditoria_guardada">Finalizar y guardar</string>
 </resources>

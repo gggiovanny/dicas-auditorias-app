@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_padding_double"
+        android:gravity="center"
+        android:text="@string/auditoria_actualizar_estatus"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/txt_id_auditoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btn_en_curso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_padding_double"
+        android:layout_marginTop="@dimen/default_padding_double"
+        android:layout_marginEnd="@dimen/default_padding_double"
+        android:backgroundTint="@color/sucess_green"
+        android:text="@string/marcar_auditoria_encurso"
+        app:drawableStartCompat="@drawable/ic_in_progres_white_24dp" />
+
+    <Button
+        android:id="@+id/btn_terminada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_padding_double"
+        android:layout_marginTop="@dimen/default_padding_double"
+        android:layout_marginEnd="@dimen/default_padding_double"
+        android:backgroundTint="@color/yellow_pastel"
+        android:drawableStart="@drawable/ic_finished_white_24dp"
+        android:text="@string/marcar_auditoria_terminada" />
+
+    <Button
+        android:id="@+id/btn_guardada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_padding_double"
+        android:layout_marginTop="@dimen/default_padding_double"
+        android:layout_marginEnd="@dimen/default_padding_double"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/error_red"
+        android:drawableStart="@drawable/ic_finished_white_24dp"
+        android:text="@string/marcar_auditoria_guardada" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -3,6 +3,7 @@ package com.dicas.auditorias.data
 import androidx.lifecycle.MutableLiveData
 import com.dicas.auditorias.data.api.AuditoriasDataSource
 import com.dicas.auditorias.data.model.*
+import com.google.gson.JsonObject
 
 class AuditoriasRepository(val dataSource: AuditoriasDataSource) {
 
@@ -36,5 +37,22 @@ class AuditoriasRepository(val dataSource: AuditoriasDataSource) {
 
     fun callClasificacionesAPI(apiKey: String) {
         dataSource.callClasificacionesAPI(apiKey)
+    }
+
+    fun updateAuditoriaTerminadaStatus(
+        apiKey: String,
+        idAuditoria: Int,
+        terminada: Boolean,
+        onResponse: (responseJson: JsonObject) -> Unit
+    ) {
+        dataSource.updateAuditoriaTerminadaStatus(apiKey, idAuditoria, terminada, onResponse)
+    }
+
+    fun saveAuditoria(
+        apiKey: String,
+        idAuditoria: Int,
+        onResponse: (responseJson: JsonObject) -> Unit
+    ) {
+        dataSource.saveAuditoria(apiKey, idAuditoria, onResponse)
     }
 }

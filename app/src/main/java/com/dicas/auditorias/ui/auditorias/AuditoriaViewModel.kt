@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.AuditoriasRepository
 import com.dicas.auditorias.data.model.*
+import com.google.gson.JsonObject
 
 class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewModel() {
 
@@ -54,5 +55,21 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
         repository.callClasificacionesAPI(apiKey)
     }
 
+    fun updateAuditoriaTerminadaStatus(
+        apiKey: String,
+        idAuditoria: Int,
+        terminada: Boolean,
+        onResponse: (responseJson: JsonObject) -> Unit
+    ) {
+        repository.updateAuditoriaTerminadaStatus(apiKey, idAuditoria, terminada, onResponse)
+    }
+
+    fun saveAuditoria(
+        apiKey: String,
+        idAuditoria: Int,
+        onResponse: (responseJson: JsonObject) -> Unit
+    ) {
+        repository.saveAuditoria(apiKey, idAuditoria, onResponse)
+    }
 
 }

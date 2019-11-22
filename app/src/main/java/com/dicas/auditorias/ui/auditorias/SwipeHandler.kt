@@ -1,8 +1,6 @@
 package com.dicas.auditorias.ui.auditorias
 
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.LEFT
-import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
 import androidx.recyclerview.widget.RecyclerView
 
 class SwipeHandler : ItemTouchHelper.Callback() {
@@ -11,7 +9,7 @@ class SwipeHandler : ItemTouchHelper.Callback() {
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
-        return makeMovementFlags(0, LEFT or RIGHT)
+        return makeMovementFlags(0, 0)
     }
 
     override fun onMove(
