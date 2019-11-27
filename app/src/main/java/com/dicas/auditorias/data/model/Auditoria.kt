@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 data class Auditoria(
     val id: String? = null,
     val fechaCreacion: String? = null,
-    val status: String? = null,
+    var status: String? = null,
     val descripcion: String? = null,
     val username: String? = null,
     val idEmpresa: String? = null,
@@ -16,5 +16,6 @@ data class Auditoria(
     val departamento: String? = null,
     val idClasificacion: String? = null,
     val clasificacion: String? = null,
-    val terminada: String? = null
+    var terminada: String? = null,
+    var fechaGuardada: String? = null
 ) : Parcelable

@@ -121,31 +121,51 @@ class AuditoriasFragment : Fragment() {
         viewModel.setRecyclerStatusChipClickListener { index ->
             val idAuditoria: String =
                 viewModel.getAuditoriaAt(index)?.id ?: return@setRecyclerStatusChipClickListener
+
             StatusDialogFragment.newInstance(idAuditoria).apply {
 
                 setOnTerminadaListener { idAuditoria ->
                     viewModel.updateAuditoriaTerminadaStatus(
                         apiKey = sharedData.token,
                         idAuditoria = idAuditoria.toInt(),
+                        datamodelIndex = index,
                         terminada = true,
                         onResponse = {
                             Toast.makeText(context, "#$idAuditoria terminada!", Toast.LENGTH_SHORT)
                                 .show()
-
+                            Log.d(TAG, "setupRecyclerView: xd")
                         }
                     )
-
-                }
-
-                setOnGuardadaListener { idAuditoria ->
-                    Toast.makeText(context, "#$idAuditoria guardada!", Toast.LENGTH_SHORT).show()
                 }
 
                 setOnEnCursoListener { idAuditoria ->
-                    Toast.makeText(context, "#$idAuditoria en curso!", Toast.LENGTH_SHORT).show()
+                    viewModel.updateAuditoriaTerminadaStatus(
+                        apiKey = sharedData.token,
+                        idAuditoria = idAuditoria.toInt(),
+                        datamodelIndex = index,
+                        terminada = false,
+                        onResponse = {
+                            Toast.makeText(context, "#$idAuditoria en curso!", Toast.LENGTH_SHORT)
+                                .show()
+                            Log.d(TAG, "setupRecyclerView: xdxd")
+                        }
+                    )
+                }
+
+                setOnGuardadaListener { idAuditoria ->
+                    viewModel.saveAuditoria(
+                        apiKey = sharedData.token,
+                        idAuditoria = idAuditoria.toInt(),
+                        datamodelIndex = index,
+                        onResponse = {
+                            Toast.makeText(context, "#$idAuditoria guardada!", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    )
                 }
 
             }.show(requireFragmentManager(), "dialog")
+
         }
 
     }

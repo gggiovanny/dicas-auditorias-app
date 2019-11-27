@@ -60,6 +60,11 @@ class StatusDialogFragment : BottomSheetDialogFragment() {
         onEnCursoListener = listener
     }
 
+    fun test() {
+        this
+        //TODO("FUNCION PARA CERRAR LA ACTIVIDAD")
+    }
+
     companion object {
         fun newInstance(idAuditoria: String): StatusDialogFragment =
             StatusDialogFragment().apply {

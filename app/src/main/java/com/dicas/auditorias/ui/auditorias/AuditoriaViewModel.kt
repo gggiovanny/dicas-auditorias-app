@@ -1,10 +1,13 @@
 package com.dicas.auditorias.ui.auditorias
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.AuditoriasRepository
 import com.dicas.auditorias.data.model.*
+import com.dicas.auditorias.ui.common.AuditoriaStatus
 import com.google.gson.JsonObject
 
 class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewModel() {
@@ -58,18 +61,61 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
     fun updateAuditoriaTerminadaStatus(
         apiKey: String,
         idAuditoria: Int,
+        datamodelIndex: Int,
         terminada: Boolean,
         onResponse: (responseJson: JsonObject) -> Unit
     ) {
-        repository.updateAuditoriaTerminadaStatus(apiKey, idAuditoria, terminada, onResponse)
+        repository.updateAuditoriaTerminadaStatus(
+            apiKey = apiKey,
+            idAuditoria = idAuditoria,
+            terminada = terminada,
+            onResponse = {
+                onResponse(it)
+                when (terminada) {
+                    true -> {
+                        auditorias.value!![datamodelIndex].terminada = "1"
+                        auditorias.value!![datamodelIndex].status =
+                            AuditoriaStatus.TERMINADA.toString()
+                        Log.d(
+                            TAG,
+                            "updateAuditoriaTerminadaStatus: Status actualizado a ${AuditoriaStatus.TERMINADA}"
+                        )
+                    }
+                    false -> {
+                        auditorias.value!![datamodelIndex].terminada = "0"
+                        auditorias.value!![datamodelIndex].status =
+                            AuditoriaStatus.EN_CURSO.toString()
+                        Log.d(
+                            TAG,
+                            "updateAuditoriaTerminadaStatus: Status actualizado a ${AuditoriaStatus.EN_CURSO}"
+                        )
+                    }
+                }
+                recyclerAuditoriasAdapter.notifyItemChanged(datamodelIndex)
+            }
+        )
+
+
     }
 
     fun saveAuditoria(
         apiKey: String,
         idAuditoria: Int,
+        datamodelIndex: Int,
         onResponse: (responseJson: JsonObject) -> Unit
     ) {
-        repository.saveAuditoria(apiKey, idAuditoria, onResponse)
+        repository.saveAuditoria(apiKey = apiKey,
+            idAuditoria = idAuditoria, onResponse = {
+                onResponse(it)
+                auditorias.value!![datamodelIndex].status = AuditoriaStatus.GUARDADA.toString()
+                Log.d(
+                    TAG,
+                    "updateAuditoriaTerminadaStatus: Status actualizado a ${AuditoriaStatus.GUARDADA}"
+                )
+                recyclerAuditoriasAdapter.notifyItemChanged(datamodelIndex)
+            }
+        )
+
     }
 
 }
