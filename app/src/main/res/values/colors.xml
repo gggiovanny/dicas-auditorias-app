@@ -58,6 +58,7 @@
     <!-- Pastel -->
     <color name="sucess_green_dark">#93D38E</color>
     <color name="error_red_dark">#CF6679</color>
+    <color name="error_red_dark_disabled">#0FCF6679</color>
     <color name="azul_kory_dark">#D1F0F2</color>
     <color name="yellow_pastel">#FCF599</color>
     <color name="yellow_rosy_highlight">#f7d794</color>

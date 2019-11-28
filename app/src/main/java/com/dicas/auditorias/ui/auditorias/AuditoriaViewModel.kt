@@ -62,16 +62,22 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
         apiKey: String,
         idAuditoria: Int,
         datamodelIndex: Int,
-        terminada: Boolean,
         onResponse: (responseJson: JsonObject) -> Unit
     ) {
+        // Se inicializa al estatus contrario del que esta actualmente para que se alterne su valor cada vez que se llame a este metodo
+        val auditoriaTerminada = when (auditorias.value!![datamodelIndex].terminada) {
+            "1" -> false
+            else -> true
+        }
+
+
         repository.updateAuditoriaTerminadaStatus(
             apiKey = apiKey,
             idAuditoria = idAuditoria,
-            terminada = terminada,
+            terminada = auditoriaTerminada,
             onResponse = {
                 onResponse(it)
-                when (terminada) {
+                when (auditoriaTerminada) {
                     true -> {
                         auditorias.value!![datamodelIndex].terminada = "1"
                         auditorias.value!![datamodelIndex].status =

@@ -25,5 +25,8 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="RedButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:backgroundTint">@color/red_button_colors</item>
+    </style>
 
 </resources>

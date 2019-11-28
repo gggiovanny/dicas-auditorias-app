@@ -72,5 +72,7 @@
     <string name="marcar_auditoria_encurso">Marcar como en curso</string>
     <string name="marcar_auditoria_terminada">Marcar como terminada</string>
     <string name="marcar_auditoria_guardada">Finalizar y guardar</string>
-    <string name="marcar_auditoria_como">Marcar como...</string>
+
+    <string name="dialog_title">Guardar auditoria</string>
+    <string name="dialog_message">¿Esta seguro que desea guardar y finalizar esta auditoria? Esta acción no se puede deshacer.</string>
 </resources>

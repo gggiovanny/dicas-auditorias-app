@@ -121,29 +121,17 @@ class AuditoriasFragment : Fragment() {
         viewModel.setRecyclerStatusChipClickListener { index ->
             val idAuditoria: String =
                 viewModel.getAuditoriaAt(index)?.id ?: return@setRecyclerStatusChipClickListener
+            val status: String =
+                viewModel.getAuditoriaAt(index)?.status ?: return@setRecyclerStatusChipClickListener
 
-            StatusDialogFragment.newInstance(idAuditoria).apply {
+            // Se muestra un bottom sheet dialog con botones para cambiar el estatus de la auditoria actual
+            StatusDialogFragment.newInstance(idAuditoria, status).apply {
 
-                setOnTerminadaListener { idAuditoria ->
+                setOnAlternarTerminadaListener { idAuditoria ->
                     viewModel.updateAuditoriaTerminadaStatus(
                         apiKey = sharedData.token,
                         idAuditoria = idAuditoria.toInt(),
                         datamodelIndex = index,
-                        terminada = true,
-                        onResponse = {
-                            Toast.makeText(context, "#$idAuditoria terminada!", Toast.LENGTH_SHORT)
-                                .show()
-                            close()
-                        }
-                    )
-                }
-
-                setOnEnCursoListener { idAuditoria ->
-                    viewModel.updateAuditoriaTerminadaStatus(
-                        apiKey = sharedData.token,
-                        idAuditoria = idAuditoria.toInt(),
-                        datamodelIndex = index,
-                        terminada = false,
                         onResponse = {
                             Toast.makeText(context, "#$idAuditoria en curso!", Toast.LENGTH_SHORT)
                                 .show()
