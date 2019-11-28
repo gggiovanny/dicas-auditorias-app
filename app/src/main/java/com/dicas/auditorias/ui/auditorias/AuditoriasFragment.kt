@@ -133,7 +133,7 @@ class AuditoriasFragment : Fragment() {
                         onResponse = {
                             Toast.makeText(context, "#$idAuditoria terminada!", Toast.LENGTH_SHORT)
                                 .show()
-                            Log.d(TAG, "setupRecyclerView: xd")
+                            close()
                         }
                     )
                 }
@@ -147,7 +147,7 @@ class AuditoriasFragment : Fragment() {
                         onResponse = {
                             Toast.makeText(context, "#$idAuditoria en curso!", Toast.LENGTH_SHORT)
                                 .show()
-                            Log.d(TAG, "setupRecyclerView: xdxd")
+                            close()
                         }
                     )
                 }
@@ -160,6 +160,7 @@ class AuditoriasFragment : Fragment() {
                         onResponse = {
                             Toast.makeText(context, "#$idAuditoria guardada!", Toast.LENGTH_SHORT)
                                 .show()
+                            close()
                         }
                     )
                 }

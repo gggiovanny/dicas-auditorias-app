@@ -49,20 +49,25 @@ class StatusDialogFragment : BottomSheetDialogFragment() {
     }
 
     fun setOnTerminadaListener(listener: (idAuditoria: String) -> Unit) {
-        onTerminadaListener = listener
+        onTerminadaListener = {
+            listener(it)
+        }
     }
 
     fun setOnGuardadaListener(listener: (idAuditoria: String) -> Unit) {
-        onGuardadaListener = listener
+        onGuardadaListener = {
+            listener(it)
+        }
     }
 
     fun setOnEnCursoListener(listener: (idAuditoria: String) -> Unit) {
-        onEnCursoListener = listener
+        onEnCursoListener = {
+            listener(it)
+        }
     }
 
-    fun test() {
-        this
-        //TODO("FUNCION PARA CERRAR LA ACTIVIDAD")
+    fun close() {
+        this.dismiss()
     }
 
     companion object {
