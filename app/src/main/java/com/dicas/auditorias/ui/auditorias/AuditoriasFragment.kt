@@ -88,11 +88,6 @@ class AuditoriasFragment : Fragment() {
     private fun setupRecyclerView() {
         rv_auditorias.adapter = viewModel.recyclerAuditoriasAdapter
 
-        val itemTouchHelper = ItemTouchHelper(SwipeHandler()).apply {
-            attachToRecyclerView(rv_auditorias)
-        }
-
-
         refresh_layout_auditoria.setOnRefreshListener {
             callAPI()
         }
@@ -102,7 +97,7 @@ class AuditoriasFragment : Fragment() {
         }
 
 
-        viewModel.auditorias.observe(this, Observer { auditorias: List<Auditoria> ->
+        viewModel.auditorias.observe(this, Observer {
             viewModel.recyclerAuditoriasAdapter.notifyDataSetChanged()
             setLoading(false)
             Log.d(TAG, "auditorias observer: RecyclerView updated!")
@@ -162,10 +157,8 @@ class AuditoriasFragment : Fragment() {
     private fun setupResponseHandler() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
-            if (response.status == null) return@Observer
 
             Log.d(TAG, "setupResponseHandler: ${response.status}: ${response.description}")
-
 
             if(response.status.contains("show")) {
                 Log.d(TAG, "setupResponseHandler: showing: ${response.description}")

@@ -27,7 +27,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
             val apiResponse = ApiResponse(
                 status = responseJson.get("status").asString,
-                description = responseJson.get("description").asString
+                description = responseJson.get("description").asString,
+                tipo = responseJson.get("tipo").asString
             )
             Log.d(
                 TAG,

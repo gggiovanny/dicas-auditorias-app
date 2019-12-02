@@ -136,7 +136,6 @@ class ActivosFragment : Fragment() {
     private fun setupResponseHandler() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
-            if (response.status == null) return@Observer
 
             if (response.status.contains("show")) {
                 Log.d(TAG, "setupResponseHandler: show: ${response.description}")

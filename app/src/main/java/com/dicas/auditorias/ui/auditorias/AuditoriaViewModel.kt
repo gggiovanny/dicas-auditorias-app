@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.AuditoriasRepository
 import com.dicas.auditorias.data.model.*
-import com.dicas.auditorias.ui.common.AuditoriaStatus
+import com.dicas.auditorias.ui.common.AuditoriaStatusEnum
 import com.google.gson.JsonObject
 
 class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewModel() {
@@ -64,8 +64,9 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
         datamodelIndex: Int,
         onResponse: (responseJson: JsonObject) -> Unit
     ) {
+        val terminada = auditorias.value!![datamodelIndex].terminada
         // Se inicializa al estatus contrario del que esta actualmente para que se alterne su valor cada vez que se llame a este metodo
-        val auditoriaTerminada = when (auditorias.value!![datamodelIndex].terminada) {
+        val auditoriaTerminada = when (terminada) {
             "1" -> false
             else -> true
         }
@@ -76,28 +77,35 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
             idAuditoria = idAuditoria,
             terminada = auditoriaTerminada,
             onResponse = {
+                val apiResponse = ResponseWrapper(it)
+                if(!apiResponse.isOk) {
+                    response.value = apiResponse
+                    return@updateAuditoriaTerminadaStatus
+                }
+
                 onResponse(it)
                 when (auditoriaTerminada) {
                     true -> {
                         auditorias.value!![datamodelIndex].terminada = "1"
                         auditorias.value!![datamodelIndex].status =
-                            AuditoriaStatus.TERMINADA.toString()
+                            AuditoriaStatusEnum.TERMINADA.toString()
                         Log.d(
                             TAG,
-                            "updateAuditoriaTerminadaStatus: Status actualizado a ${AuditoriaStatus.TERMINADA}"
+                            "updateAuditoriaTerminadaStatus: Status actualizado a ${AuditoriaStatusEnum.TERMINADA}"
                         )
                     }
                     false -> {
                         auditorias.value!![datamodelIndex].terminada = "0"
                         auditorias.value!![datamodelIndex].status =
-                            AuditoriaStatus.EN_CURSO.toString()
+                            AuditoriaStatusEnum.EN_CURSO.toString()
                         Log.d(
                             TAG,
-                            "updateAuditoriaTerminadaStatus: Status actualizado a ${AuditoriaStatus.EN_CURSO}"
+                            "updateAuditoriaTerminadaStatus: Status actualizado a ${AuditoriaStatusEnum.EN_CURSO}"
                         )
                     }
                 }
                 recyclerAuditoriasAdapter.notifyItemChanged(datamodelIndex)
+                response.value = apiResponse
             }
         )
 
@@ -113,10 +121,10 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
         repository.saveAuditoria(apiKey = apiKey,
             idAuditoria = idAuditoria, onResponse = {
                 onResponse(it)
-                auditorias.value!![datamodelIndex].status = AuditoriaStatus.GUARDADA.toString()
+                auditorias.value!![datamodelIndex].status = AuditoriaStatusEnum.GUARDADA.toString()
                 Log.d(
                     TAG,
-                    "updateAuditoriaTerminadaStatus: Status actualizado a ${AuditoriaStatus.GUARDADA}"
+                    "updateAuditoriaTerminadaStatus: Status actualizado a ${AuditoriaStatusEnum.GUARDADA}"
                 )
                 recyclerAuditoriasAdapter.notifyItemChanged(datamodelIndex)
             }

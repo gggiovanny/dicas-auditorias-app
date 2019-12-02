@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicas.auditorias.BR
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.Auditoria
-import com.dicas.auditorias.ui.common.AuditoriaStatus
+import com.dicas.auditorias.ui.common.AuditoriaStatusEnum
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.layout_auditoria_item.view.*
 import java.util.*
@@ -90,15 +90,15 @@ class RecyclerAuditoriasAdapter(
 
             /** Configurando color e icono de chip de status */
             when (auditoriaViewModel.getAuditoriaAt(index)?.status) {
-                AuditoriaStatus.EN_CURSO.toString() -> {
+                AuditoriaStatusEnum.EN_CURSO.toString() -> {
                     itemView.chip_status_auditoria.setChipBackgroundColorResource(R.color.sucess_green)
                     itemView.chip_status_auditoria.setChipIconResource(R.drawable.ic_in_progres_white_24dp)
                 }
-                AuditoriaStatus.TERMINADA.toString() -> {
+                AuditoriaStatusEnum.TERMINADA.toString() -> {
                     itemView.chip_status_auditoria.setChipBackgroundColorResource(R.color.yellow_pastel)
                     itemView.chip_status_auditoria.setChipIconResource(R.drawable.ic_finished_white_24dp)
                 }
-                AuditoriaStatus.GUARDADA.toString() -> {
+                AuditoriaStatusEnum.GUARDADA.toString() -> {
                     itemView.chip_status_auditoria.setChipBackgroundColorResource(R.color.error_red)
                     itemView.chip_status_auditoria.setChipIconResource(R.drawable.ic_saved_white_24dp)
                 }

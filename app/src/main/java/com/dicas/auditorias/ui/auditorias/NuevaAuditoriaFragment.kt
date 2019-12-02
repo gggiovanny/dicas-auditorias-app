@@ -18,6 +18,7 @@ import androidx.navigation.Navigation
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.*
 import com.dicas.auditorias.ui.common.OnItemSelectedListener
+import com.dicas.auditorias.ui.common.ResponseTypeEnum
 import com.dicas.auditorias.ui.common.SharedDataViewModel
 import com.dicas.auditorias.ui.common.afterTextChanged
 import com.dicas.auditorias.ui.login.LoginActivity
@@ -248,14 +249,15 @@ class NuevaAuditoriaFragment : Fragment() {
                 }
             }
 
-            if (response.isOk && response.description?.contains("Entry sucessfuly created") == true) {
+            if (response.isOk && response.description.contains("Entry sucessfuly created")) {
 
                 try {
                     openActivos(response.idAuditoria!!)
                 } catch (e: Exception) {
                     viewModel.response.value = ApiResponse(
                         status = "error_show",
-                        description = "¡Error! No se obtuvo de la base de datos el ID de la nueva auditoria creada."
+                        description = "¡Error! No se obtuvo de la base de datos el ID de la nueva auditoria creada.",
+                        tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                     )
                     return@Observer
                 }

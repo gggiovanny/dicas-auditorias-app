@@ -1,6 +1,6 @@
 package com.dicas.auditorias.ui.common
 
-enum class AuditoriaStatus(text: String) {
+enum class AuditoriaStatusEnum(text: String) {
     EN_CURSO("En curso"),
     TERMINADA("Terminada"),
     GUARDADA("Guardada");

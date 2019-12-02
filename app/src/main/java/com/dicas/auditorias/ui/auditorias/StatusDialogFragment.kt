@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.dicas.auditorias.R
-import com.dicas.auditorias.ui.common.AuditoriaStatus
+import com.dicas.auditorias.ui.common.AuditoriaStatusEnum
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_status_dialog.*
 
@@ -39,9 +39,9 @@ class StatusDialogFragment : BottomSheetDialogFragment() {
 
         // Se ponen los botones al estado contrario que el actual
         when (statusAuditoria) {
-            AuditoriaStatus.EN_CURSO.toString() -> setButtonToTerminada()
-            AuditoriaStatus.TERMINADA.toString() -> setButtonToEnCurso()
-            AuditoriaStatus.GUARDADA.toString() -> close()
+            AuditoriaStatusEnum.EN_CURSO.toString() -> setButtonToTerminada()
+            AuditoriaStatusEnum.TERMINADA.toString() -> setButtonToEnCurso()
+            AuditoriaStatusEnum.GUARDADA.toString() -> close()
         }
 
         btn_guardada.setOnClickListener {

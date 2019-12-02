@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
+import com.dicas.auditorias.ui.common.ResponseTypeEnum
 import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -40,7 +41,8 @@ class ActivosDataSource {
             .subscribe({ responseJson: JsonObject ->
                 val responseObject = ApiResponse(
                     status = responseJson.get("status").asString,
-                    description = responseJson.get("description").asString
+                    description = responseJson.get("description").asString,
+                    tipo = responseJson.get("tipo").asString
                 )
                 _response.value = responseObject
                 Log.d(TAG, "callActivosAPI: status=${responseObject.status}")
@@ -97,7 +99,8 @@ class ActivosDataSource {
                 it.printStackTrace()
                 _response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo crear la nueva auditoria"
+                    description = "No se pudo crear la nueva auditoria",
+                    tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
 
             })

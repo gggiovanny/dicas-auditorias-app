@@ -8,6 +8,7 @@ import com.dicas.auditorias.data.ActivosRepository
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
+import com.dicas.auditorias.ui.common.ResponseTypeEnum
 import com.dicas.auditorias.ui.common.ViewModelRecyclerBinding
 import com.google.gson.JsonObject
 
@@ -71,7 +72,8 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
                     onResponse = { responseJson: JsonObject ->
                         val responseObject = ApiResponse(
                             status = responseJson.get("status").asString,
-                            description = responseJson.get("description").asString
+                            description = responseJson.get("description").asString,
+                            tipo = responseJson.get("tipo").asString
                         )
 
                         Log.d(TAG, "setActivoExistenciaActual: status=${responseObject.status}")
@@ -81,10 +83,8 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
                         )
 
                         if (!responseObject.isOk) {
-                            response.value = ApiResponse(
-                                status = "error_show",
-                                description = "¡Error en la petición a la base de datos!"
-                            )
+                            //responseObject.description = "¡Error en la petición a la base de datos!"
+                            response.value = responseObject
                             return@setActivoExistenciaActualAPI
                         }
 
@@ -103,15 +103,16 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
             } catch (e: Throwable) {
                 response.value = ApiResponse(
                     status = "error_show",
-                    description = "¡Error al procesar el activo escaneado!"
+                    description = "¡Error al procesar el activo escaneado!",
+                    tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
             }
 
         } else {
             response.value = ApiResponse(
                 status = "alert_show",
-                description = "¡El activo escaneado no se encuentra en esta auditoria!"
-
+                description = "¡El activo escaneado no se encuentra en esta auditoria!",
+                tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
             )
         }
     }

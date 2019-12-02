@@ -3,6 +3,7 @@ package com.dicas.auditorias.data.api
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dicas.auditorias.data.model.*
+import com.dicas.auditorias.ui.common.ResponseTypeEnum
 import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -29,7 +30,8 @@ class AuditoriasDataSource {
             .subscribe({ responseJson: JsonObject ->
                 val responseObject = ApiResponse(
                     status = responseJson.get("status").asString,
-                    description = responseJson.get("description").asString
+                    description = responseJson.get("description").asString,
+                    tipo = responseJson.get("tipo").asString
                 )
                 response.value = responseObject
                 Log.d(TAG, "AuditoriasResponseHandler: status=${responseObject.status}")
@@ -66,7 +68,8 @@ class AuditoriasDataSource {
                 it.printStackTrace()
                 response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo consultar la auditoria"
+                    description = "No se pudo consultar la auditoria",
+                    tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
             })
     }
@@ -90,7 +93,8 @@ class AuditoriasDataSource {
             .subscribe({ responseJson: JsonObject ->
                 val responseObject = ApiResponse(
                     status = responseJson.get("status").asString,
-                    description = responseJson.get("description").asString
+                    description = responseJson.get("description").asString,
+                    tipo = responseJson.get("tipo").asString
                 )
 
                 Log.d(TAG, "createAuditoriaAPI: status=${responseObject.status}")
@@ -106,7 +110,8 @@ class AuditoriasDataSource {
                 it.printStackTrace()
                 response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo crear la nueva auditoria"
+                    description = "No se pudo crear la nueva auditoria",
+                    tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
 
             })
@@ -121,7 +126,8 @@ class AuditoriasDataSource {
             .subscribe({ responseJson: JsonObject ->
                 val responseObject = ApiResponse(
                     status = responseJson.get("status").asString,
-                    description = responseJson.get("description").asString
+                    description = responseJson.get("description").asString,
+                    tipo = responseJson.get("tipo").asString
                 )
                 response.value = responseObject
                 Log.d(TAG, "EmpresasResponseHandler: status=${responseObject.status}")
@@ -147,7 +153,8 @@ class AuditoriasDataSource {
                 it.printStackTrace()
                 response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo consultar la auditoria"
+                    description = "No se pudo consultar la auditoria",
+                    tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
 
             })
@@ -162,7 +169,8 @@ class AuditoriasDataSource {
             .subscribe({ responseJson: JsonObject ->
                 val responseObject = ApiResponse(
                     status = responseJson.get("status").asString,
-                    description = responseJson.get("description").asString
+                    description = responseJson.get("description").asString,
+                    tipo = responseJson.get("tipo").asString
                 )
                 response.value = responseObject
                 Log.d(TAG, "DepartamentosResponseHandler: status=${responseObject.status}")
@@ -191,7 +199,8 @@ class AuditoriasDataSource {
                 it.printStackTrace()
                 response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo consultar la auditoria"
+                    description = "No se pudo consultar la auditoria",
+                    tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
             })
     }
@@ -205,7 +214,8 @@ class AuditoriasDataSource {
             .subscribe({ responseJson: JsonObject ->
                 val responseObject = ApiResponse(
                     status = responseJson.get("status").asString,
-                    description = responseJson.get("description").asString
+                    description = responseJson.get("description").asString,
+                    tipo = responseJson.get("tipo").asString
                 )
                 response.value = responseObject
                 Log.d(TAG, "DepartamentosResponseHandler: status=${responseObject.status}")
@@ -234,7 +244,8 @@ class AuditoriasDataSource {
                 it.printStackTrace()
                 response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo consultar la auditoria"
+                    description = "No se pudo consultar la auditoria",
+                    tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
             })
     }
@@ -256,7 +267,8 @@ class AuditoriasDataSource {
                 it.printStackTrace()
                 response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo actualizar el estatus de la auditoria!"
+                    description = "No se pudo actualizar el estatus de la auditoria!",
+                    tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
             })
     }
@@ -276,7 +288,8 @@ class AuditoriasDataSource {
                 it.printStackTrace()
                 response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo finalizar y guardar la auditoria!"
+                    description = "No se pudo finalizar y guardar la auditoria!",
+                    tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
             })
     }
