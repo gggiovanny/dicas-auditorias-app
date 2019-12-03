@@ -20,6 +20,8 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
 
     val recyclerAuditoriasAdapter = RecyclerAuditoriasAdapter(this, R.layout.layout_auditoria_item)
 
+    var reloadRecyclerRequired = false
+
     fun callAuditorias(apikey: String, user: String = "", status: String = "") {
         repository.callAuditoriasAPI(apikey, user, status)
     }

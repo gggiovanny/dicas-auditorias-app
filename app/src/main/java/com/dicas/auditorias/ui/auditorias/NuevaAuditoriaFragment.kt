@@ -224,6 +224,7 @@ class NuevaAuditoriaFragment : Fragment() {
             if (response.isOk && response.description.contains("Entry sucessfuly created")) {
 
                 try {
+                    viewModel.reloadRecyclerRequired = true
                     openActivos(response.idAuditoria!!)
                 } catch (e: Exception) {
                     viewModel.response.value = ApiResponse(
@@ -240,7 +241,7 @@ class NuevaAuditoriaFragment : Fragment() {
     }
 
     private fun setupReloadWhenBackButton() {
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
             navController.popBackStack()
         }
     }

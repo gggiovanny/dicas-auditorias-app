@@ -91,10 +91,10 @@ class AuditoriasFragment : Fragment() {
             callAPI()
         }
 
-        if (viewModel.auditorias.value == null) {
+        if (viewModel.auditorias.value == null || viewModel.reloadRecyclerRequired) {
+            viewModel.reloadRecyclerRequired = false
             callAPI()
         }
-
 
         viewModel.auditorias.observe(this, Observer {
             viewModel.recyclerAuditoriasAdapter.notifyDataSetChanged()
@@ -185,7 +185,8 @@ class AuditoriasFragment : Fragment() {
 
         when (loading) {
             true -> {
-                if (viewModel.auditorias.value != null)
+                // si el modelo contiene datos y no se requirio recargar
+                if (viewModel.auditorias.value != null && !viewModel.reloadRecyclerRequired)
                     return
 
                 rv_auditorias.visibility = View.GONE
@@ -210,7 +211,7 @@ class AuditoriasFragment : Fragment() {
     }
 
     private fun setupLogoutPromt() {
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
 
             val alert: AlertDialog = AlertDialog.Builder(requireContext()).apply {
                 setTitle(getString(R.string.dialog_logout_title))
@@ -219,11 +220,11 @@ class AuditoriasFragment : Fragment() {
                     // Cerrar sesión
                     LoginRepository(LoginDataSource()).deleteTokenLocal()
                     dialog.dismiss()
-                    requireActivity().finish()
+                    requireActivity().finishAndRemoveTask()
                 }
                 setNegativeButton(getString(R.string.dialog_logout_no)) { dialog, _ ->
                     dialog.dismiss()
-                    requireActivity().finish()
+                    requireActivity().finishAndRemoveTask()
                 }
             }.create()
 
