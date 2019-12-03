@@ -88,6 +88,7 @@ class RecyclerAuditoriasAdapter(
 
             /** Configurando */
 
+
             /** Configurando color e icono de chip de status */
             when (auditoriaViewModel.getAuditoriaAt(index)?.status) {
                 AuditoriaStatusEnum.EN_CURSO.toString() -> {
@@ -109,6 +110,8 @@ class RecyclerAuditoriasAdapter(
 
             if (auditoriaViewModel.getAuditoriaAt(index)?.descripcion.isNullOrEmpty())
                 itemView.description_auditoria.visibility = View.GONE
+            else
+                itemView.description_auditoria.visibility = View.VISIBLE
 
             /** Se bindean las variables del layouts */
             binding?.setVariable(BR.model, auditoriaViewModel)
@@ -117,6 +120,7 @@ class RecyclerAuditoriasAdapter(
         }
 
         private fun addDescriptionChipsInToolbar(auditoriaActiva: Auditoria) {
+            itemView.chip_group.removeAllViews()
 
             val textColor =
                 getColorStateList(itemView.context ?: return, R.color.text_secondary_dark)
