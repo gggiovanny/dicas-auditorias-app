@@ -99,15 +99,19 @@ class AuditoriasDataSource {
 
                 Log.d(TAG, "createAuditoriaAPI: status=${responseObject.status}")
                 Log.d(TAG, "createAuditoriaAPI: description=[${responseObject.description}]")
+                Log.d(TAG, "createAuditoriaAPI: tipo=[${responseObject.tipo}]")
 
                 if (responseObject.isOk) {
                     responseObject.idAuditoria = responseJson.get("id").asString
                     response.value = responseObject
                     Log.d(TAG, "createAuditoriaAPI: idAuditoria=[${responseObject.idAuditoria}]")
-
+                } else {
+                    response.value = responseObject
                 }
             }, {
+
                 it.printStackTrace()
+                Log.d(TAG, "createAuditoriaAPI: anomaxd")
                 response.value = ApiResponse(
                     status = "error_app",
                     description = "No se pudo crear la nueva auditoria",

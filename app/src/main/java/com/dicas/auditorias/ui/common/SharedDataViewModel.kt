@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.ApiResponse
@@ -30,21 +29,7 @@ class SharedDataViewModel : ViewModel() {
     var firstSucess = true
 
     fun handleGlobalResponse(context: Context, activity: Activity, response: ApiResponse) {
-        Observer<ApiResponse> {
-
-        }
-
         Log.d(TAG, "handleGlobalResponse: ${response.status}: ${response.description}")
-
-
-        when (response.tipo) {
-            ResponseTypeEnum.ERROR.toString(),
-            ResponseTypeEnum.INTERNAL_ERROR.toString(),
-            ResponseTypeEnum.WARNING.toString()
-            -> {
-                Toast.makeText(context, response.description, Toast.LENGTH_LONG).show()
-            }
-        }
 
         when (response.isOk) {
             true -> {
@@ -58,7 +43,11 @@ class SharedDataViewModel : ViewModel() {
                 }
             }
             false -> {
-                if (firstError && response.tipo != ResponseTypeEnum.INTERNAL_ERROR.toString()) {
+                // Cuando la respuesta no es satisfactoria, mostrar indistintamente el mensaje de la API
+                Toast.makeText(context, response.description, Toast.LENGTH_LONG).show()
+
+
+                if (firstError && response.tipo == ResponseTypeEnum.LOGIN_FAILED.toString()) {
                     firstError = false
                     val login = Intent(context, LoginActivity::class.java).apply {
                         putExtra("login_failed", true)

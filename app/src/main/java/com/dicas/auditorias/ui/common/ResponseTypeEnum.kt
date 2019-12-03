@@ -7,7 +7,8 @@ enum class ResponseTypeEnum(text: String) {
     PUT("PUT"),
     WARNING("WARNING"),
     ERROR("ERROR"),
-    INTERNAL_ERROR("INTERNAL_ERROR")
+    INTERNAL_ERROR("INTERNAL_ERROR"),
+    LOGIN_FAILED("LOGIN_FAILED")
     ;
 
     val text = text
