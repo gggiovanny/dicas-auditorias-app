@@ -73,6 +73,15 @@
     <string name="marcar_auditoria_terminada">Marcar como terminada</string>
     <string name="marcar_auditoria_guardada">Finalizar y guardar</string>
 
-    <string name="dialog_title">Guardar auditoria</string>
-    <string name="dialog_message">¿Esta seguro que desea guardar y finalizar esta auditoria? Esta acción no se puede deshacer.</string>
+    <string name="dialog_guardar_auditoria_title">Guardar auditoria</string>
+    <string name="dialog_guardar_auditoria_message">¿Esta seguro que desea guardar y finalizar esta auditoria? Esta acción no se puede deshacer.</string>
+    <string name="dialog_yes">SI</string>
+    <string name="dialog_no">NO</string>
+
+    <string name="dialog_logout_title">Cerrando aplicación</string>
+    <string name="dialog_logout_message">Toque en cualquier zona fuera de este diálogo para cancelar.</string>
+    <string name="dialog_logout_yes">Cerrar app y sesión</string>
+    <string name="dialog_logout_no">Cerrar solo la app</string>
+
+
 </resources>

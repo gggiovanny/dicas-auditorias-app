@@ -61,15 +61,15 @@ class StatusDialogFragment : BottomSheetDialogFragment() {
 
             val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
 
-            builder.setTitle(getString(R.string.dialog_title))
-            builder.setMessage(getString(R.string.dialog_message))
+            builder.setTitle(getString(R.string.dialog_guardar_auditoria_title))
+            builder.setMessage(getString(R.string.dialog_guardar_auditoria_message))
 
-            builder.setPositiveButton("SI") { _, _ ->
+            builder.setPositiveButton(getString(R.string.dialog_yes)) { _, _ ->
                 // Ejecutar la accion bindeada
                 listener(idAuditoria)
             }
 
-            builder.setNegativeButton("NO") { dialog, _ ->
+            builder.setNegativeButton(getString(R.string.dialog_no)) { dialog, _ ->
                 // No hacer nada
                 dialog.dismiss()
                 close()

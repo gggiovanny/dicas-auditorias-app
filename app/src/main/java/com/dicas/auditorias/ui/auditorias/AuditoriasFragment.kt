@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,6 +15,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.dicas.auditorias.R
+import com.dicas.auditorias.data.LoginRepository
+import com.dicas.auditorias.data.api.LoginDataSource
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
 import com.dicas.auditorias.ui.common.SharedDataViewModel
@@ -68,6 +72,7 @@ class AuditoriasFragment : Fragment() {
         setupRecyclerView()
         setupNuevaAuditoriaButton()
         setupScannerButton()
+        setupLogoutPromt()
     }
 
     override fun onResume() {
@@ -202,6 +207,31 @@ class AuditoriasFragment : Fragment() {
         }
 
 
+    }
+
+    private fun setupLogoutPromt() {
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+
+            val alert: AlertDialog = AlertDialog.Builder(requireContext()).apply {
+                setTitle(getString(R.string.dialog_logout_title))
+                setMessage(getString(R.string.dialog_logout_message))
+                setPositiveButton(getString(R.string.dialog_logout_yes)) { dialog, _ ->
+                    // Cerrar sesión
+                    LoginRepository(LoginDataSource()).deleteTokenLocal()
+                    dialog.dismiss()
+                    requireActivity().finish()
+                }
+                setNegativeButton(getString(R.string.dialog_logout_no)) { dialog, _ ->
+                    dialog.dismiss()
+                    requireActivity().finish()
+                }
+            }.create()
+
+
+            alert.show()
+
+
+        }
     }
 }
 
