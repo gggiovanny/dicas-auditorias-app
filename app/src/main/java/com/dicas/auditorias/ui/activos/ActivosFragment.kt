@@ -1,6 +1,5 @@
 package com.dicas.auditorias.ui.activos
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +20,6 @@ import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
 import com.dicas.auditorias.ui.common.SharedDataViewModel
 import com.dicas.auditorias.ui.common.setupAppBarScrollFade
-import com.dicas.auditorias.ui.login.LoginActivity
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_activos.*
 import kotlinx.android.synthetic.main.layout_toolbar_general.*
@@ -137,48 +135,11 @@ class ActivosFragment : Fragment() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
 
-            if (response.status.contains("show")) {
-                Log.d(TAG, "setupResponseHandler: show: ${response.description}")
-                Toast.makeText(this.requireContext(), response.description, Toast.LENGTH_LONG)
-                    .show()
-                return@Observer
-            }
-
-            Log.d(TAG, "setupResponseHandler: ${response.status}: ${response.description}")
-            if (!response.isOk && firstError) {
-                if (!response.status.contains("app")) {
-                    firstError = false
-                    showSesionCaducada(response)
-                    val login = Intent(context, LoginActivity::class.java).apply {
-                        putExtra("login_failed", true)
-                    }
-                    startActivity(login)
-                    this.activity?.finish()
-                } else {
-
-                    Toast.makeText(
-                        context, R.string.error_api,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+            sharedData.handleGlobalResponse(requireContext(), requireActivity(), response)
 
 
         })
         Log.d(TAG, "setupResponseHandler: created observer done!")
-    }
-
-    private fun showSesionCaducada(response: ApiResponse) {
-        if (response.description == "Expired token") {
-            Log.d(TAG, "showSesionCaducada: ${response.status}: ${response.description}")
-            Toast.makeText(context, R.string.invalid_token, Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(
-                context,
-                "${response.status}: ${response.description}",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
     }
 
     private fun addDescriptionChipsInToolbar() {

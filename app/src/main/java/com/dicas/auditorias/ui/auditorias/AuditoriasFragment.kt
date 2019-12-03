@@ -1,6 +1,5 @@
 package com.dicas.auditorias.ui.auditorias
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,12 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.ItemTouchHelper
 import com.dicas.auditorias.R
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
 import com.dicas.auditorias.ui.common.SharedDataViewModel
-import com.dicas.auditorias.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_auditoria.*
 import kotlinx.android.synthetic.main.layout_toolbar_general.*
 
@@ -34,9 +31,6 @@ class AuditoriasFragment : Fragment() {
     private lateinit var viewModel: AuditoriaViewModel
     private lateinit var sharedData: SharedDataViewModel
     private lateinit var navController: NavController
-
-    private var firstError = true
-    private var firstSucess = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -158,60 +152,11 @@ class AuditoriasFragment : Fragment() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
 
-            Log.d(TAG, "setupResponseHandler: ${response.status}: ${response.description}")
-
-            if(response.status.contains("show")) {
-                Log.d(TAG, "setupResponseHandler: showing: ${response.description}")
-                Toast.makeText(
-                    context, response.description,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-
-
-
-            if (response.isOk) {
-                if (firstSucess && sharedData.isDataFromMemory) {
-                    firstSucess = false
-                    Toast.makeText(
-                        context,
-                        "${getString(R.string.welcome)} ${sharedData.username}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            } else {
-                if (firstError && !response.status.contains("app")) {
-                    firstError = false
-                    showSesionCaducada(response)
-                    val login = Intent(context, LoginActivity::class.java).apply {
-                        putExtra("login_failed", true)
-                    }
-                    startActivity(login)
-                    this.activity?.finish()
-                } else {
-                    Toast.makeText(
-                        context, R.string.error_api,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-
+            sharedData.handleGlobalResponse(requireContext(), requireActivity(), response)
         })
         Log.d(TAG, "setupResponseHandler: created observer done!")
     }
 
-    private fun showSesionCaducada(response: ApiResponse) {
-        if (response.description == "Expired token") {
-            Log.d(TAG, "showSesionCaducada: ${response.status}: ${response.description}")
-            Toast.makeText(context, R.string.invalid_token, Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(
-                context,
-                "${response.status}: ${response.description}",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
 
     private fun setupNuevaAuditoriaButton() {
         fab_nueva_auditoria.setOnClickListener {

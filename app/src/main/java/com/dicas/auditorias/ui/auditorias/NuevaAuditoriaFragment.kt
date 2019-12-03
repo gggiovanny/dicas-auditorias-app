@@ -1,7 +1,6 @@
 package com.dicas.auditorias.ui.auditorias
 
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ import com.dicas.auditorias.ui.common.OnItemSelectedListener
 import com.dicas.auditorias.ui.common.ResponseTypeEnum
 import com.dicas.auditorias.ui.common.SharedDataViewModel
 import com.dicas.auditorias.ui.common.afterTextChanged
-import com.dicas.auditorias.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_nueva_auditoria.*
 
 
@@ -89,18 +87,6 @@ class NuevaAuditoriaFragment : Fragment() {
             }
         }
 
-        /** Creando observer para la respuesta del metodo post
-        viewModel.response.observe(this, Observer {
-        val apiResponse = it ?: return@Observer
-
-        Toast.makeText(
-        context,
-        "${apiResponse.status}: ${apiResponse.description}",
-        Toast.LENGTH_SHORT
-        ).show()
-
-        })
-         */
 
 
     }
@@ -231,23 +217,9 @@ class NuevaAuditoriaFragment : Fragment() {
     private fun setupResponseHandler() {
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
-            Log.d(TAG, "setupResponseHandler: ${response.status}: ${response.description}")
-            if (!response.isOk && firstError) {
-                if (!(response.status ?: return@Observer).contains("app")) {
-                    firstError = false
-                    showSesionCaducada(response)
-                    val login = Intent(context, LoginActivity::class.java).apply {
-                        putExtra("login_failed", true)
-                    }
-                    startActivity(login)
-                    this.activity?.finish()
-                } else {
-                    Toast.makeText(
-                        context, R.string.error_api,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+
+            sharedData.handleGlobalResponse(requireContext(), requireActivity(), response)
+
 
             if (response.isOk && response.description.contains("Entry sucessfuly created")) {
 
@@ -265,19 +237,6 @@ class NuevaAuditoriaFragment : Fragment() {
 
         })
         Log.d(TAG, "setupResponseHandler: created observer done!")
-    }
-
-    private fun showSesionCaducada(response: ApiResponse) {
-        if (response.description == "Expired token") {
-            Log.d(TAG, "showSesionCaducada: ${response.status}: ${response.description}")
-            Toast.makeText(context, R.string.invalid_token, Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(
-                context,
-                "${response.status}: ${response.description}",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
     }
 
     private fun setupReloadWhenBackButton() {

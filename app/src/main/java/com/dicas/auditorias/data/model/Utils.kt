@@ -7,3 +7,4 @@ fun ResponseWrapper(responseJson: JsonObject) = ApiResponse(
     description = responseJson.get("description").asString,
     tipo = responseJson.get("tipo").asString
 )
+
