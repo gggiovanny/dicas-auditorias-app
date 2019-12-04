@@ -96,6 +96,7 @@ class AuditoriasFragment : Fragment() {
             callAPI()
         }
 
+        viewModel.auditorias.removeObservers(this)
         viewModel.auditorias.observe(this, Observer {
             viewModel.recyclerAuditoriasAdapter.notifyDataSetChanged()
             setLoading(false)
@@ -104,8 +105,7 @@ class AuditoriasFragment : Fragment() {
 
         /** clickListener */
         viewModel.setRecyclerClickListener { index ->
-
-            val auditoriaActiva = viewModel.auditorias.value?.get(index)
+            val auditoriaActiva = viewModel.getAuditoriaAt(index)
             Log.d(TAG, "setupRecyclerView: Auditoria seleccionada: ${auditoriaActiva?.id}")
             openActivos(auditoriaActiva ?: return@setRecyclerClickListener)
 
@@ -154,6 +154,7 @@ class AuditoriasFragment : Fragment() {
     }
 
     private fun setupResponseHandler() {
+        viewModel.response.removeObservers(this)
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
 

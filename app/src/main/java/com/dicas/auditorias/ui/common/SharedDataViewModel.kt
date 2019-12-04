@@ -31,6 +31,19 @@ class SharedDataViewModel : ViewModel() {
     fun handleGlobalResponse(context: Context, activity: Activity, response: ApiResponse) {
         Log.d(TAG, "handleGlobalResponse: ${response.status}: ${response.description}")
 
+        when (response.tipo) {
+            ResponseTypeEnum.ERROR.toString(),
+            ResponseTypeEnum.INTERNAL_ERROR.toString(),
+            ResponseTypeEnum.WARNING.toString(),
+            ResponseTypeEnum.LOGIN_FAILED.toString()
+            -> {
+                // Cuando la respuesta no es satisfactoria, mostrar el mensaje de la API
+                Toast.makeText(context, response.description, Toast.LENGTH_LONG).show()
+                response.tipo = ResponseTypeEnum.DO_NOT_SHOW.toString()
+            }
+        }
+
+
         when (response.isOk) {
             true -> {
                 if (firstSucess && isDataFromMemory) {
@@ -43,9 +56,6 @@ class SharedDataViewModel : ViewModel() {
                 }
             }
             false -> {
-                // Cuando la respuesta no es satisfactoria, mostrar indistintamente el mensaje de la API
-                Toast.makeText(context, response.description, Toast.LENGTH_LONG).show()
-
 
                 if (firstError && response.tipo == ResponseTypeEnum.LOGIN_FAILED.toString()) {
                     firstError = false

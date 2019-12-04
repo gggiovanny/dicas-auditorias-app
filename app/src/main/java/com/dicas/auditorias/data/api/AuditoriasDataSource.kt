@@ -114,7 +114,7 @@ class AuditoriasDataSource {
                 Log.d(TAG, "createAuditoriaAPI: anomaxd")
                 response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo crear la nueva auditoria",
+                    description = "No se pudo crear la nueva auditoria. Error en el servidor.",
                     tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
 

@@ -139,6 +139,7 @@ class NuevaAuditoriaFragment : Fragment() {
 
         /** Llamando al API para obtener los datos y creando el observer de empresas*/
         viewModel.callEmpresas(apikey = sharedData.token)
+        viewModel.empresas.removeObservers(this)
         viewModel.empresas.observe(this, Observer { empresas: List<Empresa> ->
             for (empresa in empresas)
                 adapterEmpresas.add(empresa)
@@ -147,6 +148,7 @@ class NuevaAuditoriaFragment : Fragment() {
 
         /** Observer de departamentos */
         /** Los departamentos se actualizan cuando se cambia la empresa elegida para traer los de la misma*/
+        viewModel.departamentos.removeObservers(this)
         viewModel.departamentos.observe(this, Observer { departamentos: List<Departamento> ->
             with(adapterDeptos) {
                 clear()
@@ -168,6 +170,7 @@ class NuevaAuditoriaFragment : Fragment() {
 
         /** Observer de clasificaciones */
         viewModel.callClasificaciones(apiKey = sharedData.token)
+        viewModel.clasificaciones.removeObservers(this)
         viewModel.clasificaciones.observe(this, Observer { clasificaciones: List<Clasificacion> ->
             for (clasif in clasificaciones)
                 adapterClasif.add(clasif)
@@ -224,8 +227,8 @@ class NuevaAuditoriaFragment : Fragment() {
             if (response.isOk && response.description.contains("Entry sucessfuly created")) {
 
                 try {
-                    viewModel.reloadRecyclerRequired = true
                     openActivos(response.idAuditoria!!)
+                    viewModel.reloadRecyclerRequired = true
                 } catch (e: Exception) {
                     viewModel.response.value = ApiResponse(
                         status = "error_show",

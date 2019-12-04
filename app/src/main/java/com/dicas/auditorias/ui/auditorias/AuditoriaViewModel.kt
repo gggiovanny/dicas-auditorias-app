@@ -23,6 +23,7 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
     var reloadRecyclerRequired = false
 
     fun callAuditorias(apikey: String, user: String = "", status: String = "") {
+        Log.d(TAG, "callAuditorias: Called!")
         repository.callAuditoriasAPI(apikey, user, status)
     }
 

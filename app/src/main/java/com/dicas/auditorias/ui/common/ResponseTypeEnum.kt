@@ -8,7 +8,8 @@ enum class ResponseTypeEnum(text: String) {
     WARNING("WARNING"),
     ERROR("ERROR"),
     INTERNAL_ERROR("INTERNAL_ERROR"),
-    LOGIN_FAILED("LOGIN_FAILED")
+    LOGIN_FAILED("LOGIN_FAILED"),
+    DO_NOT_SHOW("DO_NOT_SHOW")
     ;
 
     val text = text

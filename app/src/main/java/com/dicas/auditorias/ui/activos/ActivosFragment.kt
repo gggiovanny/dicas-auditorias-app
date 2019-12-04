@@ -112,6 +112,7 @@ class ActivosFragment : Fragment() {
             callAPI()
         }
 
+        viewModel.activos.removeObservers(this)
         viewModel.activos.observe(this, Observer {
             viewModel.recyclerActivosAdapter.notifyDataSetChanged()
             viewModel.ultimaAuditoriaConsultada = viewModel.auditoriaActiva?.id!!
@@ -132,6 +133,7 @@ class ActivosFragment : Fragment() {
 
 
     private fun setupResponseHandler() {
+        viewModel.response.removeObservers(this)
         viewModel.response.observe(this, Observer {
             val response: ApiResponse = it ?: return@Observer
 

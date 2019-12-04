@@ -99,7 +99,7 @@ class ActivosDataSource {
                 it.printStackTrace()
                 _response.value = ApiResponse(
                     status = "error_app",
-                    description = "No se pudo crear la nueva auditoria",
+                    description = "No se pudo actualizar la existencia del activo",
                     tipo = ResponseTypeEnum.INTERNAL_ERROR.toString()
                 )
 

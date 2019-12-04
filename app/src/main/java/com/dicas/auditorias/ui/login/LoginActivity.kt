@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
         val loginFailed = intent.getBooleanExtra("login_failed", false)
         checkForSavedToken(loginFailed)
 
-
+        loginViewModel.loginState.removeObservers(this)
         loginViewModel.loginState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
@@ -55,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
+        loginViewModel.loginResult.removeObservers(this)
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
