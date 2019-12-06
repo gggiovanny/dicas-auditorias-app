@@ -19,9 +19,11 @@ import com.dicas.auditorias.data.LoginRepository
 import com.dicas.auditorias.data.api.LoginDataSource
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
+import com.dicas.auditorias.data.model.responseWrapper
 import com.dicas.auditorias.ui.common.SharedDataViewModel
 import kotlinx.android.synthetic.main.fragment_auditoria.*
 import kotlinx.android.synthetic.main.layout_toolbar_general.*
+import java.util.*
 
 
 class AuditoriasFragment : Fragment() {
@@ -127,7 +129,13 @@ class AuditoriasFragment : Fragment() {
                         idAuditoria = idAuditoria.toInt(),
                         datamodelIndex = index,
                         onResponse = {
-                            Toast.makeText(context, "#$idAuditoria en curso!", Toast.LENGTH_SHORT)
+                            val response = responseWrapper(it)
+
+                            Toast.makeText(
+                                context, "#$idAuditoria ${response.payload?.toLowerCase(
+                                    Locale.ROOT
+                                )}!", Toast.LENGTH_SHORT
+                            )
                                 .show()
                             close()
                         }

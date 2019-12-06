@@ -225,10 +225,10 @@ class NuevaAuditoriaFragment : Fragment() {
 
 
             if (response.isOk && response.description.contains("Entry sucessfuly created")) {
-
+                viewModel.reloadRecyclerRequired = true
                 try {
-                    openActivos(response.idAuditoria!!)
-                    viewModel.reloadRecyclerRequired = true
+                    val idAuditoria = response.payload!!
+                    openActivos(idAuditoria)
                 } catch (e: Exception) {
                     viewModel.response.value = ApiResponse(
                         status = "error_show",

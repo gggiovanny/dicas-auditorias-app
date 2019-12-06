@@ -38,12 +38,17 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
             if (apiResponse.isOk) {
                 apiResponse.token = responseJson.get("token").asString
-                apiResponse.username = responseJson.get("username").asString
+                apiResponse.payload = responseJson.get("username").asString
                 Log.d(TAG, "callToken.onResponse: token=${apiResponse.token}")
 
                 try {
-                    loginRepository.setLoggedInUser(apiResponse.token!!, apiResponse.username!!)
-                    _loginResult.value = LoginResult(success = LoggedInUser(token = apiResponse.token!!, name = apiResponse.username))
+                    loginRepository.setLoggedInUser(apiResponse.token!!, apiResponse.payload!!)
+                    _loginResult.value = LoginResult(
+                        success = LoggedInUser(
+                            token = apiResponse.token!!,
+                            name = apiResponse.payload
+                        )
+                    )
                 } catch (e: Throwable) {
                     _loginResult.value = LoginResult(error = R.string.login_failed, description = apiResponse.description)
                     throw Exception("$TAG: No token on response object!", e)

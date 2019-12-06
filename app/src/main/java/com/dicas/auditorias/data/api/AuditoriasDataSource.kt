@@ -102,9 +102,9 @@ class AuditoriasDataSource {
                 Log.d(TAG, "createAuditoriaAPI: tipo=[${responseObject.tipo}]")
 
                 if (responseObject.isOk) {
-                    responseObject.idAuditoria = responseJson.get("id").asString
+                    responseObject.payload = responseJson.get("id").asString
                     response.value = responseObject
-                    Log.d(TAG, "createAuditoriaAPI: idAuditoria=[${responseObject.idAuditoria}]")
+                    Log.d(TAG, "createAuditoriaAPI: idAuditoria=[${responseObject.payload}]")
                 } else {
                     response.value = responseObject
                 }

@@ -80,7 +80,7 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
             idAuditoria = idAuditoria,
             terminada = auditoriaTerminada,
             onResponse = {
-                val apiResponse = ResponseWrapper(it)
+                val apiResponse = responseWrapper(it)
                 if (!apiResponse.isOk) {
                     response.value = apiResponse
                     return@updateAuditoriaTerminadaStatus
@@ -123,7 +123,7 @@ class AuditoriaViewModel(private val repository: AuditoriasRepository) : ViewMod
     ) {
         repository.saveAuditoria(apiKey = apiKey,
             idAuditoria = idAuditoria, onResponse = {
-                val apiResponse = ResponseWrapper(it)
+                val apiResponse = responseWrapper(it)
                 if (!apiResponse.isOk) {
                     response.value = apiResponse
                     return@saveAuditoria
