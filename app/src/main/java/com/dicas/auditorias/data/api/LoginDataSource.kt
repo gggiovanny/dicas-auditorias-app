@@ -1,10 +1,10 @@
 package com.dicas.auditorias.data.api
 
+import android.util.Log
 import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.io.IOException
 
 /**
  * Class that handles authentication w/ login credentials and retrieves userDataSource information.
@@ -26,7 +26,12 @@ class LoginDataSource {
     }
 
     private fun ErrorHandler(error: Throwable) {
-        throw IOException("Error getting token from API", error)
+        Log.e(TAG, "ErrorHandler: Error getting token from API")
+        error.printStackTrace()
+    }
+
+    companion object {
+        private const val TAG = "LoginDataSource"
     }
 }
 
