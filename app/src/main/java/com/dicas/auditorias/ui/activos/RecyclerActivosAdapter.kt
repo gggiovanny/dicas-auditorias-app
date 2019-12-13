@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
+import com.dicas.auditorias.ui.common.ActivoExistenciaActualEnum
 import kotlinx.android.synthetic.main.layout_activo_item.view.*
 
 class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item: Int) :
@@ -59,11 +60,11 @@ class RecyclerActivosAdapter(var viewModel: ActivosViewModel, var id_layout_item
                  * conservar el status del modelo de datos y solo permitir alterarlo cuando no halla
                  * un estatus definido en el modelo*/
                 when (viewModel.getObjectAt(position)?.existencia_actual) {
-                    null -> {
+                    ActivoExistenciaActualEnum.NULL.toString() -> {
                         /*
-                        binding?.root?.chip_existencia_actual?.setChipIconResource(R.drawable.ic_rounded_chip_false_black)
-                        binding?.root?.chip_existencia_actual?.setChipIconTintResource(R.color.yellow_terminada)
-                        binding?.root?.chip_existencia_actual?.setText(R.string.existencia_actual_false)
+                            binding?.root?.chip_existencia_actual?.setChipIconResource(R.drawable.ic_rounded_chip_false_black)
+                            binding?.root?.chip_existencia_actual?.setChipIconTintResource(R.color.yellow_terminada)
+                            binding?.root?.chip_existencia_actual?.setText(R.string.existencia_actual_false)
                         */
 
                         viewModel.setActivoExistencia(

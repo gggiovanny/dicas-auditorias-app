@@ -8,6 +8,7 @@ import com.dicas.auditorias.data.ActivosRepository
 import com.dicas.auditorias.data.model.Activo
 import com.dicas.auditorias.data.model.ApiResponse
 import com.dicas.auditorias.data.model.Auditoria
+import com.dicas.auditorias.ui.common.ActivoExistenciaActualEnum
 import com.dicas.auditorias.ui.common.ResponseTypeEnum
 import com.dicas.auditorias.ui.common.ViewModelRecyclerBinding
 import com.google.gson.JsonObject
@@ -90,9 +91,11 @@ class ActivosViewModel(private val repository: ActivosRepository) : ViewModel(),
 
 
                         if (existe)
-                            activos.value!![indexForUpdate!!].existencia_actual = "1"
+                            activos.value!![indexForUpdate!!].existencia_actual =
+                                ActivoExistenciaActualEnum.TRUE.toString()
                         else
-                            activos.value!![indexForUpdate!!].existencia_actual = "0"
+                            activos.value!![indexForUpdate!!].existencia_actual =
+                                ActivoExistenciaActualEnum.FALSE.toString()
 
                         recyclerActivosAdapter.notifyDataSetChanged()
                     }

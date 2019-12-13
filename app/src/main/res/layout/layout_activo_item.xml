@@ -69,9 +69,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text='@{modelAct.getObjectAt(position).existencia_actual.contains("1") ? @string/existencia_actual_true : modelAct.getObjectAt(position).existencia_actual.contains("0") ? @string/existencia_actual_false : @string/existencia_actual_null}'
-                app:chipIcon='@{modelAct.getObjectAt(position).existencia_actual.contains("1") ? @drawable/ic_rounded_chip_true_black : modelAct.getObjectAt(position).existencia_actual.contains("0") ? @drawable/ic_rounded_chip_false_black : @drawable/ic_rounded_chip_null_black}'
-                app:chipIconTint='@{modelAct.getObjectAt(position).existencia_actual.contains("1") ? @color/sucess_green_dark : modelAct.getObjectAt(position).existencia_actual.contains("0") ? @color/yellow_terminada : @color/text_secondary_dark}'
+                android:text='@{modelAct.getObjectAt(position).existencia_actual.contains("Sin definir") ? @string/existencia_actual_null : modelAct.getObjectAt(position).existencia_actual}'
+                app:chipIcon='@{modelAct.getObjectAt(position).existencia_actual.contains("Encontrado") ? @drawable/ic_rounded_chip_true_black : modelAct.getObjectAt(position).existencia_actual.contains("No encontrado") ? @drawable/ic_rounded_chip_false_black : @drawable/ic_rounded_chip_null_black}'
+                app:chipIconTint='@{modelAct.getObjectAt(position).existencia_actual.contains("Encontrado") ? @color/sucess_green_dark : modelAct.getObjectAt(position).existencia_actual.contains("No encontrado") ? @color/yellow_terminada : @color/text_secondary_dark}'
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -86,10 +86,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @string/existencia_guardada_true : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @string/existencia_guardada_false : @string/existencia_guardada_null}'
+                android:text='@{modelAct.getObjectAt(position).existencia_guardada.contains("Existencia registrada") ? @string/existencia_guardada_true : modelAct.getObjectAt(position).existencia_guardada.contains("Existencia no registrada") ? @string/existencia_guardada_false : @string/existencia_guardada_null}'
                 app:chipBackgroundColor="@color/transparent"
-                app:chipIcon='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @drawable/ic_check_box_true_black_24dp : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @drawable/ic_check_box_false_blank_black_24dp : @drawable/ic_check_box_indeterminate_black_24dp}'
-                app:chipIconTint='@{modelAct.getObjectAt(position).existencia_guardada.contains("1") ? @color/sucess_green_dark : modelAct.getObjectAt(position).existencia_guardada.contains("0") ? @color/error_red_light : @color/text_secondary_dark}'
+                app:chipIcon='@{modelAct.getObjectAt(position).existencia_guardada.contains("Existencia registrada") ? @drawable/ic_check_box_true_black_24dp : modelAct.getObjectAt(position).existencia_guardada.contains("Existencia no registrada") ? @drawable/ic_check_box_false_blank_black_24dp : @drawable/ic_check_box_indeterminate_black_24dp}'
+                app:chipIconTint='@{modelAct.getObjectAt(position).existencia_guardada.contains("Existencia registrada") ? @color/sucess_green_dark : modelAct.getObjectAt(position).existencia_guardada.contains("Existencia no registrada") ? @color/error_red_light : @color/text_secondary_dark}'
                 app:layout_constraintBottom_toTopOf="@+id/chip_existencia_actual"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
